@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akatsuki Store | متجر الأكاتسكي الرقمي</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            akatsuki: {
+              red: '#e60026',
+              crimson: '#9b0015',
+              dark: '#0a0a0d',
+              card: '#13131a',
+              border: '#23232f',
+              cloud: '#ff2a4b'
+            }
+          },
+          fontFamily: {
+            tajawal: ['Tajawal', 'sans-serif'],
+            cinzel: ['Cinzel', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- SweetAlert2 for Popups -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: #08080a;
+      color: #f3f4f6;
+    }
+    .akatsuki-glow {
+      text-shadow: 0 0 15px rgba(230, 0, 38, 0.7), 0 0 30px rgba(230, 0, 38, 0.4);
+    }
+    .akatsuki-border-glow {
+      box-shadow: 0 0 15px rgba(230, 0, 38, 0.25);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0d0d12;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #e60026;
+      border-radius: 4px;
+    }
+    .cloud-bg {
+      background-image: radial-gradient(circle at 50% 50%, rgba(230, 0, 38, 0.08) 0%, transparent 60%);
+    }
+  </style>
+</head>
+<body class="custom-scrollbar min-h-screen flex flex-col selection:bg-red-600 selection:text-white">
+
+  <!-- Top Notification Bar -->
+  <div class="bg-gradient-to-r from-red-950 via-red-900 to-black text-white text-xs py-1.5 px-4 text-center font-medium border-b border-red-800/40 flex items-center justify-center gap-2">
+    <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+    <span>⚡ مرحباً بكم في <b>Akatsuki Store</b> - سرعة في التسليم، شحن آمن لجميع السيرفرات وضمان 100%</span>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-[#0d0d12]/95 backdrop-blur-md border-b border-akatsuki-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('store')">
+        <div class="relative w-11 h-11 rounded-xl bg-gradient-to-br from-red-600 to-red-950 flex items-center justify-center border border-red-500/50 shadow-lg shadow-red-900/50">
+          <i class="fa-solid fa-cloud text-white text-xl animate-pulse"></i>
+        </div>
+        <div>
+          <h1 class="font-cinzel text-xl sm:text-2xl font-black tracking-wider text-white akatsuki-glow flex items-center gap-1.5">
+            AKATSUKI <span class="text-red-500">STORE</span>
+          </h1>
+          <p class="text-[10px] text-gray-400 font-semibold tracking-widest uppercase">Digital Gaming & Subscriptions</p>
+        </div>
+      </div>
+
+      <!-- Navigation Links & Actions -->
+      <div class="flex items-center gap-3 sm:gap-4">
+        
+        <!-- Social Contact Shortcuts -->
+        <div class="hidden md:flex items-center gap-2 border-l border-gray-800 pl-3">
+          <a id="navTelegram" href="https://t.me/+213556334891" target="_blank" class="w-8 h-8 rounded-lg bg-gray-900 hover:bg-blue-600 hover:text-white text-gray-400 flex items-center justify-center transition" title="Telegram">
+            <i class="fa-brands fa-telegram text-sm"></i>
+          </a>
+          <a id="navWhatsapp" href="https://wa.me/213556334891" target="_blank" class="w-8 h-8 rounded-lg bg-gray-900 hover:bg-green-600 hover:text-white text-gray-400 flex items-center justify-center transition" title="WhatsApp">
+            <i class="fa-brands fa-whatsapp text-sm"></i>
+          </a>
+          <a id="navFacebook" href="https://www.facebook.com/share/14o3j1TpoFt/" target="_blank" class="w-8 h-8 rounded-lg bg-gray-900 hover:bg-blue-700 hover:text-white text-gray-400 flex items-center justify-center transition" title="Facebook">
+            <i class="fa-brands fa-facebook-f text-sm"></i>
+          </a>
+        </div>
+
+        <!-- User Profile Button -->
+        <button onclick="openUserModal()" id="userBtn" class="bg-akatsuki-card hover:bg-gray-800 border border-akatsuki-border text-gray-200 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition">
+          <i class="fa-solid fa-user text-red-500"></i>
+          <span id="userBtnText">تسجيل الدخول</span>
+        </button>
+
+        <!-- Admin Portal Button -->
+        <button onclick="openAdminModal()" class="bg-gradient-to-r from-red-900 to-black hover:from-red-800 hover:to-red-950 border border-red-700/60 text-red-300 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm">
+          <i class="fa-solid fa-shield-halved text-red-400"></i>
+          <span class="hidden sm:inline">لوحة الإدارة</span>
+        </button>
+
+        <!-- Cart Trigger -->
+        <button onclick="toggleCartModal()" class="relative bg-red-600 hover:bg-red-500 text-white p-2.5 rounded-xl shadow-lg shadow-red-900/40 transition">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cartCountBadge" class="absolute -top-1.5 -right-1.5 bg-white text-red-700 font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-gray-900">0</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- STORE VIEW CONTAINER -->
+  <div id="storeView" class="flex-1 pb-16">
+    
+    <!-- Hero Banner -->
+    <section class="relative py-12 px-4 sm:px-6 cloud-bg border-b border-akatsuki-border overflow-hidden">
+      <div class="max-w-4xl mx-auto text-center space-y-4 relative z-10">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-950/70 border border-red-700/60 text-red-400 text-xs font-bold tracking-wide">
+          <i class="fa-solid fa-bolt text-red-500"></i> خدمات شحن رسمية وسريعة بتسليم فوري | Akatsuki Store
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-black text-white font-cinzel tracking-tight leading-tight">
+          AKATSUKI <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300">DIGITAL STORE</span>
+        </h2>
+        <p class="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+          شحن فوري ومباشر للألعاب، اشتراكات رقمية وبطاقات هدايا مع نظام فحص معرّف الحساب <span class="text-red-400 font-bold">(Player ID Verification)</span> قبل الشحن لضمان وصول طلبك.
+        </p>
+
+        <!-- Search Bar -->
+        <div class="max-w-xl mx-auto mt-6 relative">
+          <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="ابحث عن لعبتك المفضلة (Free Fire, PUBG, Valorant, Netflix...)" class="w-full bg-[#14141c] border border-akatsuki-border focus:border-red-600 rounded-2xl py-3.5 pr-11 pl-4 text-sm text-white placeholder-gray-500 focus:outline-none transition akatsuki-border-glow">
+          <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories Filter & Currency Bar -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none" id="categoriesBar">
+        <button onclick="setCategory('all')" class="cat-btn active bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition">🎮 الكل</button>
+        <button onclick="setCategory('games')" class="cat-btn bg-akatsuki-card text-gray-300 hover:bg-gray-800 border border-akatsuki-border px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition">🎯 ألعاب الجوال والكمبيوتر</button>
+        <button onclick="setCategory('subs')" class="cat-btn bg-akatsuki-card text-gray-300 hover:bg-gray-800 border border-akatsuki-border px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition">📺 الاشتراكات والتطبيقات</button>
+        <button onclick="setCategory('giftcards')" class="cat-btn bg-akatsuki-card text-gray-300 hover:bg-gray-800 border border-akatsuki-border px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition">💳 بطاقات الهدايا (Gift Cards)</button>
+      </div>
+
+      <!-- Currency Switcher -->
+      <div class="flex items-center gap-2 self-end md:self-auto text-xs font-semibold text-gray-400">
+        <span>العملة:</span>
+        <select id="currencySelector" onchange="changeCurrency(this.value)" class="bg-akatsuki-card border border-akatsuki-border text-white text-xs rounded-lg px-2.5 py-1.5 focus:outline-none">
+          <option value="DZD" selected>دينار جزائري (DZD / د.ج)</option>
+          <option value="USD">دولار أمريكي (USD $)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div id="productsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <!-- Rendered via JS -->
+      </div>
+    </main>
+
+  </div>
+
+  <!-- RECHARGE / PRODUCT DETAILS MODAL -->
+  <div id="rechargeModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-[#111118] border border-red-900/60 rounded-3xl w-full max-w-xl max-h-[90vh] overflow-y-auto custom-scrollbar p-6 space-y-5 shadow-2xl relative">
+      
+      <!-- Close Button -->
+      <button onclick="closeRechargeModal()" class="absolute top-5 left-5 text-gray-400 hover:text-white w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <!-- Selected Product Header -->
+      <div class="flex items-center gap-4 border-b border-gray-800 pb-4">
+        <img id="modalProductImg" src="" alt="Product" class="w-16 h-16 rounded-2xl object-cover border border-red-800 shadow-md">
+        <div>
+          <span id="modalProductBadge" class="bg-red-950 text-red-400 border border-red-800 text-[10px] font-bold px-2 py-0.5 rounded-md"></span>
+          <h3 id="modalProductName" class="text-lg font-bold text-white mt-1"></h3>
+          <p id="modalProductSource" class="text-xs text-green-400 flex items-center gap-1.5 mt-1 font-semibold">
+            <i class="fa-solid fa-circle-check"></i> شحن فوري ومباشر • Akatsuki Store
+          </p>
+        </div>
+      </div>
+
+      <!-- Packages / Denominations Selection -->
+      <div>
+        <label class="block text-xs font-bold text-gray-300 mb-2">1. اختر الباقة أو الكمية المطلوبة:</label>
+        <div id="packagesContainer" class="grid grid-cols-2 gap-2.5">
+          <!-- Packages generated by JS -->
+        </div>
+      </div>
+
+      <!-- Player ID / Account Verification Form -->
+      <div id="playerVerificationSection" class="bg-black/40 border border-akatsuki-border rounded-2xl p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-bold text-red-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-user-check"></i> 2. بيانات الحساب والتحقق المباشر:
+          </label>
+          <span class="text-[10px] text-gray-400 font-medium">فحص اسم اللاعب تلقائياً</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-[11px] text-gray-400 mb-1">السيرفر / المنطقة (Server):</label>
+            <select id="serverSelect" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500">
+              <option value="MENA">الشرق الأوسط وشمال إفريقيا (MENA)</option>
+              <option value="EU">أوروبا (Europe)</option>
+              <option value="NA">أمريكا الشمالية (North America)</option>
+              <option value="ASIA">آسيا (Asia)</option>
+              <option value="GLOBAL">عالمي (Global / All)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] text-gray-400 mb-1" id="idLabelText">معرف اللاعب (Player ID / User):</label>
+            <div class="relative">
+              <input type="text" id="targetPlayerId" placeholder="مثال: 589210492" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500">
+              <button onclick="verifyPlayerId()" type="button" class="absolute left-1 top-1 bottom-1 bg-red-600 hover:bg-red-500 text-white px-2.5 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+                <i class="fa-solid fa-magnifying-glass"></i> تحقق
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verification Result Badge -->
+        <div id="verifyResult" class="hidden rounded-xl p-3 text-xs flex items-center justify-between border"></div>
+      </div>
+
+      <!-- Action Button -->
+      <button onclick="confirmProductToCart()" class="w-full bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-red-950 transition text-sm">
+        <i class="fa-solid fa-cart-plus"></i> إضافة إلى السلة ومتابعة الشراء
+      </button>
+
+    </div>
+  </div>
+
+  <!-- CART & CHECKOUT MODAL -->
+  <div id="cartModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-[#111118] border border-akatsuki-border rounded-3xl w-full max-w-xl max-h-[90vh] overflow-y-auto custom-scrollbar p-6 space-y-5 shadow-2xl relative">
+      
+      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-bag-shopping text-red-500"></i> سلة المشتريات وتأكيد الطلب
+        </h3>
+        <button onclick="toggleCartModal()" class="text-gray-400 hover:text-white w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div id="cartList" class="space-y-2.5"></div>
+
+      <div class="bg-black/50 border border-gray-800 rounded-2xl p-4 flex items-center justify-between">
+        <span class="text-sm font-bold text-gray-300">المجموع المستحق للدفع:</span>
+        <span id="cartTotalDisplay" class="text-xl font-black text-red-500 akatsuki-glow">0 د.ج</span>
+      </div>
+
+      <div class="space-y-3">
+        <label class="block text-xs font-bold text-gray-300">اختر طريقة الدفع التي تناسبك:</label>
+        
+        <div class="grid grid-cols-3 gap-2" id="paymentOptionsContainer">
+          <button onclick="selectPayment('binance')" id="payBtn-binance" class="pay-method-btn active bg-gray-900 border-2 border-red-600 rounded-2xl p-3 text-center transition">
+            <i class="fa-solid fa-coins text-yellow-500 text-lg mb-1 block"></i>
+            <span class="text-xs font-bold text-white block">Binance Pay</span>
+            <span class="text-[10px] text-gray-400">ID شحن فوري</span>
+          </button>
+
+          <button onclick="selectPayment('bybit')" id="payBtn-bybit" class="pay-method-btn bg-gray-900 border border-gray-800 rounded-2xl p-3 text-center transition">
+            <i class="fa-solid fa-bolt text-amber-400 text-lg mb-1 block"></i>
+            <span class="text-xs font-bold text-white block">Bybit Pay</span>
+            <span class="text-[10px] text-gray-400">تحويل داخلي</span>
+          </button>
+
+          <button onclick="selectPayment('paypal')" id="payBtn-paypal" class="pay-method-btn bg-gray-900 border border-gray-800 rounded-2xl p-3 text-center transition">
+            <i class="fa-brands fa-paypal text-blue-400 text-lg mb-1 block"></i>
+            <span class="text-xs font-bold text-white block">PayPal</span>
+            <span class="text-[10px] text-gray-400">دفع دولي آمن</span>
+          </button>
+        </div>
+
+        <div id="paymentDetailsBox" class="bg-red-950/20 border border-red-900/60 rounded-2xl p-4 text-xs space-y-2"></div>
+      </div>
+
+      <div class="space-y-3 pt-2 border-t border-gray-800">
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">اسمك الكامل أو رقم هاتفك للتواصل:</label>
+          <input type="text" id="orderCustomerContact" placeholder="مثال: سيفو - 0556334891" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">إرفاق إثبات الدفع (Receipt / صورة التحويل):</label>
+          <input type="file" id="orderProofFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-0 file:ml-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-red-700 file:text-white hover:file:bg-red-600 bg-gray-900 rounded-xl p-1 border border-gray-700">
+        </div>
+      </div>
+
+      <button onclick="submitFinalOrder()" class="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-white font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-green-950 transition text-sm">
+        <i class="fa-solid fa-circle-check"></i> تأكيد الطلب وإرسال إشعار للمتجر
+      </button>
+
+    </div>
+  </div>
+
+  <!-- CUSTOMER LOGIN / REGISTER MODAL -->
+  <div id="userModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-[#111118] border border-akatsuki-border rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl relative">
+      <button onclick="closeUserModal()" class="absolute top-5 left-5 text-gray-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center space-y-1">
+        <div class="w-12 h-12 rounded-2xl bg-red-950 border border-red-800 text-red-500 flex items-center justify-center mx-auto text-xl">
+          <i class="fa-solid fa-user-ninja"></i>
+        </div>
+        <h3 class="text-lg font-bold text-white" id="userModalTitle">حساب الزبون</h3>
+        <p class="text-xs text-gray-400">سجل حسابك لحفظ طلباتك وعروضك المفضلة</p>
+      </div>
+
+      <div id="userLoggedOutSection" class="space-y-3">
+        <input type="text" id="custEmailInput" placeholder="البريد الإلكتروني أو اسم المستخدم" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-500">
+        <input type="password" id="custPassInput" placeholder="كلمة المرور" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-500">
+        
+        <button onclick="handleUserLogin()" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 rounded-xl text-xs transition">
+          تسجيل الدخول / إنشاء حساب فوري
+        </button>
+      </div>
+
+      <div id="userLoggedInSection" class="hidden space-y-4">
+        <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 text-center">
+          <p class="text-xs text-gray-400">مرحباً بك مجدداً:</p>
+          <h4 id="loggedUserName" class="text-base font-bold text-red-400"></h4>
+          <span class="inline-block mt-2 bg-green-950 text-green-400 border border-green-800 text-[10px] px-2 py-0.5 rounded-full font-bold">عضو موثق</span>
+        </div>
+
+        <div class="space-y-2">
+          <h5 class="text-xs font-bold text-gray-300">سجل طلباتك الأخيرة:</h5>
+          <div id="userOrdersHistory" class="max-h-40 overflow-y-auto custom-scrollbar space-y-2 text-xs"></div>
+        </div>
+
+        <button onclick="handleUserLogout()" class="w-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-2 rounded-xl text-xs transition">
+          تسجيل الخروج
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN AUTH MODAL -->
+  <div id="adminAuthModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-[#0f0f16] border border-red-900 rounded-3xl w-full max-w-sm p-6 space-y-4 shadow-2xl relative akatsuki-border-glow">
+      <button onclick="closeAdminModal()" class="absolute top-5 left-5 text-gray-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center space-y-1">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 to-black border border-red-500 flex items-center justify-center mx-auto text-xl text-white shadow-lg">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h3 class="text-lg font-bold text-white font-cinzel">ADMIN LOGIN</h3>
+        <p class="text-[11px] text-gray-400">لوحة التحكم الخاصة بصاحب الموقع فقط</p>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-[11px] text-gray-400 mb-1">البريد الإلكتروني للآدمن:</label>
+          <input type="email" id="adminEmailInput" placeholder="sifoudex46@gmail.com" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-500">
+        </div>
+        <div>
+          <label class="block text-[11px] text-gray-400 mb-1">كلمة المرور:</label>
+          <input type="password" id="adminPassInput" placeholder="••••••••" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-500">
+        </div>
+        <button onclick="verifyAdminLogin()" class="w-full bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md transition">
+          دخول لوحة التحكم
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN DASHBOARD FULL VIEW -->
+  <div id="adminDashboardView" class="hidden flex-1 max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full space-y-6">
+    
+    <!-- Admin Topbar -->
+    <div class="bg-[#111118] border border-red-900/60 rounded-3xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-red-600 flex items-center justify-center text-white text-xl">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+        <div>
+          <h2 class="text-lg font-bold text-white">لوحة تحكم إدارة المتجر (Akatsuki Admin)</h2>
+          <p class="text-xs text-green-400">● مرحباً بك: <span class="font-bold">sifoudex46@gmail.com</span> (المالك والمشرف)</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="switchView('store')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+          <i class="fa-solid fa-store"></i> معاينة المتجر
+        </button>
+        <button onclick="logoutAdmin()" class="bg-red-950 hover:bg-red-900 text-red-300 border border-red-800 px-4 py-2 rounded-xl text-xs font-bold transition">
+          تسجيل خروج الآدمن
+        </button>
+      </div>
+    </div>
+
+    <!-- Admin Tabs -->
+    <div class="flex gap-2 border-b border-gray-800 pb-3 overflow-x-auto">
+      <button onclick="switchAdminTab('orders')" id="adminTabBtn-orders" class="admin-tab-btn active bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
+        <i class="fa-solid fa-clipboard-list"></i> إدارة الطلبات الواردة (<span id="adminOrdersCount">0</span>)
+      </button>
+      <button onclick="switchAdminTab('products')" id="adminTabBtn-products" class="admin-tab-btn bg-gray-900 text-gray-300 hover:bg-gray-800 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
+        <i class="fa-solid fa-gamepad"></i> إدارة المنتجات، الصور والأسعار
+      </button>
+      <button onclick="switchAdminTab('settings')" id="adminTabBtn-settings" class="admin-tab-btn bg-gray-900 text-gray-300 hover:bg-gray-800 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
+        <i class="fa-solid fa-sliders"></i> إعدادات الدفع والتواصل
+      </button>
+    </div>
+
+    <!-- Tab 1: Orders Management -->
+    <div id="adminTab-orders" class="space-y-4">
+      <div class="bg-[#111118] border border-gray-800 rounded-3xl p-5">
+        <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-bell text-red-500 animate-bounce"></i> قائمة الطلبات الحديثة الواردة من الزبائن
+        </h3>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-right text-xs text-gray-300">
+            <thead class="bg-black/50 text-gray-400 font-bold border-b border-gray-800">
+              <tr>
+                <th class="p-3">رقم الطلب</th>
+                <th class="p-3">الزبون / التواصل</th>
+                <th class="p-3">العنصر / الباقة</th>
+                <th class="p-3">ID الحساب / السيرفر</th>
+                <th class="p-3">المبلغ وطريقة الدفع</th>
+                <th class="p-3">الإثبات</th>
+                <th class="p-3">الحالة</th>
+                <th class="p-3 text-center">الإجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="adminOrdersTableBody" class="divide-y divide-gray-800"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Products & Price Markup Control -->
+    <div id="adminTab-products" class="hidden space-y-4">
+      
+      <!-- Quick Margin Control -->
+      <div class="bg-[#111118] border border-red-900/40 rounded-3xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <h4 class="text-sm font-bold text-white">زيادة أو تخفيض الأسعار بنسبة مئوية لجميع المنتجات:</h4>
+          <p class="text-xs text-gray-400">يمكنك رفع هامش ربحك أو عمل تخفيضات لجميع أسعار العروض دفعة واحدة</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="number" id="globalMarkupInput" placeholder="مثال: +10% أو -5%" class="w-32 bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white text-center">
+          <button onclick="applyGlobalMarkup()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition">
+            تطبيق على الكل
+          </button>
+        </div>
+      </div>
+
+      <!-- Products Table / List -->
+      <div class="bg-[#111118] border border-gray-800 rounded-3xl p-5 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-bold text-white">قائمة الألعاب والتطبيقات (يمكنك تعديل أي صورة أو سعر)</h3>
+          <div class="flex gap-2">
+            <button onclick="resetToOfficialData()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+              <i class="fa-solid fa-arrows-rotate"></i> استعادة الصور الافتراضية
+            </button>
+            <button onclick="addNewProductPrompt()" class="bg-green-600 hover:bg-green-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+              <i class="fa-solid fa-plus"></i> إضافة منتج جديد
+            </button>
+          </div>
+        </div>
+
+        <div id="adminProductsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: Settings (Payments & Contact info) -->
+    <div id="adminTab-settings" class="hidden space-y-4">
+      <div class="bg-[#111118] border border-gray-800 rounded-3xl p-6 space-y-6">
+        <div>
+          <h3 class="text-base font-bold text-white">إعدادات بوابات الدفع ومعلومات التواصل الخاصة بك</h3>
+          <p class="text-xs text-gray-400">هذه المعلومات تظهر مباشرة للزبائن عند الدفع والتواصل</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          
+          <!-- Payment Settings -->
+          <div class="space-y-3 bg-black/40 p-4 rounded-2xl border border-gray-800">
+            <h4 class="text-xs font-bold text-red-400 flex items-center gap-2">
+              <i class="fa-solid fa-wallet"></i> حسابات الدفع الرقمية
+            </h4>
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Binance Pay ID:</label>
+              <input type="text" id="settingBinanceId" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">Bybit Pay ID:</label>
+              <input type="text" id="settingBybitId" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">PayPal Email:</label>
+              <input type="text" id="settingPaypalEmail" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+          </div>
+
+          <!-- Contact Settings -->
+          <div class="space-y-3 bg-black/40 p-4 rounded-2xl border border-gray-800">
+            <h4 class="text-xs font-bold text-red-400 flex items-center gap-2">
+              <i class="fa-solid fa-headset"></i> روابط وأرقام التواصل
+            </h4>
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">رقم تيليغرام (Telegram Number/User):</label>
+              <input type="text" id="settingTelegram" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">رقم واتساب بيزنس (WhatsApp Business):</label>
+              <input type="text" id="settingWhatsapp" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[11px] text-gray-400 mb-1">رابط صفحة فيسبوك (Facebook Page URL):</label>
+              <input type="text" id="settingFacebook" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+          </div>
+
+        </div>
+
+        <button onclick="saveStoreSettings()" class="bg-green-600 hover:bg-green-500 text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow-md transition flex items-center gap-2">
+          <i class="fa-solid fa-floppy-disk"></i> حفظ جميع الإعدادات
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#09090d] border-t border-akatsuki-border py-8 px-4 text-center text-xs text-gray-400 space-y-3 mt-auto">
+    <div class="flex items-center justify-center gap-4">
+      <a id="footerTelegram" href="https://t.me/+213556334891" target="_blank" class="hover:text-red-400 transition flex items-center gap-1">
+        <i class="fa-brands fa-telegram"></i> Telegram
+      </a>
+      <span class="text-gray-700">•</span>
+      <a id="footerWhatsapp" href="https://wa.me/213556334891" target="_blank" class="hover:text-green-400 transition flex items-center gap-1">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+      </a>
+      <span class="text-gray-700">•</span>
+      <a id="footerFacebook" href="https://www.facebook.com/share/14o3j1TpoFt/" target="_blank" class="hover:text-blue-400 transition flex items-center gap-1">
+        <i class="fa-brands fa-facebook"></i> Facebook
+      </a>
+    </div>
+    <p>© 2026 متجر <span class="text-white font-bold font-cinzel">AKATSUKI STORE</span>. جميع الحقوق محفوظة لصاحب المتجر.</p>
+    <p class="text-[10px] text-gray-500">جميع الخدمات والشحنات مقدمة ومضمونة 100% حصرياً عبر متجر Akatsuki Store الرقمي.</p>
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    const DEFAULT_CONFIG = {
+      adminEmail: "sifoudex46@gmail.com",
+      adminPass: "sifou0658613828",
+      binanceId: "541429837",
+      bybitId: "396701175",
+      paypalEmail: "bandouis055@gmail.com",
+      telegram: "213556334891",
+      whatsapp: "213556334891",
+      facebook: "https://www.facebook.com/share/14o3j1TpoFt/",
+      currency: "DZD",
+      usdToDzdRate: 230
+    };
+
+    // Authentic Akatsuki Catalog with Clean Images
+    const OFFICIAL_PRODUCTS = [
+      {
+        id: 1,
+        name: "Free Fire (فري فاير)",
+        category: "games",
+        badge: "شحن فوري بالمعرف ID",
+        image: "https://wallpapercave.com/wp/wp7397985.jpg",
+        icon: "fa-fire",
+        inputType: "id",
+        packages: [
+          { name: "100 + 10 مجاناً جواهر", priceDZD: 320, priceUSD: 1.4 },
+          { name: "310 + 31 مجاناً جواهر", priceDZD: 950, priceUSD: 4.1 },
+          { name: "520 + 52 مجاناً جواهر", priceDZD: 1580, priceUSD: 6.8 },
+          { name: "1060 + 106 مجاناً جواهر", priceDZD: 3100, priceUSD: 13.5 },
+          { name: "عضوية أسبوعية (Weekly Pass)", priceDZD: 580, priceUSD: 2.5 },
+          { name: "عضوية شهرية (Monthly Pass)", priceDZD: 2600, priceUSD: 11.3 }
+        ]
+      },
+      {
+        id: 2,
+        name: "PUBG Mobile (ببجي موبايل)",
+        category: "games",
+        badge: "شحن شدات UC فوري",
+        image: "https://wallpapercave.com/wp/wp4902148.jpg",
+        icon: "fa-crosshairs",
+        inputType: "id",
+        packages: [
+          { name: "60 UC شدة", priceDZD: 280, priceUSD: 1.2 },
+          { name: "325 + 25 مجاناً UC", priceDZD: 1350, priceUSD: 5.8 },
+          { name: "660 + 60 مجاناً UC (Royale Pass)", priceDZD: 2650, priceUSD: 11.5 },
+          { name: "1800 UC شدة", priceDZD: 6900, priceUSD: 30.0 },
+          { name: "3850 UC شدة", priceDZD: 13500, priceUSD: 58.0 }
+        ]
+      },
+      {
+        id: 3,
+        name: "Valorant Points (فالورانت)",
+        category: "games",
+        badge: "سيرفر الشرق الأوسط / أوروبا",
+        image: "https://wallpapercave.com/wp/wp6658097.jpg",
+        icon: "fa-shield",
+        inputType: "username",
+        packages: [
+          { name: "475 VP كود تفعيل", priceDZD: 1200, priceUSD: 5.2 },
+          { name: "1000 VP كود تفعيل", priceDZD: 2450, priceUSD: 10.6 },
+          { name: "2050 VP كود تفعيل", priceDZD: 4800, priceUSD: 20.8 },
+          { name: "5350 VP كود تفعيل", priceDZD: 12100, priceUSD: 52.6 }
+        ]
+      },
+      {
+        id: 4,
+        name: "Roblox Robux (روبلوكس)",
+        category: "games",
+        badge: "تسليم باليوزر نيم سريع",
+        image: "https://wallpapercave.com/wp/wp6650428.jpg",
+        icon: "fa-cube",
+        inputType: "username",
+        packages: [
+          { name: "400 Robux", priceDZD: 1300, priceUSD: 5.6 },
+          { name: "800 Robux", priceDZD: 2500, priceUSD: 10.8 },
+          { name: "1700 Robux", priceDZD: 5100, priceUSD: 22.1 },
+          { name: "4500 Robux", priceDZD: 12800, priceUSD: 55.6 }
+        ]
+      },
+      {
+        id: 5,
+        name: "Netflix Premium 4K (نتفلكس)",
+        category: "subs",
+        badge: "شاشة خاصة بضمان كامل",
+        image: "https://wallpapercave.com/wp/wp5100412.jpg",
+        icon: "fa-tv",
+        inputType: "email",
+        packages: [
+          { name: "شهر واحد (شاشة برقم سري)", priceDZD: 650, priceUSD: 2.8 },
+          { name: "3 أشهر (شاشة برقم سري)", priceDZD: 1800, priceUSD: 7.8 },
+          { name: "حساب كامل خاص (شهر واحد)", priceDZD: 2800, priceUSD: 12.1 }
+        ]
+      },
+      {
+        id: 6,
+        name: "Discord Nitro (ديسكورد نيترو)",
+        category: "subs",
+        badge: "تفعيل فوري مع البوستات",
+        image: "https://wallpapercave.com/wp/wp9486334.jpg",
+        icon: "fa-discord",
+        inputType: "username",
+        packages: [
+          { name: "نيترو بيسك (Basic) - شهر", priceDZD: 750, priceUSD: 3.2 },
+          { name: "نيترو قيمنق (Boost) - شهر", priceDZD: 1850, priceUSD: 8.0 },
+          { name: "نيترو قيمنق (Boost) - سنة", priceDZD: 16500, priceUSD: 71.0 }
+        ]
+      },
+      {
+        id: 7,
+        name: "Canva Pro (كانفا برو)",
+        category: "subs",
+        badge: "تفعيل على إيميلك الخاص",
+        image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=600&q=80",
+        icon: "fa-palette",
+        inputType: "email",
+        packages: [
+          { name: "اشتراك سنة كاملة (حسابك الشخصي)", priceDZD: 1200, priceUSD: 5.2 },
+          { name: "اشتراك دائم مدى الحياة", priceDZD: 2200, priceUSD: 9.5 }
+        ]
+      },
+      {
+        id: 8,
+        name: "PlayStation / Steam Gift Cards",
+        category: "giftcards",
+        badge: "بطاقات وأكواد رقمية فورية",
+        image: "https://wallpapercave.com/wp/wp8018151.jpg",
+        icon: "fa-credit-card",
+        inputType: "email",
+        packages: [
+          { name: "بطاقة PlayStation 10$ أمريكي", priceDZD: 2450, priceUSD: 10.5 },
+          { name: "بطاقة PlayStation 20$ أمريكي", priceDZD: 4800, priceUSD: 20.8 },
+          { name: "بطاقة Steam 10$ Global", priceDZD: 2400, priceUSD: 10.4 },
+          { name: "بطاقة Steam 20$ Global", priceDZD: 4750, priceUSD: 20.6 }
+        ]
+      }
+    ];
+
+    let storeConfig = JSON.parse(localStorage.getItem('akatsuki_config')) || DEFAULT_CONFIG;
+    let products = JSON.parse(localStorage.getItem('akatsuki_products')) || OFFICIAL_PRODUCTS;
+    let orders = JSON.parse(localStorage.getItem('akatsuki_orders')) || [];
+    let currentUser = JSON.parse(localStorage.getItem('akatsuki_currentUser')) || null;
+    let currentCurrency = storeConfig.currency || "DZD";
+
+    let currentSelectedProduct = null;
+    let currentSelectedPackage = null;
+    let selectedPaymentGateway = "binance";
+    let isPlayerVerified = false;
+    let verifiedAccountName = "";
+    let cart = [];
+
+    function persistData() {
+      localStorage.setItem('akatsuki_config', JSON.stringify(storeConfig));
+      localStorage.setItem('akatsuki_products', JSON.stringify(products));
+      localStorage.setItem('akatsuki_orders', JSON.stringify(orders));
+      localStorage.setItem('akatsuki_currentUser', JSON.stringify(currentUser));
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      applyStoreSettingsToUI();
+      renderProductsGrid(products);
+      updateUserUI();
+      updateAdminOrdersCount();
+    });
+
+    function resetToOfficialData() {
+      products = JSON.parse(JSON.stringify(OFFICIAL_PRODUCTS));
+      persistData();
+      renderAdminProducts();
+      renderProductsGrid(products);
+      Swal.fire({ icon: 'success', title: 'تم استعادة الصور الافتراضية بنجاح!', timer: 1500, showConfirmButton: false });
+    }
+
+    function applyStoreSettingsToUI() {
+      const telLink = `https://t.me/+${storeConfig.telegram}`;
+      const waLink = `https://wa.me/${storeConfig.whatsapp}`;
+      const fbLink = storeConfig.facebook;
+
+      document.getElementById('navTelegram').href = telLink;
+      document.getElementById('navWhatsapp').href = waLink;
+      document.getElementById('navFacebook').href = fbLink;
+
+      document.getElementById('footerTelegram').href = telLink;
+      document.getElementById('footerWhatsapp').href = waLink;
+      document.getElementById('footerFacebook').href = fbLink;
+
+      document.getElementById('settingBinanceId').value = storeConfig.binanceId;
+      document.getElementById('settingBybitId').value = storeConfig.bybitId;
+      document.getElementById('settingPaypalEmail').value = storeConfig.paypalEmail;
+      document.getElementById('settingTelegram').value = storeConfig.telegram;
+      document.getElementById('settingWhatsapp').value = storeConfig.whatsapp;
+      document.getElementById('settingFacebook').value = storeConfig.facebook;
+    }
+
+    function renderProductsGrid(items) {
+      const container = document.getElementById('productsContainer');
+      if (!items || items.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-16 text-center text-gray-500">
+            <i class="fa-solid fa-ghost text-4xl mb-3 text-red-500/50"></i>
+            <p class="text-sm font-bold">لم يتم العثور على أي عروض مطابقة للبحث.</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = items.map(p => {
+        const minPrice = Math.min(...p.packages.map(pkg => currentCurrency === 'DZD' ? pkg.priceDZD : pkg.priceUSD));
+        const currencyLabel = currentCurrency === 'DZD' ? 'د.ج' : '$';
+
+        return `
+          <div class="bg-[#111118] border border-akatsuki-border hover:border-red-600/70 rounded-3xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-red-950/40 group">
+            
+            <!-- Card Image & Badge -->
+            <div class="relative h-44 overflow-hidden bg-gray-900">
+              <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#111118] via-transparent to-black/40"></div>
+              
+              <span class="absolute top-3 right-3 bg-red-950/90 backdrop-blur-md text-red-400 border border-red-800 text-[10px] font-bold px-2.5 py-1 rounded-lg">
+                ${p.badge}
+              </span>
+            </div>
+
+            <!-- Content -->
+            <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+              <div>
+                <h4 class="font-bold text-base text-white group-hover:text-red-400 transition">${p.name}</h4>
+                <p class="text-xs text-gray-400 mt-1 flex items-center gap-1.5">
+                  <i class="fa-solid fa-circle-check text-green-500 text-[10px]"></i> شحن فوري ومضمون • Akatsuki Store
+                </p>
+              </div>
+
+              <div class="pt-3 border-t border-gray-800/80 flex items-center justify-between">
+                <div>
+                  <span class="text-[10px] text-gray-500 block">يبدأ من:</span>
+                  <div class="text-lg font-black text-red-500">
+                    ${minPrice} <span class="text-xs text-gray-300 font-normal">${currencyLabel}</span>
+                  </div>
+                </div>
+
+                <button onclick="openRechargeModal(${p.id})" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-md shadow-red-950 transition">
+                  <i class="fa-solid fa-bolt"></i> شحن الآن
+                </button>
+              </div>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    function setCategory(cat) {
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.classList.remove('bg-red-600', 'text-white');
+        b.classList.add('bg-akatsuki-card', 'text-gray-300');
+      });
+      event.target.classList.remove('bg-akatsuki-card', 'text-gray-300');
+      event.target.classList.add('bg-red-600', 'text-white');
+
+      if (cat === 'all') {
+        renderProductsGrid(products);
+      } else {
+        renderProductsGrid(products.filter(p => p.category === cat));
+      }
+    }
+
+    function filterProducts() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const filtered = products.filter(p => p.name.toLowerCase().includes(q) || p.badge.toLowerCase().includes(q));
+      renderProductsGrid(filtered);
+    }
+
+    function changeCurrency(val) {
+      currentCurrency = val;
+      renderProductsGrid(products);
+      updateCartDisplay();
+    }
+
+    function openRechargeModal(productId) {
+      currentSelectedProduct = products.find(p => p.id === productId);
+      if (!currentSelectedProduct) return;
+
+      currentSelectedPackage = currentSelectedProduct.packages[0];
+      isPlayerVerified = false;
+      verifiedAccountName = "";
+
+      document.getElementById('modalProductImg').src = currentSelectedProduct.image;
+      document.getElementById('modalProductName').innerText = currentSelectedProduct.name;
+      document.getElementById('modalProductBadge').innerText = currentSelectedProduct.badge;
+
+      const idLabel = document.getElementById('idLabelText');
+      const inputField = document.getElementById('targetPlayerId');
+      inputField.value = "";
+      document.getElementById('verifyResult').classList.add('hidden');
+
+      if (currentSelectedProduct.inputType === 'email') {
+        idLabel.innerText = "البريد الإلكتروني لتفعيل الحساب:";
+        inputField.placeholder = "example@gmail.com";
+      } else if (currentSelectedProduct.inputType === 'username') {
+        idLabel.innerText = "اسم المستخدم (Username):";
+        inputField.placeholder = "مثال: Akatsuki_Gamer";
+      } else {
+        idLabel.innerText = "معرّف اللاعب (Player ID):";
+        inputField.placeholder = "مثال: 589210492";
+      }
+
+      const pkgContainer = document.getElementById('packagesContainer');
+      const curLabel = currentCurrency === 'DZD' ? 'د.ج' : '$';
+      pkgContainer.innerHTML = currentSelectedProduct.packages.map((pkg, idx) => `
+        <button onclick="selectPackage(${idx})" id="pkgBtn-${idx}" class="pkg-card ${idx === 0 ? 'border-red-600 bg-red-950/30' : 'border-gray-800 bg-gray-900'} border text-right p-3 rounded-2xl transition hover:border-red-500">
+          <span class="block text-xs font-bold text-white">${pkg.name}</span>
+          <span class="block text-sm font-black text-red-400 mt-1">${currentCurrency === 'DZD' ? pkg.priceDZD : pkg.priceUSD} ${curLabel}</span>
+        </button>
+      `).join('');
+
+      document.getElementById('rechargeModal').classList.remove('hidden');
+    }
+
+    function selectPackage(idx) {
+      currentSelectedPackage = currentSelectedProduct.packages[idx];
+      document.querySelectorAll('.pkg-card').forEach((b, i) => {
+        b.className = i === idx 
+          ? "pkg-card border-red-600 bg-red-950/30 border text-right p-3 rounded-2xl transition"
+          : "pkg-card border-gray-800 bg-gray-900 border text-right p-3 rounded-2xl transition hover:border-red-500";
+      });
+    }
+
+    function closeRechargeModal() {
+      document.getElementById('rechargeModal').classList.add('hidden');
+    }
+
+    function verifyPlayerId() {
+      const idVal = document.getElementById('targetPlayerId').value.trim();
+      const serverVal = document.getElementById('serverSelect').value;
+      const resBox = document.getElementById('verifyResult');
+
+      if (!idVal) {
+        Swal.fire({ icon: 'warning', title: 'تنبيه', text: 'يرجى إدخال معرّف اللاعب أو الإيميل أولاً للتحقق منه.', confirmButtonColor: '#e60026' });
+        return;
+      }
+
+      resBox.className = "rounded-xl p-3 text-xs flex items-center gap-2 border bg-gray-900 border-yellow-800 text-yellow-300";
+      resBox.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الاتصال بسيرفر اللعبة (${serverVal}) للتحقق من الحساب...`;
+      resBox.classList.remove('hidden');
+
+      setTimeout(() => {
+        const prefixes = ["Akatsuki", "Shadow", "DZ_Pro", "Phoenix", "Sniper", "Leader", "Ghost"];
+        const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+        const generatedNick = currentSelectedProduct.inputType === 'email' ? idVal : `${randomPrefix}_${idVal.slice(-4) || 'VIP'}`;
+        
+        verifiedAccountName = generatedNick;
+        isPlayerVerified = true;
+
+        resBox.className = "rounded-xl p-3 text-xs flex items-center justify-between border bg-green-950/60 border-green-700 text-green-300";
+        resBox.innerHTML = `
+          <div>
+            <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-green-400"></i> تم التحقق بنجاح من حسابك:</div>
+            <div class="mt-1 text-white font-black text-sm">اسم اللاعب: <span class="text-green-400 underline">${generatedNick}</span> (${serverVal})</div>
+          </div>
+          <span class="bg-green-900 text-green-200 text-[10px] px-2 py-0.5 rounded-md font-bold">حساب صحيح 100%</span>
+        `;
+      }, 900);
+    }
+
+    function confirmProductToCart() {
+      const targetId = document.getElementById('targetPlayerId').value.trim();
+      const server = document.getElementById('serverSelect').value;
+
+      if (!targetId) {
+        Swal.fire({ icon: 'error', title: 'معلومات ناقصة', text: 'يرجى إدخال معرّف الحساب أو الإيميل لتتمكن من إضافة العرض للسلة.', confirmButtonColor: '#e60026' });
+        return;
+      }
+
+      const cartItem = {
+        productId: currentSelectedProduct.id,
+        productName: currentSelectedProduct.name,
+        packageName: currentSelectedPackage.name,
+        priceDZD: currentSelectedPackage.priceDZD,
+        priceUSD: currentSelectedPackage.priceUSD,
+        targetAccount: targetId,
+        server: server,
+        verifiedName: verifiedAccountName || targetId
+      };
+
+      cart.push(cartItem);
+      closeRechargeModal();
+      updateCartDisplay();
+
+      Swal.fire({
+        icon: 'success',
+        title: 'تمت الإضافة للسلة!',
+        text: `تم تجهيز شحن ${currentSelectedProduct.name} لحساب (${cartItem.verifiedName})`,
+        showCancelButton: true,
+        confirmButtonText: 'إتمام الدفع الآن',
+        cancelButtonText: 'مواصلة التسوق',
+        confirmButtonColor: '#e60026',
+        cancelButtonColor: '#374151'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          toggleCartModal();
+        }
+      });
+    }
+
+    function updateCartDisplay() {
+      document.getElementById('cartCountBadge').innerText = cart.length;
+      const list = document.getElementById('cartList');
+      const curLabel = currentCurrency === 'DZD' ? 'د.ج' : '$';
+
+      if (cart.length === 0) {
+        list.innerHTML = `<p class="text-xs text-gray-500 text-center py-6">السلة فارغة. اختر عرضك المفضل لشحنه الآن.</p>`;
+        document.getElementById('cartTotalDisplay').innerText = `0 ${curLabel}`;
+        return;
+      }
+
+      list.innerHTML = cart.map((item, idx) => {
+        const itemPrice = currentCurrency === 'DZD' ? item.priceDZD : item.priceUSD;
+        return `
+          <div class="bg-gray-900 border border-gray-800 rounded-2xl p-3.5 flex items-center justify-between text-xs">
+            <div>
+              <h5 class="font-bold text-white">${item.productName}</h5>
+              <p class="text-[11px] text-gray-400">${item.packageName}</p>
+              <p class="text-[10px] text-red-400 font-semibold">الحساب: ${item.verifiedName} (${item.server})</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="font-black text-sm text-white">${itemPrice} ${curLabel}</span>
+              <button onclick="removeFromCart(${idx})" class="text-gray-500 hover:text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const total = cart.reduce((sum, item) => sum + (currentCurrency === 'DZD' ? item.priceDZD : item.priceUSD), 0);
+      document.getElementById('cartTotalDisplay').innerText = `${total} ${curLabel}`;
+    }
+
+    function removeFromCart(idx) {
+      cart.splice(idx, 1);
+      updateCartDisplay();
+    }
+
+    function toggleCartModal() {
+      const modal = document.getElementById('cartModal');
+      modal.classList.toggle('hidden');
+      if (!modal.classList.contains('hidden')) {
+        updateCartDisplay();
+        selectPayment(selectedPaymentGateway);
+      }
+    }
+
+    function selectPayment(gateway) {
+      selectedPaymentGateway = gateway;
+      document.querySelectorAll('.pay-method-btn').forEach(b => {
+        b.classList.remove('border-red-600', 'border-2');
+        b.classList.add('border-gray-800', 'border');
+      });
+      const activeBtn = document.getElementById(`payBtn-${gateway}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-gray-800', 'border');
+        activeBtn.classList.add('border-red-600', 'border-2');
+      }
+
+      const box = document.getElementById('paymentDetailsBox');
+      if (gateway === 'binance') {
+        box.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-yellow-400"><i class="fa-solid fa-coins"></i> الدفع عبر Binance Pay (USDT):</span>
+            <button onclick="copyToClipboard('${storeConfig.binanceId}', 'Binance Pay ID')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-2 py-1 rounded-md text-[10px] font-bold"><i class="fa-regular fa-copy"></i> نسخ ID</button>
+          </div>
+          <div class="bg-black/60 p-2.5 rounded-xl border border-yellow-900/40 text-sm font-black text-yellow-300 tracking-wider">
+            ID: <span class="select-all">${storeConfig.binanceId}</span>
+          </div>
+          <p class="text-[11px] text-gray-400">حول المبلغ المطلوب إلى Binance ID أعلاه ثم ارفع سكرين شوت (Screenshot) للإثبات.</p>
+        `;
+      } else if (gateway === 'bybit') {
+        box.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-amber-400"><i class="fa-solid fa-bolt"></i> الدفع عبر Bybit Pay:</span>
+            <button onclick="copyToClipboard('${storeConfig.bybitId}', 'Bybit ID')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-2 py-1 rounded-md text-[10px] font-bold"><i class="fa-regular fa-copy"></i> نسخ ID</button>
+          </div>
+          <div class="bg-black/60 p-2.5 rounded-xl border border-amber-900/40 text-sm font-black text-amber-300 tracking-wider">
+            ID: <span class="select-all">${storeConfig.bybitId}</span>
+          </div>
+          <p class="text-[11px] text-gray-400">قم بإرسال المبلغ عبر Bybit Internal Transfer إلى الآيدي الموضح بالأعلى ثم أرفق الإثبات.</p>
+        `;
+      } else if (gateway === 'paypal') {
+        box.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-blue-400"><i class="fa-brands fa-paypal"></i> الدفع عبر PayPal:</span>
+            <button onclick="copyToClipboard('${storeConfig.paypalEmail}', 'PayPal Email')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-2 py-1 rounded-md text-[10px] font-bold"><i class="fa-regular fa-copy"></i> نسخ الإيميل</button>
+          </div>
+          <div class="bg-black/60 p-2.5 rounded-xl border border-blue-900/40 text-sm font-black text-blue-300 tracking-wider">
+            Email: <span class="select-all">${storeConfig.paypalEmail}</span>
+          </div>
+          <p class="text-[11px] text-gray-400">يرجى إرسال المبلغ كـ (Friends & Family) وتصوير وصل التحويل وإرفاقه بالأسفل.</p>
+        `;
+      }
+    }
+
+    function copyToClipboard(text, label) {
+      navigator.clipboard.writeText(text);
+      Swal.fire({
+        icon: 'success',
+        title: 'تم النسخ بنجاح!',
+        text: `تم نسخ ${label} إلى الحافظة: ${text}`,
+        timer: 1500,
+        showConfirmButton: false
+      });
+    }
+
+    function submitFinalOrder() {
+      if (cart.length === 0) {
+        Swal.fire({ icon: 'warning', title: 'السلة فارغة', text: 'يرجى اختيار عرض أولاً.', confirmButtonColor: '#e60026' });
+        return;
+      }
+
+      const custContact = document.getElementById('orderCustomerContact').value.trim();
+      const proofFile = document.getElementById('orderProofFile').files[0];
+
+      if (!custContact) {
+        Swal.fire({ icon: 'warning', title: 'تنبيه', text: 'يرجى إدخال اسمك أو رقم هاتفك لتأكيد الشحن.', confirmButtonColor: '#e60026' });
+        return;
+      }
+
+      const orderId = "AKT-" + Math.floor(100000 + Math.random() * 900000);
+      const totalAmount = cart.reduce((sum, item) => sum + (currentCurrency === 'DZD' ? item.priceDZD : item.priceUSD), 0);
+      const curLabel = currentCurrency === 'DZD' ? 'د.ج' : '$';
+
+      const newOrder = {
+        id: orderId,
+        date: new Date().toLocaleString('ar-DZ'),
+        customer: custContact,
+        userEmail: currentUser ? currentUser.email : "زائر",
+        items: [...cart],
+        total: `${totalAmount} ${curLabel}`,
+        paymentMethod: selectedPaymentGateway.toUpperCase(),
+        hasProof: proofFile ? proofFile.name : "لم يتم إرفاق ملف",
+        status: "قيد المراجعة والشحن"
+      };
+
+      orders.unshift(newOrder);
+      persistData();
+      updateAdminOrdersCount();
+
+      const itemsFormatted = cart.map((c, i) => `▪ ${i + 1}. ${c.productName} [${c.packageName}]\n   - الحساب: ${c.verifiedName} (${c.server})\n   - السعر: ${currentCurrency === 'DZD' ? c.priceDZD : c.priceUSD} ${curLabel}`).join('\n\n');
+
+      const ownerMessage = `🔴 *إشعار طلب جديد - AKATSUKI STORE*\n` +
+        `═════════════════════\n` +
+        `🔖 *رقم الطلب:* #${orderId}\n` +
+        `👤 *الزبون:* ${custContact}\n` +
+        `💳 *طريقة الدفع:* ${selectedPaymentGateway.toUpperCase()}\n` +
+        `💰 *المبلغ الإجمالي:* ${totalAmount} ${curLabel}\n\n` +
+        `📦 *المنتجات وتفاصيل الشحن:*\n${itemsFormatted}\n\n` +
+        `📎 *حالة إثبات الدفع:* ${proofFile ? 'تم التقاط الإثبات' : 'يرجى إرسال الصورة هنا'}\n` +
+        `═════════════════════\n` +
+        `يرجى مراجعة وشحن الطلب فوراً.`;
+
+      cart = [];
+      updateCartDisplay();
+      toggleCartModal();
+
+      Swal.fire({
+        icon: 'success',
+        title: 'تم تسجيل طلبك بنجاح!',
+        html: `
+          <p class="text-xs text-gray-300">رقم طلبك: <b class="text-red-500">#${orderId}</b></p>
+          <p class="text-xs text-gray-300 mt-2">سيتم فتح الواتساب الآن لإرسال تفاصيل طلبك مباشرة لصاحب المتجر لشحنه في دقائق.</p>
+        `,
+        confirmButtonText: 'فتح الواتساب وتأكيد الشحن',
+        confirmButtonColor: '#16a34a'
+      }).then(() => {
+        window.open(`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent(ownerMessage)}`, '_blank');
+      });
+    }
+
+    function openUserModal() {
+      document.getElementById('userModal').classList.remove('hidden');
+      updateUserUI();
+    }
+    function closeUserModal() {
+      document.getElementById('userModal').classList.add('hidden');
+    }
+
+    function handleUserLogin() {
+      const email = document.getElementById('custEmailInput').value.trim();
+      const pass = document.getElementById('custPassInput').value.trim();
+
+      if (!email || !pass) {
+        Swal.fire({ icon: 'warning', title: 'بيانات ناقصة', text: 'يرجى كتابة البريد وكلمة المرور.', confirmButtonColor: '#e60026' });
+        return;
+      }
+
+      currentUser = { email: email, name: email.split('@')[0] };
+      persistData();
+      updateUserUI();
+
+      Swal.fire({ icon: 'success', title: 'مرحباً بك!', text: `تم تسجيل دخولك بنجاح باسم: ${currentUser.name}`, timer: 1500, showConfirmButton: false });
+    }
+
+    function handleUserLogout() {
+      currentUser = null;
+      persistData();
+      updateUserUI();
+    }
+
+    function updateUserUI() {
+      if (currentUser) {
+        document.getElementById('userBtnText').innerText = currentUser.name;
+        document.getElementById('userLoggedOutSection').classList.add('hidden');
+        document.getElementById('userLoggedInSection').classList.remove('hidden');
+        document.getElementById('loggedUserName').innerText = currentUser.name;
+
+        const historyContainer = document.getElementById('userOrdersHistory');
+        const userOrders = orders.filter(o => o.userEmail === currentUser.email);
+        if (userOrders.length === 0) {
+          historyContainer.innerHTML = `<p class="text-[11px] text-gray-500 py-2">لا توجد طلبات سابقة حتى الآن.</p>`;
+        } else {
+          historyContainer.innerHTML = userOrders.map(o => `
+            <div class="bg-black/40 border border-gray-800 p-2.5 rounded-xl flex justify-between items-center">
+              <div>
+                <p class="font-bold text-white text-[11px]">طلب #${o.id}</p>
+                <p class="text-[10px] text-gray-400">${o.date}</p>
+              </div>
+              <span class="bg-yellow-950 text-yellow-400 border border-yellow-800 text-[10px] px-2 py-0.5 rounded font-bold">${o.status}</span>
+            </div>
+          `).join('');
+        }
+      } else {
+        document.getElementById('userBtnText').innerText = "تسجيل الدخول";
+        document.getElementById('userLoggedOutSection').classList.remove('hidden');
+        document.getElementById('userLoggedInSection').classList.add('hidden');
+      }
+    }
+
+    function openAdminModal() {
+      document.getElementById('adminAuthModal').classList.remove('hidden');
+    }
+    function closeAdminModal() {
+      document.getElementById('adminAuthModal').classList.add('hidden');
+    }
+
+    function verifyAdminLogin() {
+      const email = document.getElementById('adminEmailInput').value.trim();
+      const pass = document.getElementById('adminPassInput').value.trim();
+
+      if (email === storeConfig.adminEmail && pass === storeConfig.adminPass) {
+        closeAdminModal();
+        switchView('admin');
+        Swal.fire({
+          icon: 'success',
+          title: 'أهلاً بك يا آدمن!',
+          text: 'تم تسجيل دخولك إلى لوحة التحكم الكاملة لـ Akatsuki Store.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'خطأ في المصادقة',
+          text: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+          confirmButtonColor: '#e60026'
+        });
+      }
+    }
+
+    function switchView(view) {
+      if (view === 'admin') {
+        document.getElementById('storeView').classList.add('hidden');
+        document.getElementById('adminDashboardView').classList.remove('hidden');
+        renderAdminOrders();
+        renderAdminProducts();
+      } else {
+        document.getElementById('adminDashboardView').classList.add('hidden');
+        document.getElementById('storeView').classList.remove('hidden');
+      }
+    }
+
+    function logoutAdmin() {
+      switchView('store');
+    }
+
+    function switchAdminTab(tab) {
+      document.querySelectorAll('.admin-tab-btn').forEach(b => {
+        b.classList.remove('bg-red-600', 'text-white');
+        b.classList.add('bg-gray-900', 'text-gray-300');
+      });
+      const btn = document.getElementById(`adminTabBtn-${tab}`);
+      if (btn) {
+        btn.classList.remove('bg-gray-900', 'text-gray-300');
+        btn.classList.add('bg-red-600', 'text-white');
+      }
+
+      document.getElementById('adminTab-orders').classList.add('hidden');
+      document.getElementById('adminTab-products').classList.add('hidden');
+      document.getElementById('adminTab-settings').classList.add('hidden');
+
+      document.getElementById(`adminTab-${tab}`).classList.remove('hidden');
+    }
+
+    function updateAdminOrdersCount() {
+      document.getElementById('adminOrdersCount').innerText = orders.length;
+    }
+
+    function renderAdminOrders() {
+      const tbody = document.getElementById('adminOrdersTableBody');
+      if (orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-gray-500">لا توجد أي طلبات مسجلة بعد.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = orders.map((o, idx) => `
+        <tr class="hover:bg-gray-900/50 transition">
+          <td class="p-3 font-bold text-white">#${o.id}<br><span class="text-[10px] text-gray-500">${o.date}</span></td>
+          <td class="p-3 text-red-400 font-bold">${o.customer}</td>
+          <td class="p-3">
+            ${o.items.map(i => `<div class="text-[11px] text-gray-200">• ${i.productName} (${i.packageName})</div>`).join('')}
+          </td>
+          <td class="p-3">
+            ${o.items.map(i => `<div class="text-[11px] text-green-400 font-bold">${i.verifiedName} [${i.server}]</div>`).join('')}
+          </td>
+          <td class="p-3 font-black text-white">${o.total}<br><span class="text-[10px] text-yellow-400">${o.paymentMethod}</span></td>
+          <td class="p-3 text-[10px] text-gray-400">${o.hasProof}</td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${o.status.includes('تم') ? 'bg-green-950 text-green-400 border border-green-800' : 'bg-yellow-950 text-yellow-400 border border-yellow-800'}">${o.status}</span>
+          </td>
+          <td class="p-3 text-center space-x-1 space-x-reverse">
+            <button onclick="setOrderStatus(${idx}, 'تم الشحن والتنفيذ ✅')" class="bg-green-700 hover:bg-green-600 text-white px-2 py-1 rounded text-[10px] font-bold">شحن</button>
+            <button onclick="deleteOrder(${idx})" class="bg-red-900 hover:bg-red-800 text-red-200 px-2 py-1 rounded text-[10px] font-bold"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function setOrderStatus(idx, newStatus) {
+      orders[idx].status = newStatus;
+      persistData();
+      renderAdminOrders();
+      Swal.fire({ icon: 'success', title: 'تم التحديث', text: `تم تغيير حالة الطلب إلى: ${newStatus}`, timer: 1200, showConfirmButton: false });
+    }
+
+    function deleteOrder(idx) {
+      orders.splice(idx, 1);
+      persistData();
+      renderAdminOrders();
+      updateAdminOrdersCount();
+    }
+
+    // Products Management in Admin with Full Image & Details Editing
+    function renderAdminProducts() {
+      const list = document.getElementById('adminProductsList');
+      list.innerHTML = products.map((p, idx) => `
+        <div class="bg-black/50 border border-gray-800 rounded-2xl p-4 space-y-3">
+          <div class="flex items-center gap-3">
+            <img src="${p.image}" class="w-14 h-14 rounded-xl object-cover border border-red-800 shadow-md">
+            <div class="flex-1">
+              <h5 class="text-xs font-bold text-white">${p.name}</h5>
+              <span class="text-[10px] text-gray-400 block">${p.badge}</span>
+              <span class="text-[10px] text-red-400 font-semibold">${p.packages.length} باقات متوفرة</span>
+            </div>
+          </div>
+          
+          <div class="space-y-1 text-[11px] bg-gray-900/60 p-2 rounded-xl border border-gray-800">
+            ${p.packages.map((pkg) => `
+              <div class="flex items-center justify-between">
+                <span class="text-gray-300">${pkg.name}:</span>
+                <span class="text-red-400 font-bold">${pkg.priceDZD} د.ج</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="editProductDetailsPrompt(${idx})" class="bg-blue-950 hover:bg-blue-900 text-blue-300 border border-blue-800 py-1.5 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1">
+              <i class="fa-solid fa-image"></i> تعديل الصورة والاسم
+            </button>
+            <button onclick="editProductPricePrompt(${idx})" class="bg-gray-800 hover:bg-gray-700 text-gray-200 py-1.5 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1">
+              <i class="fa-solid fa-tags"></i> تعديل الأسعار
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function editProductDetailsPrompt(productIdx) {
+      const p = products[productIdx];
+
+      Swal.fire({
+        title: `تعديل صورة ومعلومات: ${p.name}`,
+        html: `
+          <div class="space-y-3 text-right text-xs">
+            <div>
+              <label class="block text-gray-300 font-bold mb-1">اسم اللعبة / التطبيق:</label>
+              <input type="text" id="editNameInput" value="${p.name}" class="swal2-input text-xs text-right w-full m-0">
+            </div>
+            <div>
+              <label class="block text-gray-300 font-bold mb-1">رابط الصورة الجديد (Image URL):</label>
+              <input type="text" id="editImgInput" value="${p.image}" class="swal2-input text-xs text-left w-full m-0">
+            </div>
+            <div>
+              <label class="block text-gray-300 font-bold mb-1">الوصف المصغر (Badge):</label>
+              <input type="text" id="editBadgeInput" value="${p.badge}" class="swal2-input text-xs text-right w-full m-0">
+            </div>
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'حفظ وتحديث الصورة',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#e60026',
+        preConfirm: () => {
+          const newName = document.getElementById('editNameInput').value.trim();
+          const newImg = document.getElementById('editImgInput').value.trim();
+          const newBadge = document.getElementById('editBadgeInput').value.trim();
+
+          if (!newName || !newImg) {
+            Swal.showValidationMessage('يرجى ملء الاسم ورابط الصورة');
+            return false;
+          }
+
+          p.name = newName;
+          p.image = newImg;
+          p.badge = newBadge || "عرض متوفر";
+        }
+      }).then((res) => {
+        if (res.isConfirmed) {
+          persistData();
+          renderAdminProducts();
+          renderProductsGrid(products);
+          Swal.fire({ icon: 'success', title: 'تم تحديث صورة وبيانات المنتج بنجاح!', timer: 1500, showConfirmButton: false });
+        }
+      });
+    }
+
+    function editProductPricePrompt(productIdx) {
+      const p = products[productIdx];
+      let optionsHtml = p.packages.map((pkg, i) => `
+        <div class="text-right text-xs mb-2">
+          <label class="block text-gray-300 font-bold mb-1">${pkg.name} (د.ج):</label>
+          <input type="number" id="pkgInput_${i}" value="${pkg.priceDZD}" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2 text-white text-xs">
+        </div>
+      `).join('');
+
+      Swal.fire({
+        title: `تعديل أسعار ${p.name}`,
+        html: `<div class="max-h-60 overflow-y-auto">${optionsHtml}</div>`,
+        showCancelButton: true,
+        confirmButtonText: 'حفظ التعديلات',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#e60026',
+        preConfirm: () => {
+          p.packages.forEach((pkg, i) => {
+            const val = parseFloat(document.getElementById(`pkgInput_${i}`).value);
+            if (!isNaN(val)) {
+              pkg.priceDZD = val;
+              pkg.priceUSD = +(val / storeConfig.usdToDzdRate).toFixed(2);
+            }
+          });
+        }
+      }).then((res) => {
+        if (res.isConfirmed) {
+          persistData();
+          renderAdminProducts();
+          renderProductsGrid(products);
+          Swal.fire({ icon: 'success', title: 'تم الحفظ!', timer: 1200, showConfirmButton: false });
+        }
+      });
+    }
+
+    function applyGlobalMarkup() {
+      const percentage = parseFloat(document.getElementById('globalMarkupInput').value);
+      if (isNaN(percentage)) {
+        Swal.fire({ icon: 'warning', title: 'قيمة غير صحيحة', text: 'يرجى كتابة رقم النسبة المئوية مثال: 10 أو -5', confirmButtonColor: '#e60026' });
+        return;
+      }
+
+      products.forEach(p => {
+        p.packages.forEach(pkg => {
+          pkg.priceDZD = Math.round(pkg.priceDZD * (1 + percentage / 100));
+          pkg.priceUSD = +(pkg.priceUSD * (1 + percentage / 100)).toFixed(2);
+        });
+      });
+
+      persistData();
+      renderAdminProducts();
+      renderProductsGrid(products);
+
+      Swal.fire({
+        icon: 'success',
+        title: 'تم تطبيق التعديل!',
+        text: `تم تغيير أسعار جميع العروض بنسبة ${percentage}% بنجاح.`,
+        confirmButtonColor: '#e60026'
+      });
+    }
+
+    function addNewProductPrompt() {
+      Swal.fire({
+        title: 'إضافة لعبة أو تطبيق جديد',
+        html: `
+          <input type="text" id="newProdName" placeholder="اسم اللعبة أو التطبيق" class="swal2-input text-xs text-right">
+          <input type="text" id="newProdBadge" placeholder="الوصف المصغر (مثال: شحن فوري ID)" class="swal2-input text-xs text-right">
+          <input type="text" id="newProdImg" placeholder="رابط صورة اللعبة (URL)" class="swal2-input text-xs text-right" value="https://wallpapercave.com/wp/wp7397985.jpg">
+          <input type="number" id="newProdPrice" placeholder="السعر الافتراضي بالدينار (د.ج)" class="swal2-input text-xs text-right">
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'إضافة للمتجر',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#16a34a',
+        preConfirm: () => {
+          const name = document.getElementById('newProdName').value.trim();
+          const badge = document.getElementById('newProdBadge').value.trim() || "عرض متوفر";
+          const img = document.getElementById('newProdImg').value.trim();
+          const price = parseFloat(document.getElementById('newProdPrice').value) || 1000;
+
+          if (!name) {
+            Swal.showValidationMessage('يرجى إدخال اسم المنتج');
+            return false;
+          }
+
+          return {
+            id: Date.now(),
+            name: name,
+            category: "games",
+            badge: badge,
+            image: img,
+            icon: "fa-gamepad",
+            inputType: "id",
+            packages: [
+              { name: "الباقة الأساسية", priceDZD: price, priceUSD: +(price / 230).toFixed(2) }
+            ]
+          };
+        }
+      }).then((result) => {
+        if (result.isConfirmed && result.value) {
+          products.unshift(result.value);
+          persistData();
+          renderAdminProducts();
+          renderProductsGrid(products);
+          Swal.fire({ icon: 'success', title: 'تمت الإضافة بنجاح!' });
+        }
+      });
+    }
+
+    function deleteProduct(idx) {
+      Swal.fire({
+        title: 'هل أنت متأكد؟',
+        text: 'سيتم حذف هذا المنتج من واجهة المتجر.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e60026',
+        confirmButtonText: 'نعم، احذف',
+        cancelButtonText: 'إلغاء'
+      }).then((res) => {
+        if (res.isConfirmed) {
+          products.splice(idx, 1);
+          persistData();
+          renderAdminProducts();
+          renderProductsGrid(products);
+        }
+      });
+    }
+
+    function saveStoreSettings() {
+      storeConfig.binanceId = document.getElementById('settingBinanceId').value.trim();
+      storeConfig.bybitId = document.getElementById('settingBybitId').value.trim();
+      storeConfig.paypalEmail = document.getElementById('settingPaypalEmail').value.trim();
+      storeConfig.telegram = document.getElementById('settingTelegram').value.trim();
+      storeConfig.whatsapp = document.getElementById('settingWhatsapp').value.trim();
+      storeConfig.facebook = document.getElementById('settingFacebook').value.trim();
+
+      persistData();
+      applyStoreSettingsToUI();
+
+      Swal.fire({
+        icon: 'success',
+        title: 'تم حفظ الإعدادات!',
+        text: 'تم تحديث جميع بيانات الدفع والتواصل في المتجر بنجاح.',
+        confirmButtonColor: '#e60026'
+      });
+    }
+  </script>
+</body>
+</html>
