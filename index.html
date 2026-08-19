@@ -1,1552 +1,1435 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="dark">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Akatsuki Store | متجر الأكاتسكي الرقمي</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            akatsuki: {
-              red: '#e60026',
-              crimson: '#9b0015',
-              dark: '#0a0a0d',
-              card: '#13131a',
-              border: '#23232f',
-              cloud: '#ff2a4b'
-            }
-          },
-          fontFamily: {
-            tajawal: ['Tajawal', 'sans-serif'],
-            cinzel: ['Cinzel', 'serif']
-          }
-        }
-      }
-    }
-  </script>
-  <!-- Google Fonts -->
+  <title>AKATSUKI STORE | أكاتسوكي ستور</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <!-- SweetAlert2 for Popups -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #ff1e27;
+      --primary-dark: #b80d14;
+      --primary-glow: rgba(255, 30, 39, 0.4);
+      --bg-dark: #0a0a0d;
+      --card-bg: rgba(18, 20, 26, 0.85);
+      --card-border: rgba(255, 30, 39, 0.2);
+      --text-main: #f5f5f7;
+      --text-muted: #9ba1b0;
+      --accent: #ff4757;
+      --success: #2ed573;
+      --warning: #ffa502;
+      --danger: #ff4757;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     body {
-      font-family: 'Tajawal', sans-serif;
-      background-color: #08080a;
-      color: #f3f4f6;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      transition: background 0.3s ease;
     }
-    .akatsuki-glow {
-      text-shadow: 0 0 15px rgba(230, 0, 38, 0.7), 0 0 30px rgba(230, 0, 38, 0.4);
+
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top right, rgba(255, 30, 39, 0.08), transparent 50%),
+                  radial-gradient(circle at bottom left, rgba(255, 30, 39, 0.05), transparent 50%);
+      pointer-events: none;
+      z-index: 0;
     }
-    .akatsuki-border-glow {
-      box-shadow: 0 0 15px rgba(230, 0, 38, 0.25);
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+      position: relative;
+      z-index: 1;
     }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+
+    /* Top Announcement */
+    .announcement-bar {
+      background: linear-gradient(90deg, #b80d14, #ff1e27, #b80d14);
+      color: #fff;
+      text-align: center;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      box-shadow: 0 2px 10px rgba(255, 30, 39, 0.3);
+      position: relative;
+      z-index: 10;
     }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #0d0d12;
+
+    /* Header */
+    header {
+      background: rgba(12, 14, 18, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 12px 0;
     }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #e60026;
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.25rem;
+      letter-spacing: 0.5px;
+    }
+
+    .cloud-icon {
+      width: 38px;
+      height: 38px;
+      background: #ff1e27;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px var(--primary-glow);
+      border: 2px solid #fff;
+      position: relative;
+    }
+
+    .cloud-icon::after {
+      content: "☁️";
+      font-size: 1.1rem;
+    }
+
+    .brand-text span {
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff1e27, #c90b13);
+      color: #fff;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 30, 39, 0.1);
+      border-color: var(--primary);
+    }
+
+    .btn-admin {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 30px 0 20px;
+    }
+
+    .hero-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+      text-shadow: 0 0 20px rgba(255, 30, 39, 0.4);
+    }
+
+    .hero-title span {
+      color: var(--primary);
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 600px;
+      margin: 0 auto 20px;
+    }
+
+    /* Categories Tabs */
+    .categories {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    .cat-btn {
+      padding: 8px 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cat-btn.active, .cat-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    /* Product Grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 50px;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 12px 30px rgba(255, 30, 39, 0.2);
+    }
+
+    .card-img-wrapper {
+      width: 100%;
+      height: 160px;
+      background: #14171f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 10px;
+    }
+
+    .card-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .card-img {
+      transform: scale(1.05);
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid var(--primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .card-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    /* ID Warning Alert Box */
+    .id-warning-box {
+      background: rgba(255, 165, 2, 0.12);
+      border: 1px solid rgba(255, 165, 2, 0.4);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffc048;
+      font-size: 0.78rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .id-warning-box .icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* Offers Selector */
+    .offers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 160px;
+      overflow-y: auto;
+      padding-left: 4px;
+    }
+
+    .offers-list::-webkit-scrollbar {
+      width: 4px;
+    }
+    .offers-list::-webkit-scrollbar-thumb {
+      background: var(--primary);
       border-radius: 4px;
     }
-    .cloud-bg {
-      background-image: radial-gradient(circle at 50% 50%, rgba(230, 0, 38, 0.08) 0%, transparent 60%);
+
+    .offer-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.85rem;
+    }
+
+    .offer-item:hover, .offer-item.selected {
+      background: rgba(255, 30, 39, 0.15);
+      border-color: var(--primary);
+    }
+
+    .offer-item.selected .offer-radio {
+      border-color: var(--primary);
+      background: var(--primary);
+    }
+
+    .offer-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .offer-radio {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .offer-price {
+      font-weight: 800;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    /* Player ID / Target Input */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .input-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 8px var(--primary-glow);
+    }
+
+    .card-footer {
+      margin-top: auto;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-buy {
+      flex: 1;
+      padding: 10px;
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #141720;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .btn-close:hover {
+      color: #fff;
+    }
+
+    /* Payment Box */
+    .payment-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .pay-card {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px 10px;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pay-card:hover, .pay-card.active {
+      border-color: var(--primary);
+      background: rgba(255, 30, 39, 0.15);
+    }
+
+    .pay-card .pay-name {
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: block;
+      margin-top: 4px;
+    }
+
+    .pay-info-box {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      margin-bottom: 15px;
+    }
+
+    .pay-info-box strong {
+      color: var(--primary);
+    }
+
+    .no-flexy-badge {
+      background: rgba(255, 71, 87, 0.15);
+      border: 1px solid var(--danger);
+      color: #ff6b81;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    /* Admin UI */
+    .admin-tab-nav {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 18px;
+      padding-bottom: 8px;
+      overflow-x: auto;
+    }
+
+    .admin-tab-btn {
+      padding: 6px 14px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .admin-tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .admin-tab-content {
+      display: none;
+    }
+    .admin-tab-content.active {
+      display: block;
+    }
+
+    .admin-form-row {
+      margin-bottom: 14px;
+    }
+
+    .admin-form-row label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+    }
+
+    .admin-item-card {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .admin-offer-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .btn-sm-del {
+      background: rgba(255, 71, 87, 0.2);
+      border: 1px solid var(--danger);
+      color: #ff4757;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-sm-add {
+      background: rgba(46, 213, 115, 0.2);
+      border: 1px solid var(--success);
+      color: #2ed573;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+
+    footer {
+      margin-top: auto;
+      background: #08090c;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 24px 0;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 600px) {
+      .hero-title { font-size: 1.45rem; }
+      .product-grid { grid-template-columns: 1fr; }
+      .modal-box { padding: 16px; }
     }
   </style>
 </head>
-<body class="custom-scrollbar min-h-screen flex flex-col selection:bg-red-600 selection:text-white">
+<body>
+  <div class="bg-overlay"></div>
 
-  <!-- Top Notification Bar -->
-  <div class="bg-gradient-to-r from-red-950 via-red-900 to-black text-white text-xs py-1.5 px-4 text-center font-medium border-b border-red-800/40 flex items-center justify-center gap-2">
-    <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-    <span>⚡ مرحباً بكم في <b>Akatsuki Store</b> - سرعة في التسليم، شحن آمن لجميع السيرفرات وضمان 100%</span>
+  <!-- Announcement Bar -->
+  <div class="announcement-bar" id="storeNotice">
+    ⚡ شحن فوري وتلقائي لجميع الألعاب والاشتراكات بأفضل الأسعار في الجزائر 🇩🇿
   </div>
 
-  <!-- Main Navigation Bar -->
-  <header class="sticky top-0 z-40 bg-[#0d0d12]/95 backdrop-blur-md border-b border-akatsuki-border">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
-      
-      <!-- Brand Logo -->
-      <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('store')">
-        <div class="relative w-11 h-11 rounded-xl bg-gradient-to-br from-red-600 to-red-950 flex items-center justify-center border border-red-500/50 shadow-lg shadow-red-900/50">
-          <i class="fa-solid fa-cloud text-white text-xl animate-pulse"></i>
-        </div>
-        <div>
-          <h1 class="font-cinzel text-xl sm:text-2xl font-black tracking-wider text-white akatsuki-glow flex items-center gap-1.5">
-            AKATSUKI <span class="text-red-500">STORE</span>
-          </h1>
-          <p class="text-[10px] text-gray-400 font-semibold tracking-widest uppercase">Digital Gaming & Subscriptions</p>
-        </div>
+  <!-- Header -->
+  <header>
+    <div class="container nav-container">
+      <a href="#" class="brand-logo">
+        <div class="cloud-icon"></div>
+        <div class="brand-text" id="headerStoreName">AKATSUKI <span>STORE</span></div>
+      </a>
+      <div class="header-actions">
+        <button class="btn btn-admin" onclick="openAdminModal()">⚙️ لوحة الإدارة</button>
       </div>
-
-      <!-- Navigation Links & Actions -->
-      <div class="flex items-center gap-3 sm:gap-4">
-        
-        <!-- Social Contact Shortcuts -->
-        <div class="hidden md:flex items-center gap-2 border-l border-gray-800 pl-3">
-          <a id="navTelegram" href="https://t.me/+213556334891" target="_blank" class="w-8 h-8 rounded-lg bg-gray-900 hover:bg-blue-600 hover:text-white text-gray-400 flex items-center justify-center transition" title="Telegram">
-            <i class="fa-brands fa-telegram text-sm"></i>
-          </a>
-          <a id="navWhatsapp" href="https://wa.me/213556334891" target="_blank" class="w-8 h-8 rounded-lg bg-gray-900 hover:bg-green-600 hover:text-white text-gray-400 flex items-center justify-center transition" title="WhatsApp">
-            <i class="fa-brands fa-whatsapp text-sm"></i>
-          </a>
-          <a id="navFacebook" href="https://www.facebook.com/share/14o3j1TpoFt/" target="_blank" class="w-8 h-8 rounded-lg bg-gray-900 hover:bg-blue-700 hover:text-white text-gray-400 flex items-center justify-center transition" title="Facebook">
-            <i class="fa-brands fa-facebook-f text-sm"></i>
-          </a>
-        </div>
-
-        <!-- User Profile Button -->
-        <button onclick="openUserModal()" id="userBtn" class="bg-akatsuki-card hover:bg-gray-800 border border-akatsuki-border text-gray-200 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition">
-          <i class="fa-solid fa-user text-red-500"></i>
-          <span id="userBtnText">تسجيل الدخول</span>
-        </button>
-
-        <!-- Admin Portal Button -->
-        <button onclick="openAdminModal()" class="bg-gradient-to-r from-red-900 to-black hover:from-red-800 hover:to-red-950 border border-red-700/60 text-red-300 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-sm">
-          <i class="fa-solid fa-shield-halved text-red-400"></i>
-          <span class="hidden sm:inline">لوحة الإدارة</span>
-        </button>
-
-        <!-- Cart Trigger -->
-        <button onclick="toggleCartModal()" class="relative bg-red-600 hover:bg-red-500 text-white p-2.5 rounded-xl shadow-lg shadow-red-900/40 transition">
-          <i class="fa-solid fa-cart-shopping"></i>
-          <span id="cartCountBadge" class="absolute -top-1.5 -right-1.5 bg-white text-red-700 font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-gray-900">0</span>
-        </button>
-      </div>
-
     </div>
   </header>
 
-  <!-- STORE VIEW CONTAINER -->
-  <div id="storeView" class="flex-1 pb-16">
-    
-    <!-- Hero Banner -->
-    <section class="relative py-12 px-4 sm:px-6 cloud-bg border-b border-akatsuki-border overflow-hidden">
-      <div class="max-w-4xl mx-auto text-center space-y-4 relative z-10">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-950/70 border border-red-700/60 text-red-400 text-xs font-bold tracking-wide">
-          <i class="fa-solid fa-bolt text-red-500"></i> خدمات شحن رسمية وسريعة بتسليم فوري | Akatsuki Store
-        </div>
-        <h2 class="text-3xl sm:text-5xl font-black text-white font-cinzel tracking-tight leading-tight">
-          AKATSUKI <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-300">DIGITAL STORE</span>
-        </h2>
-        <p class="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-          شحن فوري ومباشر للألعاب، اشتراكات رقمية وبطاقات هدايا مع نظام فحص معرّف الحساب <span class="text-red-400 font-bold">(Player ID Verification)</span> قبل الشحن لضمان وصول طلبك.
-        </p>
-
-        <!-- Search Bar -->
-        <div class="max-w-xl mx-auto mt-6 relative">
-          <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="ابحث عن لعبتك المفضلة (Free Fire, PUBG, Valorant, Netflix...)" class="w-full bg-[#14141c] border border-akatsuki-border focus:border-red-600 rounded-2xl py-3.5 pr-11 pl-4 text-sm text-white placeholder-gray-500 focus:outline-none transition akatsuki-border-glow">
-          <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-        </div>
+  <!-- Main Content -->
+  <main class="container">
+    <section class="hero">
+      <h1 class="hero-title">متجر <span id="heroBrandName">AKATSUKI</span> الرسمي</h1>
+      <p class="hero-subtitle">اختر باقتك المفضلة، اكتب الآيدي أو الحساب الخاص بك، وسيصلك الشحن في دقائق معدودة عبر الواتساب فوراً!</p>
+      
+      <div class="categories">
+        <button class="cat-btn active" onclick="filterCategory('all', this)">⚡ الكل</button>
+        <button class="cat-btn" onclick="filterCategory('games', this)">🎮 ألعاب (Games)</button>
+        <button class="cat-btn" onclick="filterCategory('apps', this)">📱 تطبيقات واشتراكات</button>
+        <button class="cat-btn" onclick="filterCategory('cards', this)">🎁 بطاقات وشحن</button>
       </div>
     </section>
 
-    <!-- Categories Filter & Currency Bar -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none" id="categoriesBar">
-        <button onclick="setCategory('all')" class="cat-btn active bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition">🎮 الكل</button>
-        <button onclick="setCategory('games')" class="cat-btn bg-akatsuki-card text-gray-300 hover:bg-gray-800 border border-akatsuki-border px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition">🎯 ألعاب الجوال والكمبيوتر</button>
-        <button onclick="setCategory('subs')" class="cat-btn bg-akatsuki-card text-gray-300 hover:bg-gray-800 border border-akatsuki-border px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition">📺 الاشتراكات والتطبيقات</button>
-        <button onclick="setCategory('giftcards')" class="cat-btn bg-akatsuki-card text-gray-300 hover:bg-gray-800 border border-akatsuki-border px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition">💳 بطاقات الهدايا (Gift Cards)</button>
-      </div>
+    <section class="product-grid" id="productsGrid"></section>
+  </main>
 
-      <!-- Currency Switcher -->
-      <div class="flex items-center gap-2 self-end md:self-auto text-xs font-semibold text-gray-400">
-        <span>العملة:</span>
-        <select id="currencySelector" onchange="changeCurrency(this.value)" class="bg-akatsuki-card border border-akatsuki-border text-white text-xs rounded-lg px-2.5 py-1.5 focus:outline-none">
-          <option value="DZD" selected>دينار جزائري (DZD / د.ج)</option>
-          <option value="USD">دولار أمريكي (USD $)</option>
-        </select>
-      </div>
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 جميع الحقوق محفوظة لـ <span id="footerBrandName">AKATSUKI-Store_dz</span> ⚡</p>
+      <p style="margin-top: 6px; font-size: 0.8rem;">الدفع متوفر عبر: بريدي موب | CCP | بايننس USDT (لا نتعامل بالفليكسي)</p>
     </div>
-
-    <!-- Products Grid -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6">
-      <div id="productsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        <!-- Rendered via JS -->
-      </div>
-    </main>
-
-  </div>
-
-  <!-- RECHARGE / PRODUCT DETAILS MODAL -->
-  <div id="rechargeModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#111118] border border-red-900/60 rounded-3xl w-full max-w-xl max-h-[90vh] overflow-y-auto custom-scrollbar p-6 space-y-5 shadow-2xl relative">
-      
-      <!-- Close Button -->
-      <button onclick="closeRechargeModal()" class="absolute top-5 left-5 text-gray-400 hover:text-white w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-
-      <!-- Selected Product Header -->
-      <div class="flex items-center gap-4 border-b border-gray-800 pb-4">
-        <img id="modalProductImg" src="" alt="Product" class="w-16 h-16 rounded-2xl object-cover border border-red-800 shadow-md">
-        <div>
-          <span id="modalProductBadge" class="bg-red-950 text-red-400 border border-red-800 text-[10px] font-bold px-2 py-0.5 rounded-md"></span>
-          <h3 id="modalProductName" class="text-lg font-bold text-white mt-1"></h3>
-          <p id="modalProductSource" class="text-xs text-green-400 flex items-center gap-1.5 mt-1 font-semibold">
-            <i class="fa-solid fa-circle-check"></i> شحن فوري ومباشر • Akatsuki Store
-          </p>
-        </div>
-      </div>
-
-      <!-- Packages / Denominations Selection -->
-      <div>
-        <label class="block text-xs font-bold text-gray-300 mb-2">1. اختر الباقة أو الكمية المطلوبة:</label>
-        <div id="packagesContainer" class="grid grid-cols-2 gap-2.5">
-          <!-- Packages generated by JS -->
-        </div>
-      </div>
-
-      <!-- Player ID / Account Verification Form -->
-      <div id="playerVerificationSection" class="bg-black/40 border border-akatsuki-border rounded-2xl p-4 space-y-3">
-        <div class="flex items-center justify-between">
-          <label class="text-xs font-bold text-red-400 flex items-center gap-1.5">
-            <i class="fa-solid fa-user-check"></i> 2. بيانات الحساب والتحقق المباشر:
-          </label>
-          <span class="text-[10px] text-gray-400 font-medium">فحص اسم اللاعب تلقائياً</span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          <div>
-            <label class="block text-[11px] text-gray-400 mb-1">السيرفر / المنطقة (Server):</label>
-            <select id="serverSelect" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500">
-              <option value="MENA">الشرق الأوسط وشمال إفريقيا (MENA)</option>
-              <option value="EU">أوروبا (Europe)</option>
-              <option value="NA">أمريكا الشمالية (North America)</option>
-              <option value="ASIA">آسيا (Asia)</option>
-              <option value="GLOBAL">عالمي (Global / All)</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-[11px] text-gray-400 mb-1" id="idLabelText">معرف اللاعب (Player ID / User):</label>
-            <div class="relative">
-              <input type="text" id="targetPlayerId" placeholder="مثال: 589210492" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500">
-              <button onclick="verifyPlayerId()" type="button" class="absolute left-1 top-1 bottom-1 bg-red-600 hover:bg-red-500 text-white px-2.5 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
-                <i class="fa-solid fa-magnifying-glass"></i> تحقق
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Verification Result Badge -->
-        <div id="verifyResult" class="hidden rounded-xl p-3 text-xs flex items-center justify-between border"></div>
-      </div>
-
-      <!-- Action Button -->
-      <button onclick="confirmProductToCart()" class="w-full bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-red-950 transition text-sm">
-        <i class="fa-solid fa-cart-plus"></i> إضافة إلى السلة ومتابعة الشراء
-      </button>
-
-    </div>
-  </div>
-
-  <!-- CART & CHECKOUT MODAL -->
-  <div id="cartModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#111118] border border-akatsuki-border rounded-3xl w-full max-w-xl max-h-[90vh] overflow-y-auto custom-scrollbar p-6 space-y-5 shadow-2xl relative">
-      
-      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-        <h3 class="text-base font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-bag-shopping text-red-500"></i> سلة المشتريات وتأكيد الطلب
-        </h3>
-        <button onclick="toggleCartModal()" class="text-gray-400 hover:text-white w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <div id="cartList" class="space-y-2.5"></div>
-
-      <div class="bg-black/50 border border-gray-800 rounded-2xl p-4 flex items-center justify-between">
-        <span class="text-sm font-bold text-gray-300">المجموع المستحق للدفع:</span>
-        <span id="cartTotalDisplay" class="text-xl font-black text-red-500 akatsuki-glow">0 د.ج</span>
-      </div>
-
-      <div class="space-y-3">
-        <label class="block text-xs font-bold text-gray-300">اختر طريقة الدفع التي تناسبك:</label>
-        
-        <div class="grid grid-cols-3 gap-2" id="paymentOptionsContainer">
-          <button onclick="selectPayment('binance')" id="payBtn-binance" class="pay-method-btn active bg-gray-900 border-2 border-red-600 rounded-2xl p-3 text-center transition">
-            <i class="fa-solid fa-coins text-yellow-500 text-lg mb-1 block"></i>
-            <span class="text-xs font-bold text-white block">Binance Pay</span>
-            <span class="text-[10px] text-gray-400">ID شحن فوري</span>
-          </button>
-
-          <button onclick="selectPayment('bybit')" id="payBtn-bybit" class="pay-method-btn bg-gray-900 border border-gray-800 rounded-2xl p-3 text-center transition">
-            <i class="fa-solid fa-bolt text-amber-400 text-lg mb-1 block"></i>
-            <span class="text-xs font-bold text-white block">Bybit Pay</span>
-            <span class="text-[10px] text-gray-400">تحويل داخلي</span>
-          </button>
-
-          <button onclick="selectPayment('paypal')" id="payBtn-paypal" class="pay-method-btn bg-gray-900 border border-gray-800 rounded-2xl p-3 text-center transition">
-            <i class="fa-brands fa-paypal text-blue-400 text-lg mb-1 block"></i>
-            <span class="text-xs font-bold text-white block">PayPal</span>
-            <span class="text-[10px] text-gray-400">دفع دولي آمن</span>
-          </button>
-        </div>
-
-        <div id="paymentDetailsBox" class="bg-red-950/20 border border-red-900/60 rounded-2xl p-4 text-xs space-y-2"></div>
-      </div>
-
-      <div class="space-y-3 pt-2 border-t border-gray-800">
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">اسمك الكامل أو رقم هاتفك للتواصل:</label>
-          <input type="text" id="orderCustomerContact" placeholder="مثال: سيفو - 0556334891" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-500">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">إرفاق إثبات الدفع (Receipt / صورة التحويل):</label>
-          <input type="file" id="orderProofFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-0 file:ml-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-red-700 file:text-white hover:file:bg-red-600 bg-gray-900 rounded-xl p-1 border border-gray-700">
-        </div>
-      </div>
-
-      <button onclick="submitFinalOrder()" class="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-white font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-green-950 transition text-sm">
-        <i class="fa-solid fa-circle-check"></i> تأكيد الطلب وإرسال إشعار للمتجر
-      </button>
-
-    </div>
-  </div>
-
-  <!-- CUSTOMER LOGIN / REGISTER MODAL -->
-  <div id="userModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#111118] border border-akatsuki-border rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl relative">
-      <button onclick="closeUserModal()" class="absolute top-5 left-5 text-gray-400 hover:text-white">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-
-      <div class="text-center space-y-1">
-        <div class="w-12 h-12 rounded-2xl bg-red-950 border border-red-800 text-red-500 flex items-center justify-center mx-auto text-xl">
-          <i class="fa-solid fa-user-ninja"></i>
-        </div>
-        <h3 class="text-lg font-bold text-white" id="userModalTitle">حساب الزبون</h3>
-        <p class="text-xs text-gray-400">سجل حسابك لحفظ طلباتك وعروضك المفضلة</p>
-      </div>
-
-      <div id="userLoggedOutSection" class="space-y-3">
-        <input type="text" id="custEmailInput" placeholder="البريد الإلكتروني أو اسم المستخدم" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-500">
-        <input type="password" id="custPassInput" placeholder="كلمة المرور" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-500">
-        
-        <button onclick="handleUserLogin()" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 rounded-xl text-xs transition">
-          تسجيل الدخول / إنشاء حساب فوري
-        </button>
-      </div>
-
-      <div id="userLoggedInSection" class="hidden space-y-4">
-        <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-4 text-center">
-          <p class="text-xs text-gray-400">مرحباً بك مجدداً:</p>
-          <h4 id="loggedUserName" class="text-base font-bold text-red-400"></h4>
-          <span class="inline-block mt-2 bg-green-950 text-green-400 border border-green-800 text-[10px] px-2 py-0.5 rounded-full font-bold">عضو موثق</span>
-        </div>
-
-        <div class="space-y-2">
-          <h5 class="text-xs font-bold text-gray-300">سجل طلباتك الأخيرة:</h5>
-          <div id="userOrdersHistory" class="max-h-40 overflow-y-auto custom-scrollbar space-y-2 text-xs"></div>
-        </div>
-
-        <button onclick="handleUserLogout()" class="w-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-2 rounded-xl text-xs transition">
-          تسجيل الخروج
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ADMIN AUTH MODAL -->
-  <div id="adminAuthModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-[#0f0f16] border border-red-900 rounded-3xl w-full max-w-sm p-6 space-y-4 shadow-2xl relative akatsuki-border-glow">
-      <button onclick="closeAdminModal()" class="absolute top-5 left-5 text-gray-400 hover:text-white">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
-
-      <div class="text-center space-y-1">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-600 to-black border border-red-500 flex items-center justify-center mx-auto text-xl text-white shadow-lg">
-          <i class="fa-solid fa-lock"></i>
-        </div>
-        <h3 class="text-lg font-bold text-white font-cinzel">ADMIN LOGIN</h3>
-        <p class="text-[11px] text-gray-400">لوحة التحكم الخاصة بصاحب الموقع فقط</p>
-      </div>
-
-      <div class="space-y-3">
-        <div>
-          <label class="block text-[11px] text-gray-400 mb-1">البريد الإلكتروني للآدمن:</label>
-          <input type="email" id="adminEmailInput" placeholder="sifoudex46@gmail.com" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-500">
-        </div>
-        <div>
-          <label class="block text-[11px] text-gray-400 mb-1">كلمة المرور:</label>
-          <input type="password" id="adminPassInput" placeholder="••••••••" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-500">
-        </div>
-        <button onclick="verifyAdminLogin()" class="w-full bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md transition">
-          دخول لوحة التحكم
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ADMIN DASHBOARD FULL VIEW -->
-  <div id="adminDashboardView" class="hidden flex-1 max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full space-y-6">
-    
-    <!-- Admin Topbar -->
-    <div class="bg-[#111118] border border-red-900/60 rounded-3xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-red-600 flex items-center justify-center text-white text-xl">
-          <i class="fa-solid fa-crown"></i>
-        </div>
-        <div>
-          <h2 class="text-lg font-bold text-white">لوحة تحكم إدارة المتجر (Akatsuki Admin)</h2>
-          <p class="text-xs text-green-400">● مرحباً بك: <span class="font-bold">sifoudex46@gmail.com</span> (المالك والمشرف)</p>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <button onclick="switchView('store')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
-          <i class="fa-solid fa-store"></i> معاينة المتجر
-        </button>
-        <button onclick="logoutAdmin()" class="bg-red-950 hover:bg-red-900 text-red-300 border border-red-800 px-4 py-2 rounded-xl text-xs font-bold transition">
-          تسجيل خروج الآدمن
-        </button>
-      </div>
-    </div>
-
-    <!-- Admin Tabs -->
-    <div class="flex gap-2 border-b border-gray-800 pb-3 overflow-x-auto">
-      <button onclick="switchAdminTab('orders')" id="adminTabBtn-orders" class="admin-tab-btn active bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
-        <i class="fa-solid fa-clipboard-list"></i> إدارة الطلبات الواردة (<span id="adminOrdersCount">0</span>)
-      </button>
-      <button onclick="switchAdminTab('products')" id="adminTabBtn-products" class="admin-tab-btn bg-gray-900 text-gray-300 hover:bg-gray-800 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
-        <i class="fa-solid fa-gamepad"></i> إدارة المنتجات، الصور والأسعار
-      </button>
-      <button onclick="switchAdminTab('settings')" id="adminTabBtn-settings" class="admin-tab-btn bg-gray-900 text-gray-300 hover:bg-gray-800 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
-        <i class="fa-solid fa-sliders"></i> إعدادات الدفع والتواصل
-      </button>
-    </div>
-
-    <!-- Tab 1: Orders Management -->
-    <div id="adminTab-orders" class="space-y-4">
-      <div class="bg-[#111118] border border-gray-800 rounded-3xl p-5">
-        <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
-          <i class="fa-solid fa-bell text-red-500 animate-bounce"></i> قائمة الطلبات الحديثة الواردة من الزبائن
-        </h3>
-        
-        <div class="overflow-x-auto">
-          <table class="w-full text-right text-xs text-gray-300">
-            <thead class="bg-black/50 text-gray-400 font-bold border-b border-gray-800">
-              <tr>
-                <th class="p-3">رقم الطلب</th>
-                <th class="p-3">الزبون / التواصل</th>
-                <th class="p-3">العنصر / الباقة</th>
-                <th class="p-3">ID الحساب / السيرفر</th>
-                <th class="p-3">المبلغ وطريقة الدفع</th>
-                <th class="p-3">الإثبات</th>
-                <th class="p-3">الحالة</th>
-                <th class="p-3 text-center">الإجراءات</th>
-              </tr>
-            </thead>
-            <tbody id="adminOrdersTableBody" class="divide-y divide-gray-800"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab 2: Products & Price Markup Control -->
-    <div id="adminTab-products" class="hidden space-y-4">
-      
-      <!-- Quick Margin Control -->
-      <div class="bg-[#111118] border border-red-900/40 rounded-3xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div>
-          <h4 class="text-sm font-bold text-white">زيادة أو تخفيض الأسعار بنسبة مئوية لجميع المنتجات:</h4>
-          <p class="text-xs text-gray-400">يمكنك رفع هامش ربحك أو عمل تخفيضات لجميع أسعار العروض دفعة واحدة</p>
-        </div>
-        <div class="flex items-center gap-2">
-          <input type="number" id="globalMarkupInput" placeholder="مثال: +10% أو -5%" class="w-32 bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white text-center">
-          <button onclick="applyGlobalMarkup()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition">
-            تطبيق على الكل
-          </button>
-        </div>
-      </div>
-
-      <!-- Products Table / List -->
-      <div class="bg-[#111118] border border-gray-800 rounded-3xl p-5 space-y-4">
-        <div class="flex items-center justify-between">
-          <h3 class="text-sm font-bold text-white">قائمة الألعاب والتطبيقات (يمكنك تعديل أي صورة أو سعر)</h3>
-          <div class="flex gap-2">
-            <button onclick="resetToOfficialData()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
-              <i class="fa-solid fa-arrows-rotate"></i> استعادة الصور الافتراضية
-            </button>
-            <button onclick="addNewProductPrompt()" class="bg-green-600 hover:bg-green-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
-              <i class="fa-solid fa-plus"></i> إضافة منتج جديد
-            </button>
-          </div>
-        </div>
-
-        <div id="adminProductsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <!-- Rendered via JS -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab 3: Settings (Payments & Contact info) -->
-    <div id="adminTab-settings" class="hidden space-y-4">
-      <div class="bg-[#111118] border border-gray-800 rounded-3xl p-6 space-y-6">
-        <div>
-          <h3 class="text-base font-bold text-white">إعدادات بوابات الدفع ومعلومات التواصل الخاصة بك</h3>
-          <p class="text-xs text-gray-400">هذه المعلومات تظهر مباشرة للزبائن عند الدفع والتواصل</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          
-          <!-- Payment Settings -->
-          <div class="space-y-3 bg-black/40 p-4 rounded-2xl border border-gray-800">
-            <h4 class="text-xs font-bold text-red-400 flex items-center gap-2">
-              <i class="fa-solid fa-wallet"></i> حسابات الدفع الرقمية
-            </h4>
-            <div>
-              <label class="block text-[11px] text-gray-400 mb-1">Binance Pay ID:</label>
-              <input type="text" id="settingBinanceId" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
-            </div>
-            <div>
-              <label class="block text-[11px] text-gray-400 mb-1">Bybit Pay ID:</label>
-              <input type="text" id="settingBybitId" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
-            </div>
-            <div>
-              <label class="block text-[11px] text-gray-400 mb-1">PayPal Email:</label>
-              <input type="text" id="settingPaypalEmail" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
-            </div>
-          </div>
-
-          <!-- Contact Settings -->
-          <div class="space-y-3 bg-black/40 p-4 rounded-2xl border border-gray-800">
-            <h4 class="text-xs font-bold text-red-400 flex items-center gap-2">
-              <i class="fa-solid fa-headset"></i> روابط وأرقام التواصل
-            </h4>
-            <div>
-              <label class="block text-[11px] text-gray-400 mb-1">رقم تيليغرام (Telegram Number/User):</label>
-              <input type="text" id="settingTelegram" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
-            </div>
-            <div>
-              <label class="block text-[11px] text-gray-400 mb-1">رقم واتساب بيزنس (WhatsApp Business):</label>
-              <input type="text" id="settingWhatsapp" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
-            </div>
-            <div>
-              <label class="block text-[11px] text-gray-400 mb-1">رابط صفحة فيسبوك (Facebook Page URL):</label>
-              <input type="text" id="settingFacebook" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
-            </div>
-          </div>
-
-        </div>
-
-        <button onclick="saveStoreSettings()" class="bg-green-600 hover:bg-green-500 text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow-md transition flex items-center gap-2">
-          <i class="fa-solid fa-floppy-disk"></i> حفظ جميع الإعدادات
-        </button>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- FOOTER -->
-  <footer class="bg-[#09090d] border-t border-akatsuki-border py-8 px-4 text-center text-xs text-gray-400 space-y-3 mt-auto">
-    <div class="flex items-center justify-center gap-4">
-      <a id="footerTelegram" href="https://t.me/+213556334891" target="_blank" class="hover:text-red-400 transition flex items-center gap-1">
-        <i class="fa-brands fa-telegram"></i> Telegram
-      </a>
-      <span class="text-gray-700">•</span>
-      <a id="footerWhatsapp" href="https://wa.me/213556334891" target="_blank" class="hover:text-green-400 transition flex items-center gap-1">
-        <i class="fa-brands fa-whatsapp"></i> WhatsApp
-      </a>
-      <span class="text-gray-700">•</span>
-      <a id="footerFacebook" href="https://www.facebook.com/share/14o3j1TpoFt/" target="_blank" class="hover:text-blue-400 transition flex items-center gap-1">
-        <i class="fa-brands fa-facebook"></i> Facebook
-      </a>
-    </div>
-    <p>© 2026 متجر <span class="text-white font-bold font-cinzel">AKATSUKI STORE</span>. جميع الحقوق محفوظة لصاحب المتجر.</p>
-    <p class="text-[10px] text-gray-500">جميع الخدمات والشحنات مقدمة ومضمونة 100% حصرياً عبر متجر Akatsuki Store الرقمي.</p>
   </footer>
 
-  <!-- SCRIPT LOGIC -->
+  <!-- 1. Checkout Modal -->
+  <div class="modal-backdrop" id="orderModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title" id="orderModalTitle">تأكيد الطلب 🛍️</div>
+        <button class="btn-close" onclick="closeModal('orderModal')">&times;</button>
+      </div>
+
+      <div id="orderSummaryBox" style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: var(--radius-sm); margin-bottom: 15px;"></div>
+
+      <div class="id-warning-box" style="margin-bottom: 15px;">
+        <span class="icon">⚠️</span>
+        <span><strong>تنبيه هام:</strong> يرجى التأكد التام من صحة الآيدي/المعرف المدخل، المتجر يخلي مسؤوليته في حال كان المعرف خاطئاً من طرف الزبون.</span>
+      </div>
+
+      <div class="no-flexy-badge">
+        🚫 تنبيه: لا نتعامل برصيد فليكسي (Flexy) إطلاقاً، الدفع متاح بالطرق الرسمية أدناه فقط.
+      </div>
+
+      <label class="input-label" style="display:block; margin-bottom: 6px;">اختر وسيلة الدفع التي تناسبك:</label>
+      <div class="payment-options">
+        <div class="pay-card active" onclick="selectPayment('baridimob', this)">
+          📱
+          <span class="pay-name">بريدي موب (BaridiMob)</span>
+        </div>
+        <div class="pay-card" onclick="selectPayment('ccp', this)">
+          📮
+          <span class="pay-name">حساب CCP الجاري</span>
+        </div>
+        <div class="pay-card" onclick="selectPayment('binance', this)">
+          🟡
+          <span class="pay-name">بايننس (Binance USDT)</span>
+        </div>
+      </div>
+
+      <div class="pay-info-box" id="payDetailsBox"></div>
+
+      <div class="input-group" style="margin-bottom: 15px;">
+        <label class="input-label">رقم هاتفك / واتساب للتواصل (اختياري):</label>
+        <input type="text" id="custPhone" class="form-control" placeholder="06XXXXXXXX">
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;" onclick="sendWhatsAppOrder()">
+        📲 إرسال الطلب عبر الواتساب فوراً
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. Admin Login Modal -->
+  <div class="modal-backdrop" id="adminLoginModal">
+    <div class="modal-box" style="max-width: 400px;">
+      <div class="modal-header">
+        <div class="modal-title">🔐 تسجيل دخول المدير</div>
+        <button class="btn-close" onclick="closeModal('adminLoginModal')">&times;</button>
+      </div>
+      <div class="input-group" style="margin-bottom: 12px;">
+        <label class="input-label">البريد الإلكتروني:</label>
+        <input type="email" id="adminEmailInput" class="form-control" placeholder="admin@email.com">
+      </div>
+      <div class="input-group" style="margin-bottom: 16px;">
+        <label class="input-label">كلمة المرور:</label>
+        <input type="password" id="adminPassInput" class="form-control" placeholder="••••••••">
+      </div>
+      <button class="btn btn-primary" style="width: 100%; padding: 10px;" onclick="checkAdminAuth()">
+        دخول لوحة التحكم 🚀
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. Admin Dashboard Modal -->
+  <div class="modal-backdrop" id="adminDashboardModal">
+    <div class="modal-box" style="max-width: 850px;">
+      <div class="modal-header">
+        <div class="modal-title">⚙️ لوحة الإدارة والتحكم الشاملة</div>
+        <button class="btn-close" onclick="closeModal('adminDashboardModal')">&times;</button>
+      </div>
+
+      <div class="admin-tab-nav">
+        <button class="admin-tab-btn active" onclick="switchAdminTab('tab-style', this)">🎨 مظهر وخلفية المتجر</button>
+        <button class="admin-tab-btn" onclick="switchAdminTab('tab-products', this)">📦 إدارة المنتجات والعروض</button>
+        <button class="admin-tab-btn" onclick="switchAdminTab('tab-payments', this)">💳 إعدادات الدفع والواتساب</button>
+        <button class="admin-tab-btn" onclick="switchAdminTab('tab-backup', this)">💾 النسخ الاحتياطي والضبط</button>
+      </div>
+
+      <!-- Tab 1: Theme & Background -->
+      <div class="admin-tab-content active" id="tab-style">
+        <h4 style="margin-bottom: 12px; color: var(--primary);">🖼️ تخصيص خلفية المتجر والمظهر</h4>
+        
+        <div class="admin-form-row">
+          <label>نوع الخلفية:</label>
+          <select id="admBgType" class="form-control" onchange="onBgTypeChange()">
+            <option value="default">النمط الليلي الافتراضي (Dark Cyber)</option>
+            <option value="custom_url">رابط صورة من الإنترنت (URL)</option>
+            <option value="upload">رفع صورة خلفية من هاتفك مباشرة 📁</option>
+            <option value="color">لون مخصص (Solid Color)</option>
+          </select>
+        </div>
+
+        <div class="admin-form-row" id="rowBgUrl" style="display:none;">
+          <label>رابط صورة الخلفية (Direct Image URL):</label>
+          <input type="text" id="admBgUrl" class="form-control" placeholder="https://i.postimg.cc/.../bg.jpg">
+        </div>
+
+        <div class="admin-form-row" id="rowBgUpload" style="display:none;">
+          <label>اختر صورة الخلفية من جهازك:</label>
+          <input type="file" id="admBgFile" class="form-control" accept="image/*" onchange="handleBgFileUpload(event)">
+        </div>
+
+        <div class="admin-form-row" id="rowBgColor" style="display:none;">
+          <label>اختر لون الخلفية:</label>
+          <input type="color" id="admBgColor" class="form-control" value="#0a0a0d" style="height:45px;">
+        </div>
+
+        <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin:18px 0;">
+
+        <div class="admin-form-row">
+          <label>اسم المتجر:</label>
+          <input type="text" id="admStoreName" class="form-control">
+        </div>
+
+        <div class="admin-form-row">
+          <label>شريط التنبيهات الإعلاني في الأعلى:</label>
+          <input type="text" id="admStoreNotice" class="form-control">
+        </div>
+
+        <button class="btn btn-primary" onclick="saveAdminSettings()">💾 حفظ مظهر المتجر</button>
+      </div>
+
+      <!-- Tab 2: Products & Offers -->
+      <div class="admin-tab-content" id="tab-products">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h4 style="color: var(--primary);">📦 قائمة المنتجات والعروض</h4>
+          <button class="btn btn-primary" onclick="openAddProductModal()">➕ إضافة منتج جديد</button>
+        </div>
+        <div id="adminProductsList"></div>
+      </div>
+
+      <!-- Tab 3: Payment Settings -->
+      <div class="admin-tab-content" id="tab-payments">
+        <h4 style="margin-bottom: 12px; color: var(--primary);">💳 بيانات الدفع والتواصل</h4>
+        <div class="admin-form-row">
+          <label>رقم الواتساب لاستقبال الطلبات (بدون + مثال 213658613828):</label>
+          <input type="text" id="admWhatsapp" class="form-control">
+        </div>
+        <div class="admin-form-row">
+          <label>معلومات بريدي موب (BaridiMob RIP):</label>
+          <input type="text" id="admBaridi" class="form-control">
+        </div>
+        <div class="admin-form-row">
+          <label>معلومات حساب CCP الجاري:</label>
+          <input type="text" id="admCcp" class="form-control">
+        </div>
+        <div class="admin-form-row">
+          <label>معرف أو محفظة بايننس (Binance Pay ID / USDT):</label>
+          <input type="text" id="admBinance" class="form-control">
+        </div>
+        <button class="btn btn-primary" onclick="saveAdminSettings()">💾 حفظ إعدادات الدفع</button>
+      </div>
+
+      <!-- Tab 4: Backup -->
+      <div class="admin-tab-content" id="tab-backup">
+        <h4 style="margin-bottom: 12px; color: var(--primary);">💾 النسخ الاحتياطي واستعادة البيانات</h4>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 14px;">
+          جميع التعديلات تُحفظ تلقائياً في متصفحك. يمكنك تصدير نسخة احتياطية أو استعادتها في أي وقت.
+        </p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-outline" onclick="exportDataBackup()">📥 تصدير نسخة احتياطية (JSON)</button>
+          <button class="btn btn-outline" onclick="document.getElementById('importFileInput').click()">📤 استيراد نسخة احتياطية</button>
+          <input type="file" id="importFileInput" style="display:none" accept=".json" onchange="importDataBackup(event)">
+          <button class="btn btn-sm-del" onclick="resetToFactoryDefault()">🔄 إعادة تعيين للمصنع</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Edit/Add Product Modal -->
+  <div class="modal-backdrop" id="editProductModal">
+    <div class="modal-box" style="max-width: 650px;">
+      <div class="modal-header">
+        <div class="modal-title" id="editProdModalTitle">تعديل المنتج والعروض</div>
+        <button class="btn-close" onclick="closeModal('editProductModal')">&times;</button>
+      </div>
+
+      <input type="hidden" id="editProdId">
+
+      <div class="admin-form-row">
+        <label>اسم اللعبة أو التطبيق:</label>
+        <input type="text" id="editProdName" class="form-control" placeholder="مثال: Free Fire">
+      </div>
+
+      <div class="admin-form-row">
+        <label>القسم:</label>
+        <select id="editProdCat" class="form-control">
+          <option value="games">🎮 ألعاب (Games)</option>
+          <option value="apps">📱 تطبيقات واشتراكات</option>
+          <option value="cards">🎁 بطاقات وشحن</option>
+        </select>
+      </div>
+
+      <div class="admin-form-row">
+        <label>رابط الصورة (Image URL) أو رفع صورة من الهاتف:</label>
+        <input type="text" id="editProdImg" class="form-control" placeholder="https://i.postimg.cc/..." style="margin-bottom:6px;">
+        <input type="file" id="editProdImgFile" class="form-control" accept="image/*" onchange="handleProdImgUpload(event)">
+      </div>
+
+      <div class="admin-form-row">
+        <label>عنوان خانة المعرف (مثال: معرف اللاعب ID / البريد الإلكتروني):</label>
+        <input type="text" id="editProdLabel" class="form-control" placeholder="معرف اللاعب (Player ID)">
+      </div>
+
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px; margin-top: 14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h5 style="color:var(--primary); font-size:0.95rem;">🎁 خانات العروض والأسعار:</h5>
+          <button type="button" class="btn-sm-add" onclick="addOfferRowToEditor()">➕ إضافة عرض جديد</button>
+        </div>
+        <div id="offersEditorContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
+      </div>
+
+      <div style="margin-top: 20px; display:flex; gap:10px;">
+        <button class="btn btn-primary" style="flex:1;" onclick="saveProductData()">💾 حفظ المنتج والعروض</button>
+        <button class="btn btn-outline" onclick="closeModal('editProductModal')">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const DEFAULT_CONFIG = {
+    const DEFAULT_SETTINGS = {
+      storeName: "AKATSUKI Store | أكاتسوكي ستور",
+      storeNotice: "⚡ شحن فوري وتلقائي لجميع الألعاب والاشتراكات بأفضل الأسعار في الجزائر 🇩🇿",
+      whatsappNumber: "213658613828",
       adminEmail: "sifoudex46@gmail.com",
       adminPass: "sifou0658613828",
-      binanceId: "541429837",
-      bybitId: "396701175",
-      paypalEmail: "bandouis055@gmail.com",
-      telegram: "213556334891",
-      whatsapp: "213556334891",
-      facebook: "https://www.facebook.com/share/14o3j1TpoFt/",
-      currency: "DZD",
-      usdToDzdRate: 230
+      bgType: "default",
+      bgCustomUrl: "",
+      bgImageBase64: "",
+      bgColor: "#0a0a0d",
+      baridimobRip: "00799999000000000000",
+      ccpNumber: "00000000 Clé 00",
+      ccpName: "AKATSUKI STORE",
+      binancePayId: "123456789 (USDT / Binance Pay)"
     };
 
-    // Authentic Akatsuki Catalog with Clean Images
-    const OFFICIAL_PRODUCTS = [
+    const DEFAULT_PRODUCTS = [
       {
-        id: 1,
+        id: "ff",
         name: "Free Fire (فري فاير)",
         category: "games",
-        badge: "شحن فوري بالمعرف ID",
-        image: "https://wallpapercave.com/wp/wp7397985.jpg",
-        icon: "fa-fire",
-        inputType: "id",
-        packages: [
-          { name: "100 + 10 مجاناً جواهر", priceDZD: 320, priceUSD: 1.4 },
-          { name: "310 + 31 مجاناً جواهر", priceDZD: 950, priceUSD: 4.1 },
-          { name: "520 + 52 مجاناً جواهر", priceDZD: 1580, priceUSD: 6.8 },
-          { name: "1060 + 106 مجاناً جواهر", priceDZD: 3100, priceUSD: 13.5 },
-          { name: "عضوية أسبوعية (Weekly Pass)", priceDZD: 580, priceUSD: 2.5 },
-          { name: "عضوية شهرية (Monthly Pass)", priceDZD: 2600, priceUSD: 11.3 }
+        image: "https://i.postimg.cc/k5wkM7v6/freefire.png",
+        inputLabel: "معرف اللاعب (Player ID)",
+        inputPlaceholder: "أدخل الآيدي (Player ID)",
+        offers: [
+          { id: "ff_1", name: "100 + 10 مجوهرات 💎", price: 230 },
+          { id: "ff_2", name: "310 + 31 مجوهرات 💎", price: 650 },
+          { id: "ff_3", name: "520 + 52 مجوهرات 💎", price: 1100 },
+          { id: "ff_4", name: "1060 + 106 مجوهرات 💎", price: 2150 },
+          { id: "ff_5", name: "2180 + 218 مجوهرات 💎", price: 4200 },
+          { id: "ff_w", name: "عضوية أسبوعية (Weekly) 🎫", price: 450 },
+          { id: "ff_m", name: "عضوية شهرية (Monthly) 👑", price: 2200 }
         ]
       },
       {
-        id: 2,
+        id: "pubg",
         name: "PUBG Mobile (ببجي موبايل)",
         category: "games",
-        badge: "شحن شدات UC فوري",
-        image: "https://wallpapercave.com/wp/wp4902148.jpg",
-        icon: "fa-crosshairs",
-        inputType: "id",
-        packages: [
-          { name: "60 UC شدة", priceDZD: 280, priceUSD: 1.2 },
-          { name: "325 + 25 مجاناً UC", priceDZD: 1350, priceUSD: 5.8 },
-          { name: "660 + 60 مجاناً UC (Royale Pass)", priceDZD: 2650, priceUSD: 11.5 },
-          { name: "1800 UC شدة", priceDZD: 6900, priceUSD: 30.0 },
-          { name: "3850 UC شدة", priceDZD: 13500, priceUSD: 58.0 }
+        image: "https://i.postimg.cc/L5R9Rz8/pubg.png",
+        inputLabel: "معرف اللاعب (Player ID)",
+        inputPlaceholder: "أدخل معرّف ببجي",
+        offers: [
+          { id: "pubg_1", name: "60 شدة UC 🪙", price: 240 },
+          { id: "pubg_2", name: "325 شدة UC 🪙", price: 1150 },
+          { id: "pubg_3", name: "660 شدة UC 🪙", price: 2250 },
+          { id: "pubg_4", name: "1800 شدة UC 🪙", price: 5600 },
+          { id: "pubg_5", name: "3850 شدة UC 🪙", price: 11200 },
+          { id: "pubg_rp", name: "رويال باس (Royale Pass) 🎟️", price: 1900 }
         ]
       },
       {
-        id: 3,
-        name: "Valorant Points (فالورانت)",
+        id: "roblox",
+        name: "Roblox (روبلوكس)",
         category: "games",
-        badge: "سيرفر الشرق الأوسط / أوروبا",
-        image: "https://wallpapercave.com/wp/wp6658097.jpg",
-        icon: "fa-shield",
-        inputType: "username",
-        packages: [
-          { name: "475 VP كود تفعيل", priceDZD: 1200, priceUSD: 5.2 },
-          { name: "1000 VP كود تفعيل", priceDZD: 2450, priceUSD: 10.6 },
-          { name: "2050 VP كود تفعيل", priceDZD: 4800, priceUSD: 20.8 },
-          { name: "5350 VP كود تفعيل", priceDZD: 12100, priceUSD: 52.6 }
+        image: "https://cdn.simpleicons.org/roblox/ffffff",
+        inputLabel: "اسم المستخدم (Username) أو ID",
+        inputPlaceholder: "اسم الحساب في روبلوكس",
+        offers: [
+          { id: "rbx_1", name: "80 روبوكس (Robux) 🪙", price: 260 },
+          { id: "rbx_2", name: "400 روبوكس (Robux) 🪙", price: 1150 },
+          { id: "rbx_3", name: "800 روبوكس (Robux) 🪙", price: 2200 },
+          { id: "rbx_4", name: "1700 روبوكس (Robux) 🪙", price: 4500 }
         ]
       },
       {
-        id: 4,
-        name: "Roblox Robux (روبلوكس)",
+        id: "codm",
+        name: "Call of Duty Mobile (كود)",
         category: "games",
-        badge: "تسليم باليوزر نيم سريع",
-        image: "https://wallpapercave.com/wp/wp6650428.jpg",
-        icon: "fa-cube",
-        inputType: "username",
-        packages: [
-          { name: "400 Robux", priceDZD: 1300, priceUSD: 5.6 },
-          { name: "800 Robux", priceDZD: 2500, priceUSD: 10.8 },
-          { name: "1700 Robux", priceDZD: 5100, priceUSD: 22.1 },
-          { name: "4500 Robux", priceDZD: 12800, priceUSD: 55.6 }
+        image: "https://i.postimg.cc/VMyB8Y7/codm.png",
+        inputLabel: "معرف اللاعب (Player ID / OpenID)",
+        inputPlaceholder: "Player ID من داخل اللعبة",
+        offers: [
+          { id: "cod_1", name: "80 كوين CP 🪙", price: 260 },
+          { id: "cod_2", name: "420 كوين CP 🪙", price: 1200 },
+          { id: "cod_3", name: "880 كوين CP 🪙", price: 2350 },
+          { id: "cod_4", name: "2400 كوين CP 🪙", price: 5800 }
         ]
       },
       {
-        id: 5,
-        name: "Netflix Premium 4K (نتفلكس)",
-        category: "subs",
-        badge: "شاشة خاصة بضمان كامل",
-        image: "https://wallpapercave.com/wp/wp5100412.jpg",
-        icon: "fa-tv",
-        inputType: "email",
-        packages: [
-          { name: "شهر واحد (شاشة برقم سري)", priceDZD: 650, priceUSD: 2.8 },
-          { name: "3 أشهر (شاشة برقم سري)", priceDZD: 1800, priceUSD: 7.8 },
-          { name: "حساب كامل خاص (شهر واحد)", priceDZD: 2800, priceUSD: 12.1 }
-        ]
-      },
-      {
-        id: 6,
-        name: "Discord Nitro (ديسكورد نيترو)",
-        category: "subs",
-        badge: "تفعيل فوري مع البوستات",
-        image: "https://wallpapercave.com/wp/wp9486334.jpg",
-        icon: "fa-discord",
-        inputType: "username",
-        packages: [
-          { name: "نيترو بيسك (Basic) - شهر", priceDZD: 750, priceUSD: 3.2 },
-          { name: "نيترو قيمنق (Boost) - شهر", priceDZD: 1850, priceUSD: 8.0 },
-          { name: "نيترو قيمنق (Boost) - سنة", priceDZD: 16500, priceUSD: 71.0 }
-        ]
-      },
-      {
-        id: 7,
+        id: "canva",
         name: "Canva Pro (كانفا برو)",
-        category: "subs",
-        badge: "تفعيل على إيميلك الخاص",
-        image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=600&q=80",
-        icon: "fa-palette",
-        inputType: "email",
-        packages: [
-          { name: "اشتراك سنة كاملة (حسابك الشخصي)", priceDZD: 1200, priceUSD: 5.2 },
-          { name: "اشتراك دائم مدى الحياة", priceDZD: 2200, priceUSD: 9.5 }
+        category: "apps",
+        image: "https://cdn.simpleicons.org/canva/00C4CC",
+        inputLabel: "البريد الإلكتروني (Email)",
+        inputPlaceholder: "بريدك لتفعيل الاشتراك",
+        offers: [
+          { id: "canva_1", name: "اشتراك حساب خاص 1 سنة 🎨", price: 800 },
+          { id: "canva_2", name: "اشتراك مدى الحياة (Lifetime) ♾️", price: 1500 },
+          { id: "canva_3", name: "بانل إداري (Panel 500 Users) 🚀", price: 4500 }
         ]
       },
       {
-        id: 8,
-        name: "PlayStation / Steam Gift Cards",
-        category: "giftcards",
-        badge: "بطاقات وأكواد رقمية فورية",
-        image: "https://wallpapercave.com/wp/wp8018151.jpg",
-        icon: "fa-credit-card",
-        inputType: "email",
-        packages: [
-          { name: "بطاقة PlayStation 10$ أمريكي", priceDZD: 2450, priceUSD: 10.5 },
-          { name: "بطاقة PlayStation 20$ أمريكي", priceDZD: 4800, priceUSD: 20.8 },
-          { name: "بطاقة Steam 10$ Global", priceDZD: 2400, priceUSD: 10.4 },
-          { name: "بطاقة Steam 20$ Global", priceDZD: 4750, priceUSD: 20.6 }
+        id: "capcut",
+        name: "CapCut Pro (كاب كات برو)",
+        category: "apps",
+        image: "https://cdn.simpleicons.org/capcut/ffffff",
+        inputLabel: "البريد الإلكتروني (Email)",
+        inputPlaceholder: "بريدك الإلكتروني للتفعيل",
+        offers: [
+          { id: "capcut_1", name: "اشتراك 1 شهر 🎬", price: 700 },
+          { id: "capcut_2", name: "اشتراك 1 سنة كاملة 🌟", price: 2800 }
+        ]
+      },
+      {
+        id: "google_one",
+        name: "Google One / AI (مساحة وذكاء اصطناعي)",
+        category: "apps",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Google_One_icon.svg/512px-Google_One_icon.svg.png",
+        inputLabel: "حساب جوجل (Gmail)",
+        inputPlaceholder: "example@gmail.com",
+        offers: [
+          { id: "g1_100", name: "مساحة 100GB (سنة كاملة) ☁️", price: 1800 },
+          { id: "g1_2tb", name: "مساحة 2TB + Gemini Advanced (شهر) 🤖", price: 1400 },
+          { id: "g1_2tby", name: "مساحة 2TB + Gemini Advanced (سنة) 🤖", price: 9500 }
+        ]
+      },
+      {
+        id: "spotify",
+        name: "Spotify Premium (سبوتيفاي)",
+        category: "apps",
+        image: "https://cdn.simpleicons.org/spotify/1ED760",
+        inputLabel: "البريد الإلكتروني للسبوتيفاي",
+        inputPlaceholder: "your-email@gmail.com",
+        offers: [
+          { id: "spot_1", name: "اشتراك فردي 1 شهر 🎵", price: 450 },
+          { id: "spot_3", name: "اشتراك فردي 3 أشهر 🎵", price: 1100 },
+          { id: "spot_12", name: "اشتراك فردي 1 سنة 👑", price: 2900 }
+        ]
+      },
+      {
+        id: "telegram",
+        name: "Telegram Premium (تيليغرام برو)",
+        category: "apps",
+        image: "https://cdn.simpleicons.org/telegram/24A1DE",
+        inputLabel: "معرف التيليغرام (@username)",
+        inputPlaceholder: "مثال: @username",
+        offers: [
+          { id: "tg_3", name: "اشتراك 3 أشهر ⭐", price: 2400 },
+          { id: "tg_6", name: "اشتراك 6 أشهر ⭐", price: 3800 },
+          { id: "tg_12", name: "اشتراك 1 سنة ⭐", price: 6200 }
         ]
       }
     ];
 
-    let storeConfig = JSON.parse(localStorage.getItem('akatsuki_config')) || DEFAULT_CONFIG;
-    let products = JSON.parse(localStorage.getItem('akatsuki_products')) || OFFICIAL_PRODUCTS;
-    let orders = JSON.parse(localStorage.getItem('akatsuki_orders')) || [];
-    let currentUser = JSON.parse(localStorage.getItem('akatsuki_currentUser')) || null;
-    let currentCurrency = storeConfig.currency || "DZD";
+    let appSettings = JSON.parse(localStorage.getItem('akatsuki_settings')) || DEFAULT_SETTINGS;
+    let appProducts = JSON.parse(localStorage.getItem('akatsuki_products')) || DEFAULT_PRODUCTS;
+    let currentCategory = 'all';
+    let selectedOrder = null;
+    let currentPayment = 'baridimob';
 
-    let currentSelectedProduct = null;
-    let currentSelectedPackage = null;
-    let selectedPaymentGateway = "binance";
-    let isPlayerVerified = false;
-    let verifiedAccountName = "";
-    let cart = [];
-
-    function persistData() {
-      localStorage.setItem('akatsuki_config', JSON.stringify(storeConfig));
-      localStorage.setItem('akatsuki_products', JSON.stringify(products));
-      localStorage.setItem('akatsuki_orders', JSON.stringify(orders));
-      localStorage.setItem('akatsuki_currentUser', JSON.stringify(currentUser));
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      applyStoreSettingsToUI();
-      renderProductsGrid(products);
-      updateUserUI();
-      updateAdminOrdersCount();
+    document.addEventListener('DOMContentLoaded', () => {
+      applyThemeAndSettings();
+      renderProducts();
     });
 
-    function resetToOfficialData() {
-      products = JSON.parse(JSON.stringify(OFFICIAL_PRODUCTS));
-      persistData();
-      renderAdminProducts();
-      renderProductsGrid(products);
-      Swal.fire({ icon: 'success', title: 'تم استعادة الصور الافتراضية بنجاح!', timer: 1500, showConfirmButton: false });
+    function applyThemeAndSettings() {
+      document.getElementById('storeNotice').textContent = appSettings.storeNotice;
+      document.getElementById('headerStoreName').innerHTML = appSettings.storeName.replace('AKATSUKI', 'AKATSUKI <span>STORE</span>');
+      document.getElementById('heroBrandName').textContent = appSettings.storeName.split('|')[0].trim();
+      document.getElementById('footerBrandName').textContent = appSettings.storeName;
+
+      const body = document.body;
+      if (appSettings.bgType === 'upload' && appSettings.bgImageBase64) {
+        body.style.backgroundImage = `url('${appSettings.bgImageBase64}')`;
+      } else if (appSettings.bgType === 'custom_url' && appSettings.bgCustomUrl) {
+        body.style.backgroundImage = `url('${appSettings.bgCustomUrl}')`;
+      } else if (appSettings.bgType === 'color' && appSettings.bgColor) {
+        body.style.backgroundImage = 'none';
+        body.style.backgroundColor = appSettings.bgColor;
+      } else {
+        body.style.backgroundImage = 'none';
+        body.style.backgroundColor = '#0a0a0d';
+      }
     }
 
-    function applyStoreSettingsToUI() {
-      const telLink = `https://t.me/+${storeConfig.telegram}`;
-      const waLink = `https://wa.me/${storeConfig.whatsapp}`;
-      const fbLink = storeConfig.facebook;
+    function renderProducts() {
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = '';
 
-      document.getElementById('navTelegram').href = telLink;
-      document.getElementById('navWhatsapp').href = waLink;
-      document.getElementById('navFacebook').href = fbLink;
+      const filtered = currentCategory === 'all' 
+        ? appProducts 
+        : appProducts.filter(p => p.category === currentCategory);
 
-      document.getElementById('footerTelegram').href = telLink;
-      document.getElementById('footerWhatsapp').href = waLink;
-      document.getElementById('footerFacebook').href = fbLink;
-
-      document.getElementById('settingBinanceId').value = storeConfig.binanceId;
-      document.getElementById('settingBybitId').value = storeConfig.bybitId;
-      document.getElementById('settingPaypalEmail').value = storeConfig.paypalEmail;
-      document.getElementById('settingTelegram').value = storeConfig.telegram;
-      document.getElementById('settingWhatsapp').value = storeConfig.whatsapp;
-      document.getElementById('settingFacebook').value = storeConfig.facebook;
-    }
-
-    function renderProductsGrid(items) {
-      const container = document.getElementById('productsContainer');
-      if (!items || items.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full py-16 text-center text-gray-500">
-            <i class="fa-solid fa-ghost text-4xl mb-3 text-red-500/50"></i>
-            <p class="text-sm font-bold">لم يتم العثور على أي عروض مطابقة للبحث.</p>
-          </div>`;
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="text-align:center; grid-column:1/-1; padding:40px; color:var(--text-muted);">لا توجد منتجات في هذا القسم حالياً.</div>';
         return;
       }
 
-      container.innerHTML = items.map(p => {
-        const minPrice = Math.min(...p.packages.map(pkg => currentCurrency === 'DZD' ? pkg.priceDZD : pkg.priceUSD));
-        const currencyLabel = currentCurrency === 'DZD' ? 'د.ج' : '$';
-
-        return `
-          <div class="bg-[#111118] border border-akatsuki-border hover:border-red-600/70 rounded-3xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-red-950/40 group">
-            
-            <!-- Card Image & Badge -->
-            <div class="relative h-44 overflow-hidden bg-gray-900">
-              <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-              <div class="absolute inset-0 bg-gradient-to-t from-[#111118] via-transparent to-black/40"></div>
-              
-              <span class="absolute top-3 right-3 bg-red-950/90 backdrop-blur-md text-red-400 border border-red-800 text-[10px] font-bold px-2.5 py-1 rounded-lg">
-                ${p.badge}
-              </span>
-            </div>
-
-            <!-- Content -->
-            <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
-              <div>
-                <h4 class="font-bold text-base text-white group-hover:text-red-400 transition">${p.name}</h4>
-                <p class="text-xs text-gray-400 mt-1 flex items-center gap-1.5">
-                  <i class="fa-solid fa-circle-check text-green-500 text-[10px]"></i> شحن فوري ومضمون • Akatsuki Store
-                </p>
-              </div>
-
-              <div class="pt-3 border-t border-gray-800/80 flex items-center justify-between">
-                <div>
-                  <span class="text-[10px] text-gray-500 block">يبدأ من:</span>
-                  <div class="text-lg font-black text-red-500">
-                    ${minPrice} <span class="text-xs text-gray-300 font-normal">${currencyLabel}</span>
-                  </div>
-                </div>
-
-                <button onclick="openRechargeModal(${p.id})" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-md shadow-red-950 transition">
-                  <i class="fa-solid fa-bolt"></i> شحن الآن
-                </button>
-              </div>
-            </div>
-
-          </div>
-        `;
-      }).join('');
-    }
-
-    function setCategory(cat) {
-      document.querySelectorAll('.cat-btn').forEach(b => {
-        b.classList.remove('bg-red-600', 'text-white');
-        b.classList.add('bg-akatsuki-card', 'text-gray-300');
-      });
-      event.target.classList.remove('bg-akatsuki-card', 'text-gray-300');
-      event.target.classList.add('bg-red-600', 'text-white');
-
-      if (cat === 'all') {
-        renderProductsGrid(products);
-      } else {
-        renderProductsGrid(products.filter(p => p.category === cat));
-      }
-    }
-
-    function filterProducts() {
-      const q = document.getElementById('searchInput').value.toLowerCase().trim();
-      const filtered = products.filter(p => p.name.toLowerCase().includes(q) || p.badge.toLowerCase().includes(q));
-      renderProductsGrid(filtered);
-    }
-
-    function changeCurrency(val) {
-      currentCurrency = val;
-      renderProductsGrid(products);
-      updateCartDisplay();
-    }
-
-    function openRechargeModal(productId) {
-      currentSelectedProduct = products.find(p => p.id === productId);
-      if (!currentSelectedProduct) return;
-
-      currentSelectedPackage = currentSelectedProduct.packages[0];
-      isPlayerVerified = false;
-      verifiedAccountName = "";
-
-      document.getElementById('modalProductImg').src = currentSelectedProduct.image;
-      document.getElementById('modalProductName').innerText = currentSelectedProduct.name;
-      document.getElementById('modalProductBadge').innerText = currentSelectedProduct.badge;
-
-      const idLabel = document.getElementById('idLabelText');
-      const inputField = document.getElementById('targetPlayerId');
-      inputField.value = "";
-      document.getElementById('verifyResult').classList.add('hidden');
-
-      if (currentSelectedProduct.inputType === 'email') {
-        idLabel.innerText = "البريد الإلكتروني لتفعيل الحساب:";
-        inputField.placeholder = "example@gmail.com";
-      } else if (currentSelectedProduct.inputType === 'username') {
-        idLabel.innerText = "اسم المستخدم (Username):";
-        inputField.placeholder = "مثال: Akatsuki_Gamer";
-      } else {
-        idLabel.innerText = "معرّف اللاعب (Player ID):";
-        inputField.placeholder = "مثال: 589210492";
-      }
-
-      const pkgContainer = document.getElementById('packagesContainer');
-      const curLabel = currentCurrency === 'DZD' ? 'د.ج' : '$';
-      pkgContainer.innerHTML = currentSelectedProduct.packages.map((pkg, idx) => `
-        <button onclick="selectPackage(${idx})" id="pkgBtn-${idx}" class="pkg-card ${idx === 0 ? 'border-red-600 bg-red-950/30' : 'border-gray-800 bg-gray-900'} border text-right p-3 rounded-2xl transition hover:border-red-500">
-          <span class="block text-xs font-bold text-white">${pkg.name}</span>
-          <span class="block text-sm font-black text-red-400 mt-1">${currentCurrency === 'DZD' ? pkg.priceDZD : pkg.priceUSD} ${curLabel}</span>
-        </button>
-      `).join('');
-
-      document.getElementById('rechargeModal').classList.remove('hidden');
-    }
-
-    function selectPackage(idx) {
-      currentSelectedPackage = currentSelectedProduct.packages[idx];
-      document.querySelectorAll('.pkg-card').forEach((b, i) => {
-        b.className = i === idx 
-          ? "pkg-card border-red-600 bg-red-950/30 border text-right p-3 rounded-2xl transition"
-          : "pkg-card border-gray-800 bg-gray-900 border text-right p-3 rounded-2xl transition hover:border-red-500";
-      });
-    }
-
-    function closeRechargeModal() {
-      document.getElementById('rechargeModal').classList.add('hidden');
-    }
-
-    function verifyPlayerId() {
-      const idVal = document.getElementById('targetPlayerId').value.trim();
-      const serverVal = document.getElementById('serverSelect').value;
-      const resBox = document.getElementById('verifyResult');
-
-      if (!idVal) {
-        Swal.fire({ icon: 'warning', title: 'تنبيه', text: 'يرجى إدخال معرّف اللاعب أو الإيميل أولاً للتحقق منه.', confirmButtonColor: '#e60026' });
-        return;
-      }
-
-      resBox.className = "rounded-xl p-3 text-xs flex items-center gap-2 border bg-gray-900 border-yellow-800 text-yellow-300";
-      resBox.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الاتصال بسيرفر اللعبة (${serverVal}) للتحقق من الحساب...`;
-      resBox.classList.remove('hidden');
-
-      setTimeout(() => {
-        const prefixes = ["Akatsuki", "Shadow", "DZ_Pro", "Phoenix", "Sniper", "Leader", "Ghost"];
-        const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-        const generatedNick = currentSelectedProduct.inputType === 'email' ? idVal : `${randomPrefix}_${idVal.slice(-4) || 'VIP'}`;
+      filtered.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        const categoryName = product.category === 'games' ? 'لعبة' : (product.category === 'apps' ? 'تطبيق' : 'بطاقة');
         
-        verifiedAccountName = generatedNick;
-        isPlayerVerified = true;
-
-        resBox.className = "rounded-xl p-3 text-xs flex items-center justify-between border bg-green-950/60 border-green-700 text-green-300";
-        resBox.innerHTML = `
-          <div>
-            <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-green-400"></i> تم التحقق بنجاح من حسابك:</div>
-            <div class="mt-1 text-white font-black text-sm">اسم اللاعب: <span class="text-green-400 underline">${generatedNick}</span> (${serverVal})</div>
-          </div>
-          <span class="bg-green-900 text-green-200 text-[10px] px-2 py-0.5 rounded-md font-bold">حساب صحيح 100%</span>
-        `;
-      }, 900);
-    }
-
-    function confirmProductToCart() {
-      const targetId = document.getElementById('targetPlayerId').value.trim();
-      const server = document.getElementById('serverSelect').value;
-
-      if (!targetId) {
-        Swal.fire({ icon: 'error', title: 'معلومات ناقصة', text: 'يرجى إدخال معرّف الحساب أو الإيميل لتتمكن من إضافة العرض للسلة.', confirmButtonColor: '#e60026' });
-        return;
-      }
-
-      const cartItem = {
-        productId: currentSelectedProduct.id,
-        productName: currentSelectedProduct.name,
-        packageName: currentSelectedPackage.name,
-        priceDZD: currentSelectedPackage.priceDZD,
-        priceUSD: currentSelectedPackage.priceUSD,
-        targetAccount: targetId,
-        server: server,
-        verifiedName: verifiedAccountName || targetId
-      };
-
-      cart.push(cartItem);
-      closeRechargeModal();
-      updateCartDisplay();
-
-      Swal.fire({
-        icon: 'success',
-        title: 'تمت الإضافة للسلة!',
-        text: `تم تجهيز شحن ${currentSelectedProduct.name} لحساب (${cartItem.verifiedName})`,
-        showCancelButton: true,
-        confirmButtonText: 'إتمام الدفع الآن',
-        cancelButtonText: 'مواصلة التسوق',
-        confirmButtonColor: '#e60026',
-        cancelButtonColor: '#374151'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          toggleCartModal();
-        }
-      });
-    }
-
-    function updateCartDisplay() {
-      document.getElementById('cartCountBadge').innerText = cart.length;
-      const list = document.getElementById('cartList');
-      const curLabel = currentCurrency === 'DZD' ? 'د.ج' : '$';
-
-      if (cart.length === 0) {
-        list.innerHTML = `<p class="text-xs text-gray-500 text-center py-6">السلة فارغة. اختر عرضك المفضل لشحنه الآن.</p>`;
-        document.getElementById('cartTotalDisplay').innerText = `0 ${curLabel}`;
-        return;
-      }
-
-      list.innerHTML = cart.map((item, idx) => {
-        const itemPrice = currentCurrency === 'DZD' ? item.priceDZD : item.priceUSD;
-        return `
-          <div class="bg-gray-900 border border-gray-800 rounded-2xl p-3.5 flex items-center justify-between text-xs">
-            <div>
-              <h5 class="font-bold text-white">${item.productName}</h5>
-              <p class="text-[11px] text-gray-400">${item.packageName}</p>
-              <p class="text-[10px] text-red-400 font-semibold">الحساب: ${item.verifiedName} (${item.server})</p>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="font-black text-sm text-white">${itemPrice} ${curLabel}</span>
-              <button onclick="removeFromCart(${idx})" class="text-gray-500 hover:text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      const total = cart.reduce((sum, item) => sum + (currentCurrency === 'DZD' ? item.priceDZD : item.priceUSD), 0);
-      document.getElementById('cartTotalDisplay').innerText = `${total} ${curLabel}`;
-    }
-
-    function removeFromCart(idx) {
-      cart.splice(idx, 1);
-      updateCartDisplay();
-    }
-
-    function toggleCartModal() {
-      const modal = document.getElementById('cartModal');
-      modal.classList.toggle('hidden');
-      if (!modal.classList.contains('hidden')) {
-        updateCartDisplay();
-        selectPayment(selectedPaymentGateway);
-      }
-    }
-
-    function selectPayment(gateway) {
-      selectedPaymentGateway = gateway;
-      document.querySelectorAll('.pay-method-btn').forEach(b => {
-        b.classList.remove('border-red-600', 'border-2');
-        b.classList.add('border-gray-800', 'border');
-      });
-      const activeBtn = document.getElementById(`payBtn-${gateway}`);
-      if (activeBtn) {
-        activeBtn.classList.remove('border-gray-800', 'border');
-        activeBtn.classList.add('border-red-600', 'border-2');
-      }
-
-      const box = document.getElementById('paymentDetailsBox');
-      if (gateway === 'binance') {
-        box.innerHTML = `
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-yellow-400"><i class="fa-solid fa-coins"></i> الدفع عبر Binance Pay (USDT):</span>
-            <button onclick="copyToClipboard('${storeConfig.binanceId}', 'Binance Pay ID')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-2 py-1 rounded-md text-[10px] font-bold"><i class="fa-regular fa-copy"></i> نسخ ID</button>
-          </div>
-          <div class="bg-black/60 p-2.5 rounded-xl border border-yellow-900/40 text-sm font-black text-yellow-300 tracking-wider">
-            ID: <span class="select-all">${storeConfig.binanceId}</span>
-          </div>
-          <p class="text-[11px] text-gray-400">حول المبلغ المطلوب إلى Binance ID أعلاه ثم ارفع سكرين شوت (Screenshot) للإثبات.</p>
-        `;
-      } else if (gateway === 'bybit') {
-        box.innerHTML = `
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-amber-400"><i class="fa-solid fa-bolt"></i> الدفع عبر Bybit Pay:</span>
-            <button onclick="copyToClipboard('${storeConfig.bybitId}', 'Bybit ID')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-2 py-1 rounded-md text-[10px] font-bold"><i class="fa-regular fa-copy"></i> نسخ ID</button>
-          </div>
-          <div class="bg-black/60 p-2.5 rounded-xl border border-amber-900/40 text-sm font-black text-amber-300 tracking-wider">
-            ID: <span class="select-all">${storeConfig.bybitId}</span>
-          </div>
-          <p class="text-[11px] text-gray-400">قم بإرسال المبلغ عبر Bybit Internal Transfer إلى الآيدي الموضح بالأعلى ثم أرفق الإثبات.</p>
-        `;
-      } else if (gateway === 'paypal') {
-        box.innerHTML = `
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-blue-400"><i class="fa-brands fa-paypal"></i> الدفع عبر PayPal:</span>
-            <button onclick="copyToClipboard('${storeConfig.paypalEmail}', 'PayPal Email')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-2 py-1 rounded-md text-[10px] font-bold"><i class="fa-regular fa-copy"></i> نسخ الإيميل</button>
-          </div>
-          <div class="bg-black/60 p-2.5 rounded-xl border border-blue-900/40 text-sm font-black text-blue-300 tracking-wider">
-            Email: <span class="select-all">${storeConfig.paypalEmail}</span>
-          </div>
-          <p class="text-[11px] text-gray-400">يرجى إرسال المبلغ كـ (Friends & Family) وتصوير وصل التحويل وإرفاقه بالأسفل.</p>
-        `;
-      }
-    }
-
-    function copyToClipboard(text, label) {
-      navigator.clipboard.writeText(text);
-      Swal.fire({
-        icon: 'success',
-        title: 'تم النسخ بنجاح!',
-        text: `تم نسخ ${label} إلى الحافظة: ${text}`,
-        timer: 1500,
-        showConfirmButton: false
-      });
-    }
-
-    function submitFinalOrder() {
-      if (cart.length === 0) {
-        Swal.fire({ icon: 'warning', title: 'السلة فارغة', text: 'يرجى اختيار عرض أولاً.', confirmButtonColor: '#e60026' });
-        return;
-      }
-
-      const custContact = document.getElementById('orderCustomerContact').value.trim();
-      const proofFile = document.getElementById('orderProofFile').files[0];
-
-      if (!custContact) {
-        Swal.fire({ icon: 'warning', title: 'تنبيه', text: 'يرجى إدخال اسمك أو رقم هاتفك لتأكيد الشحن.', confirmButtonColor: '#e60026' });
-        return;
-      }
-
-      const orderId = "AKT-" + Math.floor(100000 + Math.random() * 900000);
-      const totalAmount = cart.reduce((sum, item) => sum + (currentCurrency === 'DZD' ? item.priceDZD : item.priceUSD), 0);
-      const curLabel = currentCurrency === 'DZD' ? 'د.ج' : '$';
-
-      const newOrder = {
-        id: orderId,
-        date: new Date().toLocaleString('ar-DZ'),
-        customer: custContact,
-        userEmail: currentUser ? currentUser.email : "زائر",
-        items: [...cart],
-        total: `${totalAmount} ${curLabel}`,
-        paymentMethod: selectedPaymentGateway.toUpperCase(),
-        hasProof: proofFile ? proofFile.name : "لم يتم إرفاق ملف",
-        status: "قيد المراجعة والشحن"
-      };
-
-      orders.unshift(newOrder);
-      persistData();
-      updateAdminOrdersCount();
-
-      const itemsFormatted = cart.map((c, i) => `▪ ${i + 1}. ${c.productName} [${c.packageName}]\n   - الحساب: ${c.verifiedName} (${c.server})\n   - السعر: ${currentCurrency === 'DZD' ? c.priceDZD : c.priceUSD} ${curLabel}`).join('\n\n');
-
-      const ownerMessage = `🔴 *إشعار طلب جديد - AKATSUKI STORE*\n` +
-        `═════════════════════\n` +
-        `🔖 *رقم الطلب:* #${orderId}\n` +
-        `👤 *الزبون:* ${custContact}\n` +
-        `💳 *طريقة الدفع:* ${selectedPaymentGateway.toUpperCase()}\n` +
-        `💰 *المبلغ الإجمالي:* ${totalAmount} ${curLabel}\n\n` +
-        `📦 *المنتجات وتفاصيل الشحن:*\n${itemsFormatted}\n\n` +
-        `📎 *حالة إثبات الدفع:* ${proofFile ? 'تم التقاط الإثبات' : 'يرجى إرسال الصورة هنا'}\n` +
-        `═════════════════════\n` +
-        `يرجى مراجعة وشحن الطلب فوراً.`;
-
-      cart = [];
-      updateCartDisplay();
-      toggleCartModal();
-
-      Swal.fire({
-        icon: 'success',
-        title: 'تم تسجيل طلبك بنجاح!',
-        html: `
-          <p class="text-xs text-gray-300">رقم طلبك: <b class="text-red-500">#${orderId}</b></p>
-          <p class="text-xs text-gray-300 mt-2">سيتم فتح الواتساب الآن لإرسال تفاصيل طلبك مباشرة لصاحب المتجر لشحنه في دقائق.</p>
-        `,
-        confirmButtonText: 'فتح الواتساب وتأكيد الشحن',
-        confirmButtonColor: '#16a34a'
-      }).then(() => {
-        window.open(`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent(ownerMessage)}`, '_blank');
-      });
-    }
-
-    function openUserModal() {
-      document.getElementById('userModal').classList.remove('hidden');
-      updateUserUI();
-    }
-    function closeUserModal() {
-      document.getElementById('userModal').classList.add('hidden');
-    }
-
-    function handleUserLogin() {
-      const email = document.getElementById('custEmailInput').value.trim();
-      const pass = document.getElementById('custPassInput').value.trim();
-
-      if (!email || !pass) {
-        Swal.fire({ icon: 'warning', title: 'بيانات ناقصة', text: 'يرجى كتابة البريد وكلمة المرور.', confirmButtonColor: '#e60026' });
-        return;
-      }
-
-      currentUser = { email: email, name: email.split('@')[0] };
-      persistData();
-      updateUserUI();
-
-      Swal.fire({ icon: 'success', title: 'مرحباً بك!', text: `تم تسجيل دخولك بنجاح باسم: ${currentUser.name}`, timer: 1500, showConfirmButton: false });
-    }
-
-    function handleUserLogout() {
-      currentUser = null;
-      persistData();
-      updateUserUI();
-    }
-
-    function updateUserUI() {
-      if (currentUser) {
-        document.getElementById('userBtnText').innerText = currentUser.name;
-        document.getElementById('userLoggedOutSection').classList.add('hidden');
-        document.getElementById('userLoggedInSection').classList.remove('hidden');
-        document.getElementById('loggedUserName').innerText = currentUser.name;
-
-        const historyContainer = document.getElementById('userOrdersHistory');
-        const userOrders = orders.filter(o => o.userEmail === currentUser.email);
-        if (userOrders.length === 0) {
-          historyContainer.innerHTML = `<p class="text-[11px] text-gray-500 py-2">لا توجد طلبات سابقة حتى الآن.</p>`;
-        } else {
-          historyContainer.innerHTML = userOrders.map(o => `
-            <div class="bg-black/40 border border-gray-800 p-2.5 rounded-xl flex justify-between items-center">
-              <div>
-                <p class="font-bold text-white text-[11px]">طلب #${o.id}</p>
-                <p class="text-[10px] text-gray-400">${o.date}</p>
+        let offersHtml = '';
+        if (product.offers && product.offers.length > 0) {
+          offersHtml = product.offers.map((offer, idx) => `
+            <div class="offer-item ${idx === 0 ? 'selected' : ''}" onclick="selectOffer('${product.id}', '${offer.id}', this)">
+              <div class="offer-info">
+                <div class="offer-radio"></div>
+                <span>${offer.name}</span>
               </div>
-              <span class="bg-yellow-950 text-yellow-400 border border-yellow-800 text-[10px] px-2 py-0.5 rounded font-bold">${o.status}</span>
+              <div class="offer-price">${offer.price} د.ج</div>
             </div>
           `).join('');
+        } else {
+          offersHtml = '<div style="font-size:0.8rem; color:var(--text-muted);">لا توجد باقات متوفرة حالياً</div>';
+        }
+
+        card.innerHTML = `
+          <div class="card-img-wrapper">
+            <img src="${product.image}" alt="${product.name}" class="card-img" onerror="this.src='https://cdn.simpleicons.org/gamecontroller/ffffff'">
+            <div class="card-badge">${categoryName}</div>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">${product.name}</h3>
+            <div class="id-warning-box">
+              <span class="icon">⚠️</span>
+              <span>تأكد من كتابة ${product.inputLabel || 'المعرّف ID'} بشكل دقيق قبل الطلب.</span>
+            </div>
+            <div>
+              <label class="input-label" style="margin-bottom:4px; display:block;">اختر الباقة / العرض:</label>
+              <div class="offers-list" id="offers_list_${product.id}">
+                ${offersHtml}
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">${product.inputLabel || 'معرف الحساب (ID)'}:</label>
+              <input type="text" id="target_input_${product.id}" class="form-control" placeholder="${product.inputPlaceholder || 'أدخل البيانات المطلوبة هنا'}">
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary btn-buy" onclick="openOrderModal('${product.id}')">⚡ شحن الآن عبر واتساب</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderProducts();
+    }
+
+    function selectOffer(prodId, offerId, elem) {
+      const container = document.getElementById(`offers_list_${prodId}`);
+      container.querySelectorAll('.offer-item').forEach(i => i.classList.remove('selected'));
+      elem.classList.add('selected');
+    }
+
+    function openOrderModal(prodId) {
+      const product = appProducts.find(p => p.id === prodId);
+      if (!product) return;
+
+      const targetInput = document.getElementById(`target_input_${prodId}`);
+      const targetValue = targetInput ? targetInput.value.trim() : '';
+
+      if (!targetValue) {
+        alert(`⚠️ يرجى إدخال ${product.inputLabel || 'المعرّف ID'} قبل المتابعة!`);
+        if (targetInput) targetInput.focus();
+        return;
+      }
+
+      const container = document.getElementById(`offers_list_${prodId}`);
+      const selectedElem = container ? container.querySelector('.offer-item.selected') : null;
+      let selectedOffer = null;
+
+      if (product.offers && product.offers.length > 0) {
+        if (selectedElem) {
+          const offerName = selectedElem.querySelector('.offer-info span').textContent;
+          selectedOffer = product.offers.find(o => o.name === offerName) || product.offers[0];
+        } else {
+          selectedOffer = product.offers[0];
         }
       } else {
-        document.getElementById('userBtnText').innerText = "تسجيل الدخول";
-        document.getElementById('userLoggedOutSection').classList.remove('hidden');
-        document.getElementById('userLoggedInSection').classList.add('hidden');
+        alert('لا توجد عروض متاحة لهذا المنتج');
+        return;
       }
+
+      selectedOrder = {
+        product: product,
+        offer: selectedOffer,
+        targetValue: targetValue
+      };
+
+      document.getElementById('orderSummaryBox').innerHTML = `
+        <div style="font-size:1rem; font-weight:800; color:#fff; margin-bottom:4px;">${product.name}</div>
+        <div style="font-size:0.9rem; color:var(--primary); font-weight:700;">🎁 الباقة: ${selectedOffer.name}</div>
+        <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">👤 ${product.inputLabel || 'المعرّف'}: <span style="color:#fff; font-weight:bold;">${targetValue}</span></div>
+        <div style="font-size:1.1rem; font-weight:900; color:#2ed573; margin-top:6px;">💰 المبلغ الإجمالي: ${selectedOffer.price} د.ج</div>
+      `;
+
+      updatePaymentDetailsDisplay();
+      openModal('orderModal');
+    }
+
+    function selectPayment(method, elem) {
+      currentPayment = method;
+      document.querySelectorAll('.pay-card').forEach(c => c.classList.remove('active'));
+      elem.classList.add('active');
+      updatePaymentDetailsDisplay();
+    }
+
+    function updatePaymentDetailsDisplay() {
+      const box = document.getElementById('payDetailsBox');
+      if (currentPayment === 'baridimob') {
+        box.innerHTML = `
+          <div>📱 <strong>طريقة الدفع: بريدي موب (BaridiMob)</strong></div>
+          <div style="margin-top:4px;">رقم الحساب (RIP): <code style="color:#2ed573; font-weight:bold;">${appSettings.baridimobRip}</code></div>
+          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">يرجى تحويل المبلغ والاحتفاظ بلقطة شاشة (Reçu) للوصل وإرسالها للواتساب.</div>
+        `;
+      } else if (currentPayment === 'ccp') {
+        box.innerHTML = `
+          <div>📮 <strong>طريقة الدفع: حساب CCP الجاري</strong></div>
+          <div style="margin-top:4px;">رقم الحساب: <code style="color:#2ed573; font-weight:bold;">${appSettings.ccpNumber}</code></div>
+          <div style="margin-top:2px;">الاسم: <strong>${appSettings.ccpName}</strong></div>
+          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">يرجى الدفع في مركز البريد وإرسال الوصل.</div>
+        `;
+      } else {
+        box.innerHTML = `
+          <div>🟡 <strong>طريقة الدفع: بايننس (Binance USDT)</strong></div>
+          <div style="margin-top:4px;">Binance Pay ID: <code style="color:#2ed573; font-weight:bold;">${appSettings.binancePayId}</code></div>
+          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">أرسل المبلغ المعادل بـ USDT ثم أرسل لقطة المعاملة.</div>
+        `;
+      }
+    }
+
+    function sendWhatsAppOrder() {
+      if (!selectedOrder) return;
+
+      const custPhone = document.getElementById('custPhone').value.trim();
+      const payName = currentPayment === 'baridimob' ? 'بريدي موب (BaridiMob)' : (currentPayment === 'ccp' ? 'حساب CCP' : 'بايننس (Binance Pay)');
+
+      const msg = `⚡ *طلب جديد من متجر AKATSUKI STORE* ⚡\n` +
+                  `---------------------------------\n` +
+                  `🎮 *المنتج:* ${selectedOrder.product.name}\n` +
+                  `🎁 *الباقة المطلوبة:* ${selectedOrder.offer.name}\n` +
+                  `💰 *السعر الإجمالي:* ${selectedOrder.offer.price} د.ج\n` +
+                  `👤 *${selectedOrder.product.inputLabel || 'المعرّف/الحساب'}:* ${selectedOrder.targetValue}\n` +
+                  `💳 *طريقة الدفع المختارة:* ${payName}\n` +
+                  (custPhone ? `📞 *هاتف الزبون:* ${custPhone}\n` : '') +
+                  `---------------------------------\n` +
+                  `✅ *تأكيد الزبون:* لقد تحققت من صحة الآيدي والمعلومات وجاهز لإرسال الوصل للشحن الفوري.`;
+
+      const encodedMsg = encodeURIComponent(msg);
+      const waUrl = `https://wa.me/${appSettings.whatsappNumber}?text=${encodedMsg}`;
+      window.open(waUrl, '_blank');
+      closeModal('orderModal');
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('show');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('show');
     }
 
     function openAdminModal() {
-      document.getElementById('adminAuthModal').classList.remove('hidden');
-    }
-    function closeAdminModal() {
-      document.getElementById('adminAuthModal').classList.add('hidden');
+      openModal('adminLoginModal');
     }
 
-    function verifyAdminLogin() {
+    function checkAdminAuth() {
       const email = document.getElementById('adminEmailInput').value.trim();
       const pass = document.getElementById('adminPassInput').value.trim();
 
-      if (email === storeConfig.adminEmail && pass === storeConfig.adminPass) {
-        closeAdminModal();
-        switchView('admin');
-        Swal.fire({
-          icon: 'success',
-          title: 'أهلاً بك يا آدمن!',
-          text: 'تم تسجيل دخولك إلى لوحة التحكم الكاملة لـ Akatsuki Store.',
-          timer: 1500,
-          showConfirmButton: false
-        });
+      if (email === appSettings.adminEmail && pass === appSettings.adminPass) {
+        closeModal('adminLoginModal');
+        loadAdminData();
+        openModal('adminDashboardModal');
       } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'خطأ في المصادقة',
-          text: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
-          confirmButtonColor: '#e60026'
-        });
+        alert('❌ البريد الإلكتروني أو كلمة السر غير صحيحة!');
       }
     }
 
-    function switchView(view) {
-      if (view === 'admin') {
-        document.getElementById('storeView').classList.add('hidden');
-        document.getElementById('adminDashboardView').classList.remove('hidden');
-        renderAdminOrders();
-        renderAdminProducts();
-      } else {
-        document.getElementById('adminDashboardView').classList.add('hidden');
-        document.getElementById('storeView').classList.remove('hidden');
+    function switchAdminTab(tabId, btn) {
+      document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    function loadAdminData() {
+      document.getElementById('admBgType').value = appSettings.bgType || 'default';
+      document.getElementById('admBgUrl').value = appSettings.bgCustomUrl || '';
+      document.getElementById('admBgColor').value = appSettings.bgColor || '#0a0a0d';
+      document.getElementById('admStoreName').value = appSettings.storeName;
+      document.getElementById('admStoreNotice').value = appSettings.storeNotice;
+      onBgTypeChange();
+
+      document.getElementById('admWhatsapp').value = appSettings.whatsappNumber;
+      document.getElementById('admBaridi').value = appSettings.baridimobRip;
+      document.getElementById('admCcp').value = appSettings.ccpNumber;
+      document.getElementById('admBinance').value = appSettings.binancePayId;
+
+      renderAdminProductsList();
+    }
+
+    function onBgTypeChange() {
+      const type = document.getElementById('admBgType').value;
+      document.getElementById('rowBgUrl').style.display = type === 'custom_url' ? 'block' : 'none';
+      document.getElementById('rowBgUpload').style.display = type === 'upload' ? 'block' : 'none';
+      document.getElementById('rowBgColor').style.display = type === 'color' ? 'block' : 'none';
+    }
+
+    function handleBgFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          appSettings.bgImageBase64 = e.target.result;
+          alert('✅ تم تحميل صورة الخلفية بنجاح، اضغط حفظ لتطبيقها!');
+        };
+        reader.readAsDataURL(file);
       }
     }
 
-    function logoutAdmin() {
-      switchView('store');
+    function saveAdminSettings() {
+      appSettings.bgType = document.getElementById('admBgType').value;
+      appSettings.bgCustomUrl = document.getElementById('admBgUrl').value.trim();
+      appSettings.bgColor = document.getElementById('admBgColor').value;
+      appSettings.storeName = document.getElementById('admStoreName').value.trim() || DEFAULT_SETTINGS.storeName;
+      appSettings.storeNotice = document.getElementById('admStoreNotice').value.trim() || DEFAULT_SETTINGS.storeNotice;
+      
+      appSettings.whatsappNumber = document.getElementById('admWhatsapp').value.trim() || DEFAULT_SETTINGS.whatsappNumber;
+      appSettings.baridimobRip = document.getElementById('admBaridi').value.trim();
+      appSettings.ccpNumber = document.getElementById('admCcp').value.trim();
+      appSettings.binancePayId = document.getElementById('admBinance').value.trim();
+
+      localStorage.setItem('akatsuki_settings', JSON.stringify(appSettings));
+      applyThemeAndSettings();
+      alert('✅ تم حفظ جميع الإعدادات بنجاح!');
     }
 
-    function switchAdminTab(tab) {
-      document.querySelectorAll('.admin-tab-btn').forEach(b => {
-        b.classList.remove('bg-red-600', 'text-white');
-        b.classList.add('bg-gray-900', 'text-gray-300');
-      });
-      const btn = document.getElementById(`adminTabBtn-${tab}`);
-      if (btn) {
-        btn.classList.remove('bg-gray-900', 'text-gray-300');
-        btn.classList.add('bg-red-600', 'text-white');
-      }
+    function renderAdminProductsList() {
+      const container = document.getElementById('adminProductsList');
+      container.innerHTML = '';
 
-      document.getElementById('adminTab-orders').classList.add('hidden');
-      document.getElementById('adminTab-products').classList.add('hidden');
-      document.getElementById('adminTab-settings').classList.add('hidden');
-
-      document.getElementById(`adminTab-${tab}`).classList.remove('hidden');
-    }
-
-    function updateAdminOrdersCount() {
-      document.getElementById('adminOrdersCount').innerText = orders.length;
-    }
-
-    function renderAdminOrders() {
-      const tbody = document.getElementById('adminOrdersTableBody');
-      if (orders.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-gray-500">لا توجد أي طلبات مسجلة بعد.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = orders.map((o, idx) => `
-        <tr class="hover:bg-gray-900/50 transition">
-          <td class="p-3 font-bold text-white">#${o.id}<br><span class="text-[10px] text-gray-500">${o.date}</span></td>
-          <td class="p-3 text-red-400 font-bold">${o.customer}</td>
-          <td class="p-3">
-            ${o.items.map(i => `<div class="text-[11px] text-gray-200">• ${i.productName} (${i.packageName})</div>`).join('')}
-          </td>
-          <td class="p-3">
-            ${o.items.map(i => `<div class="text-[11px] text-green-400 font-bold">${i.verifiedName} [${i.server}]</div>`).join('')}
-          </td>
-          <td class="p-3 font-black text-white">${o.total}<br><span class="text-[10px] text-yellow-400">${o.paymentMethod}</span></td>
-          <td class="p-3 text-[10px] text-gray-400">${o.hasProof}</td>
-          <td class="p-3">
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${o.status.includes('تم') ? 'bg-green-950 text-green-400 border border-green-800' : 'bg-yellow-950 text-yellow-400 border border-yellow-800'}">${o.status}</span>
-          </td>
-          <td class="p-3 text-center space-x-1 space-x-reverse">
-            <button onclick="setOrderStatus(${idx}, 'تم الشحن والتنفيذ ✅')" class="bg-green-700 hover:bg-green-600 text-white px-2 py-1 rounded text-[10px] font-bold">شحن</button>
-            <button onclick="deleteOrder(${idx})" class="bg-red-900 hover:bg-red-800 text-red-200 px-2 py-1 rounded text-[10px] font-bold"><i class="fa-solid fa-trash"></i></button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function setOrderStatus(idx, newStatus) {
-      orders[idx].status = newStatus;
-      persistData();
-      renderAdminOrders();
-      Swal.fire({ icon: 'success', title: 'تم التحديث', text: `تم تغيير حالة الطلب إلى: ${newStatus}`, timer: 1200, showConfirmButton: false });
-    }
-
-    function deleteOrder(idx) {
-      orders.splice(idx, 1);
-      persistData();
-      renderAdminOrders();
-      updateAdminOrdersCount();
-    }
-
-    // Products Management in Admin with Full Image & Details Editing
-    function renderAdminProducts() {
-      const list = document.getElementById('adminProductsList');
-      list.innerHTML = products.map((p, idx) => `
-        <div class="bg-black/50 border border-gray-800 rounded-2xl p-4 space-y-3">
-          <div class="flex items-center gap-3">
-            <img src="${p.image}" class="w-14 h-14 rounded-xl object-cover border border-red-800 shadow-md">
-            <div class="flex-1">
-              <h5 class="text-xs font-bold text-white">${p.name}</h5>
-              <span class="text-[10px] text-gray-400 block">${p.badge}</span>
-              <span class="text-[10px] text-red-400 font-semibold">${p.packages.length} باقات متوفرة</span>
-            </div>
-          </div>
-          
-          <div class="space-y-1 text-[11px] bg-gray-900/60 p-2 rounded-xl border border-gray-800">
-            ${p.packages.map((pkg) => `
-              <div class="flex items-center justify-between">
-                <span class="text-gray-300">${pkg.name}:</span>
-                <span class="text-red-400 font-bold">${pkg.priceDZD} د.ج</span>
+      appProducts.forEach(prod => {
+        const item = document.createElement('div');
+        item.className = 'admin-item-card';
+        item.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <img src="${prod.image}" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#000;">
+              <div>
+                <strong style="color:#fff; font-size:1rem;">${prod.name}</strong>
+                <div style="font-size:0.8rem; color:var(--text-muted);">${prod.offers ? prod.offers.length : 0} باقات / عروض</div>
               </div>
-            `).join('')}
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="editProductDetailsPrompt(${idx})" class="bg-blue-950 hover:bg-blue-900 text-blue-300 border border-blue-800 py-1.5 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1">
-              <i class="fa-solid fa-image"></i> تعديل الصورة والاسم
-            </button>
-            <button onclick="editProductPricePrompt(${idx})" class="bg-gray-800 hover:bg-gray-700 text-gray-200 py-1.5 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1">
-              <i class="fa-solid fa-tags"></i> تعديل الأسعار
-            </button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function editProductDetailsPrompt(productIdx) {
-      const p = products[productIdx];
-
-      Swal.fire({
-        title: `تعديل صورة ومعلومات: ${p.name}`,
-        html: `
-          <div class="space-y-3 text-right text-xs">
-            <div>
-              <label class="block text-gray-300 font-bold mb-1">اسم اللعبة / التطبيق:</label>
-              <input type="text" id="editNameInput" value="${p.name}" class="swal2-input text-xs text-right w-full m-0">
             </div>
-            <div>
-              <label class="block text-gray-300 font-bold mb-1">رابط الصورة الجديد (Image URL):</label>
-              <input type="text" id="editImgInput" value="${p.image}" class="swal2-input text-xs text-left w-full m-0">
-            </div>
-            <div>
-              <label class="block text-gray-300 font-bold mb-1">الوصف المصغر (Badge):</label>
-              <input type="text" id="editBadgeInput" value="${p.badge}" class="swal2-input text-xs text-right w-full m-0">
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem;" onclick="openEditProductModal('${prod.id}')">✏️ تعديل والعروض</button>
+              <button class="btn-sm-del" onclick="deleteProduct('${prod.id}')">🗑️ حذف</button>
             </div>
           </div>
-        `,
-        showCancelButton: true,
-        confirmButtonText: 'حفظ وتحديث الصورة',
-        cancelButtonText: 'إلغاء',
-        confirmButtonColor: '#e60026',
-        preConfirm: () => {
-          const newName = document.getElementById('editNameInput').value.trim();
-          const newImg = document.getElementById('editImgInput').value.trim();
-          const newBadge = document.getElementById('editBadgeInput').value.trim();
-
-          if (!newName || !newImg) {
-            Swal.showValidationMessage('يرجى ملء الاسم ورابط الصورة');
-            return false;
-          }
-
-          p.name = newName;
-          p.image = newImg;
-          p.badge = newBadge || "عرض متوفر";
-        }
-      }).then((res) => {
-        if (res.isConfirmed) {
-          persistData();
-          renderAdminProducts();
-          renderProductsGrid(products);
-          Swal.fire({ icon: 'success', title: 'تم تحديث صورة وبيانات المنتج بنجاح!', timer: 1500, showConfirmButton: false });
-        }
+        `;
+        container.appendChild(item);
       });
     }
 
-    function editProductPricePrompt(productIdx) {
-      const p = products[productIdx];
-      let optionsHtml = p.packages.map((pkg, i) => `
-        <div class="text-right text-xs mb-2">
-          <label class="block text-gray-300 font-bold mb-1">${pkg.name} (د.ج):</label>
-          <input type="number" id="pkgInput_${i}" value="${pkg.priceDZD}" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2 text-white text-xs">
-        </div>
-      `).join('');
+    let currentEditingOffers = [];
 
-      Swal.fire({
-        title: `تعديل أسعار ${p.name}`,
-        html: `<div class="max-h-60 overflow-y-auto">${optionsHtml}</div>`,
-        showCancelButton: true,
-        confirmButtonText: 'حفظ التعديلات',
-        cancelButtonText: 'إلغاء',
-        confirmButtonColor: '#e60026',
-        preConfirm: () => {
-          p.packages.forEach((pkg, i) => {
-            const val = parseFloat(document.getElementById(`pkgInput_${i}`).value);
-            if (!isNaN(val)) {
-              pkg.priceDZD = val;
-              pkg.priceUSD = +(val / storeConfig.usdToDzdRate).toFixed(2);
-            }
-          });
-        }
-      }).then((res) => {
-        if (res.isConfirmed) {
-          persistData();
-          renderAdminProducts();
-          renderProductsGrid(products);
-          Swal.fire({ icon: 'success', title: 'تم الحفظ!', timer: 1200, showConfirmButton: false });
-        }
-      });
+    function openAddProductModal() {
+      document.getElementById('editProdModalTitle').textContent = '➕ إضافة منتج جديد';
+      document.getElementById('editProdId').value = 'prod_' + Date.now();
+      document.getElementById('editProdName').value = '';
+      document.getElementById('editProdCat').value = 'games';
+      document.getElementById('editProdImg').value = '';
+      document.getElementById('editProdLabel').value = 'معرف اللاعب (Player ID)';
+      currentEditingOffers = [
+        { id: 'off_1', name: 'الباقة الأولى', price: 500 }
+      ];
+      renderOffersEditor();
+      openModal('editProductModal');
     }
 
-    function applyGlobalMarkup() {
-      const percentage = parseFloat(document.getElementById('globalMarkupInput').value);
-      if (isNaN(percentage)) {
-        Swal.fire({ icon: 'warning', title: 'قيمة غير صحيحة', text: 'يرجى كتابة رقم النسبة المئوية مثال: 10 أو -5', confirmButtonColor: '#e60026' });
+    function openEditProductModal(prodId) {
+      const prod = appProducts.find(p => p.id === prodId);
+      if (!prod) return;
+
+      document.getElementById('editProdModalTitle').textContent = '✏️ تعديل المنتج والعروض';
+      document.getElementById('editProdId').value = prod.id;
+      document.getElementById('editProdName').value = prod.name;
+      document.getElementById('editProdCat').value = prod.category;
+      document.getElementById('editProdImg').value = prod.image;
+      document.getElementById('editProdLabel').value = prod.inputLabel || 'معرف اللاعب (Player ID)';
+      currentEditingOffers = prod.offers ? JSON.parse(JSON.stringify(prod.offers)) : [];
+      renderOffersEditor();
+      openModal('editProductModal');
+    }
+
+    function renderOffersEditor() {
+      const container = document.getElementById('offersEditorContainer');
+      container.innerHTML = '';
+
+      if (currentEditingOffers.length === 0) {
+        container.innerHTML = '<div style="color:var(--text-muted); font-size:0.85rem;">لا توجد عروض مضافة. اضغط على زر الإضافة بالأعلى.</div>';
         return;
       }
 
-      products.forEach(p => {
-        p.packages.forEach(pkg => {
-          pkg.priceDZD = Math.round(pkg.priceDZD * (1 + percentage / 100));
-          pkg.priceUSD = +(pkg.priceUSD * (1 + percentage / 100)).toFixed(2);
-        });
+      currentEditingOffers.forEach((off, idx) => {
+        const row = document.createElement('div');
+        row.className = 'admin-offer-row';
+        row.innerHTML = `
+          <input type="text" class="form-control" style="flex:2;" placeholder="اسم العرض (مثال: 100 مجوهرة)" value="${off.name}" oninput="updateOfferField(${idx}, 'name', this.value)">
+          <input type="number" class="form-control" style="flex:1;" placeholder="السعر (د.ج)" value="${off.price}" oninput="updateOfferField(${idx}, 'price', this.value)">
+          <button type="button" class="btn-sm-del" onclick="removeOfferRow(${idx})">✕</button>
+        `;
+        container.appendChild(row);
       });
-
-      persistData();
-      renderAdminProducts();
-      renderProductsGrid(products);
-
-      Swal.fire({
-        icon: 'success',
-        title: 'تم تطبيق التعديل!',
-        text: `تم تغيير أسعار جميع العروض بنسبة ${percentage}% بنجاح.`,
-        confirmButtonColor: '#e60026'
-      });
-    }
-
-    function addNewProductPrompt() {
-      Swal.fire({
-        title: 'إضافة لعبة أو تطبيق جديد',
-        html: `
-          <input type="text" id="newProdName" placeholder="اسم اللعبة أو التطبيق" class="swal2-input text-xs text-right">
-          <input type="text" id="newProdBadge" placeholder="الوصف المصغر (مثال: شحن فوري ID)" class="swal2-input text-xs text-right">
-          <input type="text" id="newProdImg" placeholder="رابط صورة اللعبة (URL)" class="swal2-input text-xs text-right" value="https://wallpapercave.com/wp/wp7397985.jpg">
-          <input type="number" id="newProdPrice" placeholder="السعر الافتراضي بالدينار (د.ج)" class="swal2-input text-xs text-right">
-        `,
-        showCancelButton: true,
-        confirmButtonText: 'إضافة للمتجر',
-        cancelButtonText: 'إلغاء',
-        confirmButtonColor: '#16a34a',
-        preConfirm: () => {
-          const name = document.getElementById('newProdName').value.trim();
-          const badge = document.getElementById('newProdBadge').value.trim() || "عرض متوفر";
-          const img = document.getElementById('newProdImg').value.trim();
-          const price = parseFloat(document.getElementById('newProdPrice').value) || 1000;
-
-          if (!name) {
-            Swal.showValidationMessage('يرجى إدخال اسم المنتج');
-            return false;
-          }
-
-          return {
-            id: Date.now(),
-            name: name,
-            category: "games",
-            badge: badge,
-            image: img,
-            icon: "fa-gamepad",
-            inputType: "id",
-            packages: [
-              { name: "الباقة الأساسية", priceDZD: price, priceUSD: +(price / 230).toFixed(2) }
-            ]
-          };
-        }
-      }).then((result) => {
-        if (result.isConfirmed && result.value) {
-          products.unshift(result.value);
-          persistData();
-          renderAdminProducts();
-          renderProductsGrid(products);
-          Swal.fire({ icon: 'success', title: 'تمت الإضافة بنجاح!' });
-        }
-      });
-    }
-
-    function deleteProduct(idx) {
-      Swal.fire({
-        title: 'هل أنت متأكد؟',
-        text: 'سيتم حذف هذا المنتج من واجهة المتجر.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#e60026',
-        confirmButtonText: 'نعم، احذف',
-        cancelButtonText: 'إلغاء'
-      }).then((res) => {
-        if (res.isConfirmed) {
-          products.splice(idx, 1);
-          persistData();
-          renderAdminProducts();
-          renderProductsGrid(products);
-        }
-      });
-    }
-
-    function saveStoreSettings() {
-      storeConfig.binanceId = document.getElementById('settingBinanceId').value.trim();
-      storeConfig.bybitId = document.getElementById('settingBybitId').value.trim();
-      storeConfig.paypalEmail = document.getElementById('settingPaypalEmail').value.trim();
-      storeConfig.telegram = document.getElementById('settingTelegram').value.trim();
-      storeConfig.whatsapp = document.getElementById('settingWhatsapp').value.trim();
-      storeConfig.facebook = document.getElementById('settingFacebook').value.trim();
-
-      persistData();
-      applyStoreSettingsToUI();
-
-      Swal.fire({
-        icon: 'success',
-        title: 'تم حفظ الإعدادات!',
-        text: 'تم تحديث جميع بيانات الدفع والتواصل في المتجر بنجاح.',
-        confirmButtonColor: '#e60026'
-      });
-    }
-  </script>
-</body>
-</html>
+    
