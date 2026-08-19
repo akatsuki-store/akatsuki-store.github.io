@@ -13,8 +13,8 @@
       --primary-dark: #b80d14;
       --primary-glow: rgba(255, 30, 39, 0.4);
       --bg-dark: #0a0a0d;
-      --card-bg: rgba(18, 20, 26, 0.85);
-      --card-border: rgba(255, 30, 39, 0.2);
+      --card-bg: rgba(18, 20, 26, 0.9);
+      --card-border: rgba(255, 30, 39, 0.25);
       --text-main: #f5f5f7;
       --text-muted: #9ba1b0;
       --accent: #ff4757;
@@ -44,7 +44,6 @@
       background-position: center;
       background-attachment: fixed;
       background-repeat: no-repeat;
-      transition: background 0.3s ease;
     }
 
     .bg-overlay {
@@ -68,7 +67,6 @@
       z-index: 1;
     }
 
-    /* Top Announcement */
     .announcement-bar {
       background: linear-gradient(90deg, #b80d14, #ff1e27, #b80d14);
       color: #fff;
@@ -81,9 +79,8 @@
       z-index: 10;
     }
 
-    /* Header */
     header {
-      background: rgba(12, 14, 18, 0.92);
+      background: rgba(12, 14, 18, 0.95);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--card-border);
       position: sticky;
@@ -105,8 +102,7 @@
       text-decoration: none;
       color: #fff;
       font-weight: 900;
-      font-size: 1.25rem;
-      letter-spacing: 0.5px;
+      font-size: 1.2rem;
     }
 
     .cloud-icon {
@@ -119,22 +115,7 @@
       justify-content: center;
       box-shadow: 0 0 15px var(--primary-glow);
       border: 2px solid #fff;
-      position: relative;
-    }
-
-    .cloud-icon::after {
-      content: "☁️";
       font-size: 1.1rem;
-    }
-
-    .brand-text span {
-      color: var(--primary);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
     .btn {
@@ -168,20 +149,14 @@
       color: var(--text-main);
     }
 
-    .btn-outline:hover {
-      background: rgba(255, 30, 39, 0.1);
-      border-color: var(--primary);
-    }
-
     .btn-admin {
       background: rgba(255, 255, 255, 0.08);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 6px 12px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
     }
 
-    /* Hero */
     .hero {
       text-align: center;
       padding: 30px 0 20px;
@@ -205,7 +180,6 @@
       margin: 0 auto 20px;
     }
 
-    /* Categories Tabs */
     .categories {
       display: flex;
       justify-content: center;
@@ -233,7 +207,6 @@
       box-shadow: 0 0 15px var(--primary-glow);
     }
 
-    /* Product Grid */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -250,7 +223,6 @@
       flex-direction: column;
       transition: all 0.3s ease;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-      position: relative;
     }
 
     .product-card:hover {
@@ -262,12 +234,11 @@
     .card-img-wrapper {
       width: 100%;
       height: 160px;
-      background: #14171f;
+      background: #12141a;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      overflow: hidden;
       padding: 10px;
     }
 
@@ -275,11 +246,6 @@
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      transition: transform 0.3s ease;
-    }
-
-    .product-card:hover .card-img {
-      transform: scale(1.05);
     }
 
     .card-badge {
@@ -293,7 +259,6 @@
       font-weight: 700;
       padding: 3px 8px;
       border-radius: 20px;
-      backdrop-filter: blur(4px);
     }
 
     .card-content {
@@ -310,7 +275,6 @@
       color: #fff;
     }
 
-    /* ID Warning Alert Box */
     .id-warning-box {
       background: rgba(255, 165, 2, 0.12);
       border: 1px solid rgba(255, 165, 2, 0.4);
@@ -325,12 +289,6 @@
       line-height: 1.4;
     }
 
-    .id-warning-box .icon {
-      font-size: 1rem;
-      flex-shrink: 0;
-    }
-
-    /* Offers Selector */
     .offers-list {
       display: flex;
       flex-direction: column;
@@ -338,14 +296,6 @@
       max-height: 160px;
       overflow-y: auto;
       padding-left: 4px;
-    }
-
-    .offers-list::-webkit-scrollbar {
-      width: 4px;
-    }
-    .offers-list::-webkit-scrollbar-thumb {
-      background: var(--primary);
-      border-radius: 4px;
     }
 
     .offer-item {
@@ -382,7 +332,6 @@
       height: 14px;
       border-radius: 50%;
       border: 2px solid var(--text-muted);
-      transition: all 0.2s;
     }
 
     .offer-price {
@@ -391,7 +340,6 @@
       white-space: nowrap;
     }
 
-    /* Player ID / Target Input */
     .input-group {
       display: flex;
       flex-direction: column;
@@ -413,7 +361,6 @@
       color: #fff;
       font-size: 0.9rem;
       outline: none;
-      transition: border-color 0.2s;
     }
 
     .form-control:focus {
@@ -421,25 +368,19 @@
       box-shadow: 0 0 8px var(--primary-glow);
     }
 
-    .card-footer {
-      margin-top: auto;
-      display: flex;
-      gap: 8px;
-    }
-
     .btn-buy {
-      flex: 1;
+      width: 100%;
       padding: 10px;
+      margin-top: auto;
     }
 
-    /* Modals */
     .modal-backdrop {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(8px);
       display: none;
       align-items: center;
@@ -462,7 +403,6 @@
       overflow-y: auto;
       padding: 24px;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
-      position: relative;
     }
 
     .modal-header {
@@ -478,9 +418,6 @@
       font-size: 1.25rem;
       font-weight: 800;
       color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
     .btn-close {
@@ -489,14 +426,8 @@
       color: var(--text-muted);
       font-size: 1.5rem;
       cursor: pointer;
-      line-height: 1;
     }
 
-    .btn-close:hover {
-      color: #fff;
-    }
-
-    /* Payment Box */
     .payment-options {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -511,19 +442,11 @@
       border-radius: var(--radius-sm);
       text-align: center;
       cursor: pointer;
-      transition: all 0.2s;
     }
 
-    .pay-card:hover, .pay-card.active {
+    .pay-card.active {
       border-color: var(--primary);
       background: rgba(255, 30, 39, 0.15);
-    }
-
-    .pay-card .pay-name {
-      font-weight: 700;
-      font-size: 0.85rem;
-      display: block;
-      margin-top: 4px;
     }
 
     .pay-info-box {
@@ -533,10 +456,6 @@
       border-radius: var(--radius-sm);
       font-size: 0.85rem;
       margin-bottom: 15px;
-    }
-
-    .pay-info-box strong {
-      color: var(--primary);
     }
 
     .no-flexy-badge {
@@ -551,7 +470,6 @@
       margin-bottom: 15px;
     }
 
-    /* Admin UI */
     .admin-tab-nav {
       display: flex;
       gap: 8px;
@@ -653,7 +571,7 @@
 <body>
   <div class="bg-overlay"></div>
 
-  <!-- Announcement Bar -->
+  <!-- Notice -->
   <div class="announcement-bar" id="storeNotice">
     ⚡ شحن فوري وتلقائي لجميع الألعاب والاشتراكات بأفضل الأسعار في الجزائر 🇩🇿
   </div>
@@ -662,8 +580,8 @@
   <header>
     <div class="container nav-container">
       <a href="#" class="brand-logo">
-        <div class="cloud-icon"></div>
-        <div class="brand-text" id="headerStoreName">AKATSUKI <span>STORE</span></div>
+        <div class="cloud-icon">☁️</div>
+        <div id="headerStoreName">AKATSUKI <span style="color:var(--primary);">STORE</span></div>
       </a>
       <div class="header-actions">
         <button class="btn btn-admin" onclick="openAdminModal()">⚙️ لوحة الإدارة</button>
@@ -671,7 +589,7 @@
     </div>
   </header>
 
-  <!-- Main Content -->
+  <!-- Main -->
   <main class="container">
     <section class="hero">
       <h1 class="hero-title">متجر <span id="heroBrandName">AKATSUKI</span> الرسمي</h1>
@@ -685,6 +603,7 @@
       </div>
     </section>
 
+    <!-- Grid -->
     <section class="product-grid" id="productsGrid"></section>
   </main>
 
@@ -696,18 +615,18 @@
     </div>
   </footer>
 
-  <!-- 1. Checkout Modal -->
+  <!-- Order Modal -->
   <div class="modal-backdrop" id="orderModal">
     <div class="modal-box">
       <div class="modal-header">
-        <div class="modal-title" id="orderModalTitle">تأكيد الطلب 🛍️</div>
+        <div class="modal-title">تأكيد الطلب 🛍️</div>
         <button class="btn-close" onclick="closeModal('orderModal')">&times;</button>
       </div>
 
       <div id="orderSummaryBox" style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: var(--radius-sm); margin-bottom: 15px;"></div>
 
       <div class="id-warning-box" style="margin-bottom: 15px;">
-        <span class="icon">⚠️</span>
+        <span>⚠️</span>
         <span><strong>تنبيه هام:</strong> يرجى التأكد التام من صحة الآيدي/المعرف المدخل، المتجر يخلي مسؤوليته في حال كان المعرف خاطئاً من طرف الزبون.</span>
       </div>
 
@@ -715,26 +634,26 @@
         🚫 تنبيه: لا نتعامل برصيد فليكسي (Flexy) إطلاقاً، الدفع متاح بالطرق الرسمية أدناه فقط.
       </div>
 
-      <label class="input-label" style="display:block; margin-bottom: 6px;">اختر وسيلة الدفع التي تناسبك:</label>
+      <label class="input-label" style="display:block; margin-bottom: 6px;">اختر وسيلة الدفع المناسبة:</label>
       <div class="payment-options">
         <div class="pay-card active" onclick="selectPayment('baridimob', this)">
           📱
-          <span class="pay-name">بريدي موب (BaridiMob)</span>
+          <span style="font-weight:700; font-size:0.85rem; display:block; margin-top:4px;">بريدي موب (BaridiMob)</span>
         </div>
         <div class="pay-card" onclick="selectPayment('ccp', this)">
           📮
-          <span class="pay-name">حساب CCP الجاري</span>
+          <span style="font-weight:700; font-size:0.85rem; display:block; margin-top:4px;">حساب CCP الجاري</span>
         </div>
         <div class="pay-card" onclick="selectPayment('binance', this)">
           🟡
-          <span class="pay-name">بايننس (Binance USDT)</span>
+          <span style="font-weight:700; font-size:0.85rem; display:block; margin-top:4px;">بايننس (Binance USDT)</span>
         </div>
       </div>
 
       <div class="pay-info-box" id="payDetailsBox"></div>
 
       <div class="input-group" style="margin-bottom: 15px;">
-        <label class="input-label">رقم هاتفك / واتساب للتواصل (اختياري):</label>
+        <label class="input-label">رقم هاتفك / واتساب (اختياري):</label>
         <input type="text" id="custPhone" class="form-control" placeholder="06XXXXXXXX">
       </div>
 
@@ -744,7 +663,7 @@
     </div>
   </div>
 
-  <!-- 2. Admin Login Modal -->
+  <!-- Admin Login Modal -->
   <div class="modal-backdrop" id="adminLoginModal">
     <div class="modal-box" style="max-width: 400px;">
       <div class="modal-header">
@@ -765,7 +684,7 @@
     </div>
   </div>
 
-  <!-- 3. Admin Dashboard Modal -->
+  <!-- Admin Dashboard Modal -->
   <div class="modal-backdrop" id="adminDashboardModal">
     <div class="modal-box" style="max-width: 850px;">
       <div class="modal-header">
@@ -777,10 +696,9 @@
         <button class="admin-tab-btn active" onclick="switchAdminTab('tab-style', this)">🎨 مظهر وخلفية المتجر</button>
         <button class="admin-tab-btn" onclick="switchAdminTab('tab-products', this)">📦 إدارة المنتجات والعروض</button>
         <button class="admin-tab-btn" onclick="switchAdminTab('tab-payments', this)">💳 إعدادات الدفع والواتساب</button>
-        <button class="admin-tab-btn" onclick="switchAdminTab('tab-backup', this)">💾 النسخ الاحتياطي والضبط</button>
       </div>
 
-      <!-- Tab 1: Theme & Background -->
+      <!-- Tab 1 -->
       <div class="admin-tab-content active" id="tab-style">
         <h4 style="margin-bottom: 12px; color: var(--primary);">🖼️ تخصيص خلفية المتجر والمظهر</h4>
         
@@ -824,7 +742,7 @@
         <button class="btn btn-primary" onclick="saveAdminSettings()">💾 حفظ مظهر المتجر</button>
       </div>
 
-      <!-- Tab 2: Products & Offers -->
+      <!-- Tab 2 -->
       <div class="admin-tab-content" id="tab-products">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
           <h4 style="color: var(--primary);">📦 قائمة المنتجات والعروض</h4>
@@ -833,45 +751,31 @@
         <div id="adminProductsList"></div>
       </div>
 
-      <!-- Tab 3: Payment Settings -->
+      <!-- Tab 3 -->
       <div class="admin-tab-content" id="tab-payments">
         <h4 style="margin-bottom: 12px; color: var(--primary);">💳 بيانات الدفع والتواصل</h4>
         <div class="admin-form-row">
-          <label>رقم الواتساب لاستقبال الطلبات (بدون + مثال 213658613828):</label>
+          <label>رقم الواتساب لاستقبال الطلبات (بدون +):</label>
           <input type="text" id="admWhatsapp" class="form-control">
         </div>
         <div class="admin-form-row">
-          <label>معلومات بريدي موب (BaridiMob RIP):</label>
+          <label>معلومات بريدي موب (RIP):</label>
           <input type="text" id="admBaridi" class="form-control">
         </div>
         <div class="admin-form-row">
-          <label>معلومات حساب CCP الجاري:</label>
+          <label>معلومات حساب CCP:</label>
           <input type="text" id="admCcp" class="form-control">
         </div>
         <div class="admin-form-row">
-          <label>معرف أو محفظة بايننس (Binance Pay ID / USDT):</label>
+          <label>معرف بايننس (Binance Pay ID / USDT):</label>
           <input type="text" id="admBinance" class="form-control">
         </div>
         <button class="btn btn-primary" onclick="saveAdminSettings()">💾 حفظ إعدادات الدفع</button>
       </div>
-
-      <!-- Tab 4: Backup -->
-      <div class="admin-tab-content" id="tab-backup">
-        <h4 style="margin-bottom: 12px; color: var(--primary);">💾 النسخ الاحتياطي واستعادة البيانات</h4>
-        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom: 14px;">
-          جميع التعديلات تُحفظ تلقائياً في متصفحك. يمكنك تصدير نسخة احتياطية أو استعادتها في أي وقت.
-        </p>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn btn-outline" onclick="exportDataBackup()">📥 تصدير نسخة احتياطية (JSON)</button>
-          <button class="btn btn-outline" onclick="document.getElementById('importFileInput').click()">📤 استيراد نسخة احتياطية</button>
-          <input type="file" id="importFileInput" style="display:none" accept=".json" onchange="importDataBackup(event)">
-          <button class="btn btn-sm-del" onclick="resetToFactoryDefault()">🔄 إعادة تعيين للمصنع</button>
-        </div>
-      </div>
     </div>
   </div>
 
-  <!-- 4. Edit/Add Product Modal -->
+  <!-- Edit Product Modal -->
   <div class="modal-backdrop" id="editProductModal">
     <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header">
@@ -883,7 +787,7 @@
 
       <div class="admin-form-row">
         <label>اسم اللعبة أو التطبيق:</label>
-        <input type="text" id="editProdName" class="form-control" placeholder="مثال: Free Fire">
+        <input type="text" id="editProdName" class="form-control">
       </div>
 
       <div class="admin-form-row">
@@ -902,8 +806,8 @@
       </div>
 
       <div class="admin-form-row">
-        <label>عنوان خانة المعرف (مثال: معرف اللاعب ID / البريد الإلكتروني):</label>
-        <input type="text" id="editProdLabel" class="form-control" placeholder="معرف اللاعب (Player ID)">
+        <label>عنوان خانة المعرف (مثال: معرف اللاعب ID):</label>
+        <input type="text" id="editProdLabel" class="form-control">
       </div>
 
       <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 14px; margin-top: 14px;">
@@ -945,7 +849,6 @@
         category: "games",
         image: "https://i.postimg.cc/k5wkM7v6/freefire.png",
         inputLabel: "معرف اللاعب (Player ID)",
-        inputPlaceholder: "أدخل الآيدي (Player ID)",
         offers: [
           { id: "ff_1", name: "100 + 10 مجوهرات 💎", price: 230 },
           { id: "ff_2", name: "310 + 31 مجوهرات 💎", price: 650 },
@@ -962,7 +865,6 @@
         category: "games",
         image: "https://i.postimg.cc/L5R9Rz8/pubg.png",
         inputLabel: "معرف اللاعب (Player ID)",
-        inputPlaceholder: "أدخل معرّف ببجي",
         offers: [
           { id: "pubg_1", name: "60 شدة UC 🪙", price: 240 },
           { id: "pubg_2", name: "325 شدة UC 🪙", price: 1150 },
@@ -977,8 +879,7 @@
         name: "Roblox (روبلوكس)",
         category: "games",
         image: "https://cdn.simpleicons.org/roblox/ffffff",
-        inputLabel: "اسم المستخدم (Username) أو ID",
-        inputPlaceholder: "اسم الحساب في روبلوكس",
+        inputLabel: "اسم الحساب في روبلوكس (Username)",
         offers: [
           { id: "rbx_1", name: "80 روبوكس (Robux) 🪙", price: 260 },
           { id: "rbx_2", name: "400 روبوكس (Robux) 🪙", price: 1150 },
@@ -991,8 +892,7 @@
         name: "Call of Duty Mobile (كود)",
         category: "games",
         image: "https://i.postimg.cc/VMyB8Y7/codm.png",
-        inputLabel: "معرف اللاعب (Player ID / OpenID)",
-        inputPlaceholder: "Player ID من داخل اللعبة",
+        inputLabel: "معرف اللاعب (Player ID)",
         offers: [
           { id: "cod_1", name: "80 كوين CP 🪙", price: 260 },
           { id: "cod_2", name: "420 كوين CP 🪙", price: 1200 },
@@ -1006,7 +906,6 @@
         category: "apps",
         image: "https://cdn.simpleicons.org/canva/00C4CC",
         inputLabel: "البريد الإلكتروني (Email)",
-        inputPlaceholder: "بريدك لتفعيل الاشتراك",
         offers: [
           { id: "canva_1", name: "اشتراك حساب خاص 1 سنة 🎨", price: 800 },
           { id: "canva_2", name: "اشتراك مدى الحياة (Lifetime) ♾️", price: 1500 },
@@ -1019,7 +918,6 @@
         category: "apps",
         image: "https://cdn.simpleicons.org/capcut/ffffff",
         inputLabel: "البريد الإلكتروني (Email)",
-        inputPlaceholder: "بريدك الإلكتروني للتفعيل",
         offers: [
           { id: "capcut_1", name: "اشتراك 1 شهر 🎬", price: 700 },
           { id: "capcut_2", name: "اشتراك 1 سنة كاملة 🌟", price: 2800 }
@@ -1031,7 +929,6 @@
         category: "apps",
         image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Google_One_icon.svg/512px-Google_One_icon.svg.png",
         inputLabel: "حساب جوجل (Gmail)",
-        inputPlaceholder: "example@gmail.com",
         offers: [
           { id: "g1_100", name: "مساحة 100GB (سنة كاملة) ☁️", price: 1800 },
           { id: "g1_2tb", name: "مساحة 2TB + Gemini Advanced (شهر) 🤖", price: 1400 },
@@ -1044,11 +941,10 @@
         category: "apps",
         image: "https://cdn.simpleicons.org/spotify/1ED760",
         inputLabel: "البريد الإلكتروني للسبوتيفاي",
-        inputPlaceholder: "your-email@gmail.com",
         offers: [
-          { id: "spot_1", name: "اشتراك فردي 1 شهر 🎵", price: 450 },
-          { id: "spot_3", name: "اشتراك فردي 3 أشهر 🎵", price: 1100 },
-          { id: "spot_12", name: "اشتراك فردي 1 سنة 👑", price: 2900 }
+          { id: "spot_1", name: "اشتراك 1 شهر 🎵", price: 450 },
+          { id: "spot_3", name: "اشتراك 3 أشهر 🎵", price: 1100 },
+          { id: "spot_12", name: "اشتراك 1 سنة 👑", price: 2900 }
         ]
       },
       {
@@ -1057,7 +953,6 @@
         category: "apps",
         image: "https://cdn.simpleicons.org/telegram/24A1DE",
         inputLabel: "معرف التيليغرام (@username)",
-        inputPlaceholder: "مثال: @username",
         offers: [
           { id: "tg_3", name: "اشتراك 3 أشهر ⭐", price: 2400 },
           { id: "tg_6", name: "اشتراك 6 أشهر ⭐", price: 3800 },
@@ -1066,22 +961,22 @@
       }
     ];
 
-    let appSettings = JSON.parse(localStorage.getItem('akatsuki_settings')) || DEFAULT_SETTINGS;
-    let appProducts = JSON.parse(localStorage.getItem('akatsuki_products')) || DEFAULT_PRODUCTS;
+    // STORAGE V2 (Bypasses old cache)
+    let appSettings = JSON.parse(localStorage.getItem('akatsuki_v2_settings')) || DEFAULT_SETTINGS;
+    let appProducts = JSON.parse(localStorage.getItem('akatsuki_v2_products')) || DEFAULT_PRODUCTS;
     let currentCategory = 'all';
     let selectedOrder = null;
     let currentPayment = 'baridimob';
 
-    document.addEventListener('DOMContentLoaded', () => {
+    function initApp() {
       applyThemeAndSettings();
       renderProducts();
-    });
+    }
 
     function applyThemeAndSettings() {
-      document.getElementById('storeNotice').textContent = appSettings.storeNotice;
-      document.getElementById('headerStoreName').innerHTML = appSettings.storeName.replace('AKATSUKI', 'AKATSUKI <span>STORE</span>');
-      document.getElementById('heroBrandName').textContent = appSettings.storeName.split('|')[0].trim();
-      document.getElementById('footerBrandName').textContent = appSettings.storeName;
+      if (document.getElementById('storeNotice')) document.getElementById('storeNotice').textContent = appSettings.storeNotice;
+      if (document.getElementById('heroBrandName')) document.getElementById('heroBrandName').textContent = "AKATSUKI";
+      if (document.getElementById('footerBrandName')) document.getElementById('footerBrandName').textContent = appSettings.storeName;
 
       const body = document.body;
       if (appSettings.bgType === 'upload' && appSettings.bgImageBase64) {
@@ -1099,6 +994,7 @@
 
     function renderProducts() {
       const grid = document.getElementById('productsGrid');
+      if (!grid) return;
       grid.innerHTML = '';
 
       const filtered = currentCategory === 'all' 
@@ -1106,7 +1002,7 @@
         : appProducts.filter(p => p.category === currentCategory);
 
       if (filtered.length === 0) {
-        grid.innerHTML = '<div style="text-align:center; grid-column:1/-1; padding:40px; color:var(--text-muted);">لا توجد منتجات في هذا القسم حالياً.</div>';
+        grid.innerHTML = '<div style="text-align:center; grid-column:1/-1; padding:40px; color:var(--text-muted);">لا توجد منتجات في هذا القسم.</div>';
         return;
       }
 
@@ -1126,8 +1022,6 @@
               <div class="offer-price">${offer.price} د.ج</div>
             </div>
           `).join('');
-        } else {
-          offersHtml = '<div style="font-size:0.8rem; color:var(--text-muted);">لا توجد باقات متوفرة حالياً</div>';
         }
 
         card.innerHTML = `
@@ -1138,7 +1032,7 @@
           <div class="card-content">
             <h3 class="card-title">${product.name}</h3>
             <div class="id-warning-box">
-              <span class="icon">⚠️</span>
+              <span>⚠️</span>
               <span>تأكد من كتابة ${product.inputLabel || 'المعرّف ID'} بشكل دقيق قبل الطلب.</span>
             </div>
             <div>
@@ -1149,11 +1043,9 @@
             </div>
             <div class="input-group">
               <label class="input-label">${product.inputLabel || 'معرف الحساب (ID)'}:</label>
-              <input type="text" id="target_input_${product.id}" class="form-control" placeholder="${product.inputPlaceholder || 'أدخل البيانات المطلوبة هنا'}">
+              <input type="text" id="target_input_${product.id}" class="form-control" placeholder="أدخل ${product.inputLabel || 'الآيدي'}">
             </div>
-            <div class="card-footer">
-              <button class="btn btn-primary btn-buy" onclick="openOrderModal('${product.id}')">⚡ شحن الآن عبر واتساب</button>
-            </div>
+            <button class="btn btn-primary btn-buy" onclick="openOrderModal('${product.id}')">⚡ شحن الآن عبر واتساب</button>
           </div>
         `;
         grid.appendChild(card);
@@ -1169,6 +1061,7 @@
 
     function selectOffer(prodId, offerId, elem) {
       const container = document.getElementById(`offers_list_${prodId}`);
+      if (!container) return;
       container.querySelectorAll('.offer-item').forEach(i => i.classList.remove('selected'));
       elem.classList.add('selected');
     }
@@ -1188,18 +1081,11 @@
 
       const container = document.getElementById(`offers_list_${prodId}`);
       const selectedElem = container ? container.querySelector('.offer-item.selected') : null;
-      let selectedOffer = null;
+      let selectedOffer = product.offers ? product.offers[0] : { name: 'طلب شحن', price: 0 };
 
-      if (product.offers && product.offers.length > 0) {
-        if (selectedElem) {
-          const offerName = selectedElem.querySelector('.offer-info span').textContent;
-          selectedOffer = product.offers.find(o => o.name === offerName) || product.offers[0];
-        } else {
-          selectedOffer = product.offers[0];
-        }
-      } else {
-        alert('لا توجد عروض متاحة لهذا المنتج');
-        return;
+      if (selectedElem && product.offers) {
+        const offerName = selectedElem.querySelector('.offer-info span').textContent;
+        selectedOffer = product.offers.find(o => o.name === offerName) || product.offers[0];
       }
 
       selectedOrder = {
@@ -1211,7 +1097,7 @@
       document.getElementById('orderSummaryBox').innerHTML = `
         <div style="font-size:1rem; font-weight:800; color:#fff; margin-bottom:4px;">${product.name}</div>
         <div style="font-size:0.9rem; color:var(--primary); font-weight:700;">🎁 الباقة: ${selectedOffer.name}</div>
-        <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">👤 ${product.inputLabel || 'المعرّف'}: <span style="color:#fff; font-weight:bold;">${targetValue}</span></div>
+        <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">👤 ${product.inputLabel || 'المعرّف'}: <strong style="color:#fff;">${targetValue}</strong></div>
         <div style="font-size:1.1rem; font-weight:900; color:#2ed573; margin-top:6px;">💰 المبلغ الإجمالي: ${selectedOffer.price} د.ج</div>
       `;
 
@@ -1239,20 +1125,17 @@
           <div>📮 <strong>طريقة الدفع: حساب CCP الجاري</strong></div>
           <div style="margin-top:4px;">رقم الحساب: <code style="color:#2ed573; font-weight:bold;">${appSettings.ccpNumber}</code></div>
           <div style="margin-top:2px;">الاسم: <strong>${appSettings.ccpName}</strong></div>
-          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">يرجى الدفع في مركز البريد وإرسال الوصل.</div>
         `;
       } else {
         box.innerHTML = `
           <div>🟡 <strong>طريقة الدفع: بايننس (Binance USDT)</strong></div>
           <div style="margin-top:4px;">Binance Pay ID: <code style="color:#2ed573; font-weight:bold;">${appSettings.binancePayId}</code></div>
-          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">أرسل المبلغ المعادل بـ USDT ثم أرسل لقطة المعاملة.</div>
         `;
       }
     }
 
     function sendWhatsAppOrder() {
       if (!selectedOrder) return;
-
       const custPhone = document.getElementById('custPhone').value.trim();
       const payName = currentPayment === 'baridimob' ? 'بريدي موب (BaridiMob)' : (currentPayment === 'ccp' ? 'حساب CCP' : 'بايننس (Binance Pay)');
 
@@ -1268,21 +1151,14 @@
                   `✅ *تأكيد الزبون:* لقد تحققت من صحة الآيدي والمعلومات وجاهز لإرسال الوصل للشحن الفوري.`;
 
       const encodedMsg = encodeURIComponent(msg);
-      const waUrl = `https://wa.me/${appSettings.whatsappNumber}?text=${encodedMsg}`;
-      window.open(waUrl, '_blank');
+      window.open(`https://wa.me/${appSettings.whatsappNumber}?text=${encodedMsg}`, '_blank');
       closeModal('orderModal');
     }
 
-    function openModal(id) {
-      document.getElementById(id).classList.add('show');
-    }
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('show');
-    }
+    function openModal(id) { document.getElementById(id).classList.add('show'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
-    function openAdminModal() {
-      openModal('adminLoginModal');
-    }
+    function openAdminModal() { openModal('adminLoginModal'); }
 
     function checkAdminAuth() {
       const email = document.getElementById('adminEmailInput').value.trim();
@@ -1333,7 +1209,7 @@
         const reader = new FileReader();
         reader.onload = function(e) {
           appSettings.bgImageBase64 = e.target.result;
-          alert('✅ تم تحميل صورة الخلفية بنجاح، اضغط حفظ لتطبيقها!');
+          alert('✅ تم رفع صورة الخلفية بنجاح، اضغط حفظ لتطبيقها!');
         };
         reader.readAsDataURL(file);
       }
@@ -1351,7 +1227,7 @@
       appSettings.ccpNumber = document.getElementById('admCcp').value.trim();
       appSettings.binancePayId = document.getElementById('admBinance').value.trim();
 
-      localStorage.setItem('akatsuki_settings', JSON.stringify(appSettings));
+      localStorage.setItem('akatsuki_v2_settings', JSON.stringify(appSettings));
       applyThemeAndSettings();
       alert('✅ تم حفظ جميع الإعدادات بنجاح!');
     }
@@ -1369,7 +1245,7 @@
               <img src="${prod.image}" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#000;">
               <div>
                 <strong style="color:#fff; font-size:1rem;">${prod.name}</strong>
-                <div style="font-size:0.8rem; color:var(--text-muted);">${prod.offers ? prod.offers.length : 0} باقات / عروض</div>
+                <div style="font-size:0.8rem; color:var(--text-muted);">${prod.offers ? prod.offers.length : 0} باقات</div>
               </div>
             </div>
             <div style="display:flex; gap:6px;">
@@ -1391,9 +1267,7 @@
       document.getElementById('editProdCat').value = 'games';
       document.getElementById('editProdImg').value = '';
       document.getElementById('editProdLabel').value = 'معرف اللاعب (Player ID)';
-      currentEditingOffers = [
-        { id: 'off_1', name: 'الباقة الأولى', price: 500 }
-      ];
+      currentEditingOffers = [{ id: 'off_1', name: 'الباقة الأولى', price: 500 }];
       renderOffersEditor();
       openModal('editProductModal');
     }
@@ -1418,7 +1292,7 @@
       container.innerHTML = '';
 
       if (currentEditingOffers.length === 0) {
-        container.innerHTML = '<div style="color:var(--text-muted); font-size:0.85rem;">لا توجد عروض مضافة. اضغط على زر الإضافة بالأعلى.</div>';
+        container.innerHTML = '<div style="color:var(--text-muted); font-size:0.85rem;">لا توجد عروض مضافة.</div>';
         return;
       }
 
@@ -1426,10 +1300,80 @@
         const row = document.createElement('div');
         row.className = 'admin-offer-row';
         row.innerHTML = `
-          <input type="text" class="form-control" style="flex:2;" placeholder="اسم العرض (مثال: 100 مجوهرة)" value="${off.name}" oninput="updateOfferField(${idx}, 'name', this.value)">
+          <input type="text" class="form-control" style="flex:2;" placeholder="اسم العرض" value="${off.name}" oninput="updateOfferField(${idx}, 'name', this.value)">
           <input type="number" class="form-control" style="flex:1;" placeholder="السعر (د.ج)" value="${off.price}" oninput="updateOfferField(${idx}, 'price', this.value)">
           <button type="button" class="btn-sm-del" onclick="removeOfferRow(${idx})">✕</button>
         `;
         container.appendChild(row);
       });
-    
+    }
+
+    function addOfferRowToEditor() {
+      currentEditingOffers.push({ id: 'off_' + Date.now(), name: 'عرض جديد', price: 1000 });
+      renderOffersEditor();
+    }
+
+    function removeOfferRow(idx) {
+      currentEditingOffers.splice(idx, 1);
+      renderOffersEditor();
+    }
+
+    function updateOfferField(idx, field, val) {
+      if (field === 'price') currentEditingOffers[idx][field] = Number(val) || 0;
+      else currentEditingOffers[idx][field] = val;
+    }
+
+    function handleProdImgUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('editProdImg').value = e.target.result;
+          alert('✅ تم رفع صورة المنتج بنجاح!');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function saveProductData() {
+      const prodId = document.getElementById('editProdId').value;
+      const name = document.getElementById('editProdName').value.trim();
+      const cat = document.getElementById('editProdCat').value;
+      const img = document.getElementById('editProdImg').value.trim() || 'https://cdn.simpleicons.org/gamecontroller/ffffff';
+      const label = document.getElementById('editProdLabel').value.trim() || 'معرف الحساب (ID)';
+
+      if (!name) { alert('⚠️ يرجى إدخال اسم اللعبة أو التطبيق!'); return; }
+
+      const existingIndex = appProducts.findIndex(p => p.id === prodId);
+      const productObj = {
+        id: prodId,
+        name: name,
+        category: cat,
+        image: img,
+        inputLabel: label,
+        offers: currentEditingOffers
+      };
+
+      if (existingIndex > -1) appProducts[existingIndex] = productObj;
+      else appProducts.unshift(productObj);
+
+      localStorage.setItem('akatsuki_v2_products', JSON.stringify(appProducts));
+      renderProducts();
+      renderAdminProductsList();
+      closeModal('editProductModal');
+      alert('✅ تم حفظ المنتج وعروضه بنجاح!');
+    }
+
+    function deleteProduct(prodId) {
+      if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
+        appProducts = appProducts.filter(p => p.id !== prodId);
+        localStorage.setItem('akatsuki_v2_products', JSON.stringify(appProducts));
+        renderProducts();
+        renderAdminProductsList();
+      }
+    }
+
+    window.onload = initApp;
+  </script>
+</body>
+</html>
