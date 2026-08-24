@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="store-title">Akatsuki-Store</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -12,7 +12,6 @@
 </head>
 <body class="theme-dark" id="main-body">
 
-  <!-- Header -->
   <header class="main-header">
     <div class="nav-container">
       <div class="brand">
@@ -30,7 +29,6 @@
     </div>
   </header>
 
-  <!-- Hero Banner -->
   <section class="hero-banner" id="hero-section">
     <div class="hero-content" id="hero-content-box">
       <h2 id="hero-title">أفضل عروض الشحن والبطاقات الرقمية</h2>
@@ -38,7 +36,6 @@
     </div>
   </section>
 
-  <!-- Categories Filter -->
   <section class="filter-section">
     <div class="filter-tabs">
       <button class="tab-btn active" onclick="filterCategory('all')" id="tab-all">الكل</button>
@@ -49,12 +46,10 @@
     </div>
   </section>
 
-  <!-- Products Grid -->
   <main class="container">
     <div class="products-grid" id="products-container"></div>
   </main>
 
-  <!-- Dynamic Order Modal -->
   <div id="order-modal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeOrderModal()">&times;</span>
@@ -62,12 +57,12 @@
       
       <div id="uid-warning-box" class="warning-box">
         <i class="fa-solid fa-triangle-exclamation"></i>
-        <span id="uid-warning">تنبيه هام: الرجاء التأكد جيداً من صحة المعرف (UID). المتجر لا يتحمل أي مسؤولية عن الأخطاء المدخلة.</span>
+        <span id="uid-warning">تنبيه هام: الرجاء التأكد جيداً من صحة المعرف (UID).</span>
       </div>
 
       <div id="giftcard-info-box" class="warning-box hidden" style="color: #4BB543; border-color: #4BB543; background: rgba(75, 181, 67, 0.1);">
         <i class="fa-solid fa-envelope-circle-check"></i>
-        <span>سيتم إرسال كود البطاقة / الاشتراك إلى بريدك الإلكتروني وحسابك في الموقع فور تأكيد الدفع.</span>
+        <span>سيتم إرسال كود البطاقة إلى بريدك الإلكتروني وحسابك فور تأكيد الدفع.</span>
       </div>
 
       <form id="order-form" onsubmit="handleOrderSubmit(event)">
@@ -103,7 +98,7 @@
 
         <div class="receipt-notice-box" style="background: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b; color: #fbbf24; border-radius: 8px; padding: 10px; margin-bottom: 14px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
           <i class="fa-solid fa-camera" style="font-size: 1.1rem;"></i>
-          <span><strong>ملاحظة هامة:</strong> بعد إتمام عملية التحويل، يرجى إرسال <u>صورة وصل الدفع (Screenshot)</u> في محادثة الواتساب لتأكيد وشحن طلبك مباشرة.</span>
+          <span><strong>ملاحظة هامة:</strong> بعد إتمام التحويل، يرجى إرسال <u>صورة وصل الدفع (Screenshot)</u> في محادثة الواتساب لتأكيد وشحن طلبك مباشرة.</span>
         </div>
 
         <button type="submit" class="btn-primary full-width" id="btn-confirm-order"><i class="fa-brands fa-whatsapp"></i> إرسال الطلب وإرفاق الوصل على واتساب</button>
@@ -111,7 +106,6 @@
     </div>
   </div>
 
-  <!-- User Account Modal -->
   <div id="auth-modal" class="modal">
     <div class="modal-content auth-box">
       <span class="close" onclick="closeAuthModal()">&times;</span>
@@ -143,7 +137,6 @@
     </div>
   </div>
 
-  <!-- Admin Modal -->
   <div id="admin-modal" class="modal">
     <div class="modal-content admin-dashboard">
       <span class="close" onclick="closeAdminModal()">&times;</span>
@@ -170,11 +163,10 @@
           <button class="admin-tab" onclick="switchAdminTab('settings')">المظهر والنصوص والبانر</button>
         </div>
 
-        <!-- Tab 1: Products -->
         <div id="tab-admin-products" class="admin-tab-content">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <h4 id="form-product-title">إضافة أو تعديل منتج / بطاقة</h4>
-            <button type="button" onclick="resetProductForm()" class="btn-secondary" style="font-size:0.75rem; padding:4px 8px;">إلغاء التعديل / إضافة جديد</button>
+            <button type="button" onclick="resetProductForm()" class="btn-secondary" style="font-size:0.75rem; padding:4px 8px;">إلغاء التعديل</button>
           </div>
           
           <form id="product-form" onsubmit="saveProduct(event)">
@@ -197,21 +189,20 @@
               <input type="url" id="prod-image-url" placeholder="https://i.postimg.cc/example.jpg" style="width:100%;">
             </div>
             <div style="margin:8px 0;">
-              <label>السعر الأساسي الظاهر على البطاقة في الواجهة (اختياري - بالدولار أو بالدينار):</label>
-              <input type="text" id="prod-display-price" placeholder="مثال: 8$ أو 1900 da (اتركه فارغاً ليحسب تلقائياً)" style="width:100%;">
+              <label>السعر الظاهر على البطاقة في الواجهة (اكتب مثلاً: 8$ أو 1900 da):</label>
+              <input type="text" id="prod-display-price" placeholder="مثال: 8$ أو 1900 da" style="width:100%;">
             </div>
             <div style="margin:8px 0;">
-              <label>الباقات والأسعار (اكتب الباقة : السعر ، وافصل بفاصلة أو سطر جديد):</label>
-              <textarea id="prod-packages" placeholder="اشتراك 18 شهر : 8.00" required style="width:100%; height:80px;"></textarea>
+              <label>الباقات والأسعار (الباقة : السعر):</label>
+              <textarea id="prod-packages" placeholder="باقة 1 : 8.00" required style="width:100%; height:80px;"></textarea>
             </div>
             <button type="submit" class="btn-primary" id="btn-save-product">حفظ المنتج</button>
           </form>
           <hr style="margin:15px 0; border-color:var(--border-color);">
-          <h4>قائمة المنتجات الحالية (اضغط تعديل لتغيير السعر فوراً):</h4>
+          <h4>قائمة المنتجات (اضغط تعديل لتعديل السعر مباشرة):</h4>
           <div id="admin-products-list"></div>
         </div>
 
-        <!-- Tab 2: Payments -->
         <div id="tab-admin-payments" class="admin-tab-content hidden">
           <h4>إضافة طريقة دفع جديدة</h4>
           <form id="new-payment-form" onsubmit="addNewPaymentMethod(event)">
@@ -219,44 +210,40 @@
               <input type="text" id="new-pay-name" placeholder="اسم طريقة الدفع (مثال: بريدي موب BaridiMob)" required style="width:100%;">
             </div>
             <div style="margin:10px 0;">
-              <textarea id="new-pay-details" placeholder="بيانات التحويل (رقم الحساب، الـ RIP، أو العنوان)" required style="width:100%;"></textarea>
+              <textarea id="new-pay-details" placeholder="بيانات التحويل" required style="width:100%;"></textarea>
             </div>
             <button type="submit" class="btn-primary">إضافة طريقة الدفع</button>
           </form>
           <hr style="margin:15px 0; border-color:var(--border-color);">
-          <h4>التحكم بطرق الدفع الحالية (تفعيل / إيقاف):</h4>
+          <h4>التحكم بطرق الدفع:</h4>
           <div id="admin-payments-list"></div>
         </div>
 
-        <!-- Tab 3: Orders -->
         <div id="tab-admin-orders" class="admin-tab-content hidden">
-          <h4>الطلبات والتحقق وإرسال الأكواد</h4>
+          <h4>الطلبات والتحقق</h4>
           <div id="admin-orders-table"></div>
         </div>
 
-        <!-- Tab 4: Design & Header Text Settings -->
         <div id="tab-admin-settings" class="admin-tab-content hidden">
           <h4>تخصيص المظهر ونصوص البانر</h4>
           <div style="margin:10px 0;">
             <label>اسم المتجر:</label>
             <input type="text" id="setting-store-name" style="width:100%;">
           </div>
-          
           <div style="background:#0b0d10; padding:10px; border-radius:8px; margin:10px 0; border:1px solid #30363d;">
-            <h5 style="margin-bottom:8px; color:#e50914;">التحكم بكتابة البانر العلوي (Hero Text):</h5>
             <div style="margin-bottom:8px;">
-              <label><input type="checkbox" id="setting-hide-hero-text"> إخفاء الكتابة في البانر كلياً (إذا كانت صورتك تحتوي على الكتابة)</label>
+              <label><input type="checkbox" id="setting-hide-hero-text"> إخفاء الكتابة في البانر كلياً</label>
             </div>
             <div style="margin-bottom:8px;">
               <label>العنوان الرئيسي في البانر:</label>
-              <input type="text" id="setting-hero-title" placeholder="أفضل عروض الشحن والبطاقات الرقمية" style="width:100%;">
+              <input type="text" id="setting-hero-title" style="width:100%;">
             </div>
             <div style="margin-bottom:8px;">
               <label>الوصف الفرعي في البانر:</label>
-              <input type="text" id="setting-hero-sub" placeholder="تسليم فوري وموثوق | سعر الصرف: 1$ = 280 دج" style="width:100%;">
+              <input type="text" id="setting-hero-sub" style="width:100%;">
             </div>
             <div>
-              <label>موضع النص في البانر:</label>
+              <label>موضع النص:</label>
               <select id="setting-hero-align" style="width:100%;">
                 <option value="center">في الوسط (Center)</option>
                 <option value="right">على اليمين (Right)</option>
@@ -264,20 +251,19 @@
               </select>
             </div>
           </div>
-
           <div style="margin:10px 0;">
             <label>رابط صورة الشعار (Logo URL):</label>
-            <input type="url" id="setting-logo-url" placeholder="https://i.postimg.cc/logo.jpg" style="width:100%;">
+            <input type="url" id="setting-logo-url" style="width:100%;">
           </div>
           <div style="margin:10px 0;">
             <label>رابط صورة خلفية البانر العلوي (Hero Banner URL):</label>
-            <input type="url" id="setting-hero-url" placeholder="https://i.postimg.cc/banner.jpg" style="width:100%;">
+            <input type="url" id="setting-hero-url" style="width:100%;">
           </div>
           <div style="margin:10px 0;">
             <label>روابط صور معرض أسفل الموقع (مفصولة بفاصلة):</label>
-            <textarea id="setting-gallery-urls" placeholder="https://i.postimg.cc/img1.jpg , https://i.postimg.cc/img2.jpg" style="width:100%;"></textarea>
+            <textarea id="setting-gallery-urls" style="width:100%;"></textarea>
           </div>
-          <button onclick="saveStoreSettings()" class="btn-primary">حفظ إعدادات المظهر والنصوص</button>
+          <button onclick="saveStoreSettings()" class="btn-primary">حفظ إعدادات المظهر</button>
         </div>
       </div>
     </div>
@@ -301,7 +287,6 @@
       </div>
       <div class="footer-col">
         <h4>تابع جديدنا</h4>
-        <p>عروض وتخفيضات مستمرة عبر صفحتنا الرسمية:</p>
         <a href="https://www.facebook.com/profile.php?id=61571026619148" target="_blank" class="btn-facebook">
           <i class="fa-brands fa-facebook"></i> صفحتنا على فيسبوك
         </a>
@@ -309,6 +294,6 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2.0"></script>
 </body>
 </html>
