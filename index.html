@@ -12,13 +12,18 @@
 </head>
 <body class="theme-dark">
 
+  <!-- Header -->
   <header class="main-header">
     <div class="nav-container">
       <div class="brand">
         <h1 id="brand-name">Akatsuki-Store</h1>
       </div>
       <div class="nav-actions">
-        <select id="language-switcher" onchange="changeLanguage(this.value)">
+        <select id="currency-switcher" onchange="changeCurrency(this.value)" style="width: auto; padding: 0.4rem;">
+          <option value="USD">USD ($)</option>
+          <option value="DZD">DZD (دج)</option>
+        </select>
+        <select id="language-switcher" onchange="changeLanguage(this.value)" style="width: auto; padding: 0.4rem;">
           <option value="ar">العربية</option>
           <option value="en">English</option>
           <option value="fr">Français</option>
@@ -29,47 +34,60 @@
     </div>
   </header>
 
+  <!-- Hero Section -->
   <section class="hero-banner" id="hero-section">
     <div class="hero-content">
-      <h2 id="hero-title">أفضل عروض الشحن والاشتراكات الرقمية</h2>
-      <p id="hero-subtitle">أسعار منافسة وتسليم فوري بأعلى موثوقية</p>
+      <h2 id="hero-title">أفضل عروض الشحن والبطاقات الرقمية</h2>
+      <p id="hero-subtitle">تسليم فوري وموثوق | سعر الصرف: 1$ = 280 دج</p>
     </div>
   </section>
 
+  <!-- Categories Filter -->
   <section class="filter-section">
     <div class="filter-tabs">
       <button class="tab-btn active" onclick="filterCategory('all')" id="tab-all">الكل</button>
-      <button class="tab-btn" onclick="filterCategory('games')" id="tab-games">ألعاب</button>
+      <button class="tab-btn" onclick="filterCategory('games')" id="tab-games">ألعاب (شحن UID)</button>
+      <button class="tab-btn" onclick="filterCategory('giftcards')" id="tab-giftcards">بطاقات رقمية (Gift Cards)</button>
       <button class="tab-btn" onclick="filterCategory('apps')" id="tab-apps">تطبيقات</button>
       <button class="tab-btn" onclick="filterCategory('subs')" id="tab-subs">اشتراكات</button>
     </div>
   </section>
 
+  <!-- Products Grid -->
   <main class="container">
     <div class="products-grid" id="products-container"></div>
   </main>
 
-  <!-- Order Modal -->
+  <!-- Dynamic Order Modal -->
   <div id="order-modal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeOrderModal()">&times;</span>
-      <h3 id="modal-product-name">طلب شحن</h3>
+      <h3 id="modal-product-name">طلب شراء</h3>
       
-      <div class="warning-box">
+      <!-- Top-Up UID Warning -->
+      <div id="uid-warning-box" class="warning-box">
         <i class="fa-solid fa-triangle-exclamation"></i>
-        <span id="uid-warning">تنبيه هام: الرجاء التأكد جيداً من صحة الـ Player ID (UID). المتجر لا يتحمل أي مسؤولية عن الأخطاء المدخلة من طرفكم.</span>
+        <span id="uid-warning">تنبيه هام: الرجاء التأكد جيداً من صحة المعرف (UID). المتجر لا يتحمل أي مسؤولية عن الأخطاء المدخلة.</span>
+      </div>
+
+      <!-- Gift Card Info -->
+      <div id="giftcard-info-box" class="warning-box hidden" style="color: #4BB543; border-color: #4BB543; background: rgba(75, 181, 67, 0.1);">
+        <i class="fa-solid fa-envelope-circle-check"></i>
+        <span>سيتم إرسال كود البطاقة / الاشتراك إلى بريدك الإلكتروني وحسابك في الموقع فور تأكيد الدفع.</span>
       </div>
 
       <form id="order-form" onsubmit="handleOrderSubmit(event)">
         <input type="hidden" id="order-product-id">
+        <input type="hidden" id="order-product-type">
         
-        <div class="form-group">
-          <label id="lbl-uid">معرف الحساب / UID:</label>
-          <input type="text" id="order-uid" required placeholder="أدخل ID حسابك هنا">
+        <!-- Input field changes dynamically based on Topup vs GiftCard -->
+        <div class="form-group" id="group-uid">
+          <label id="lbl-target-input">معرف الحساب / Player ID (UID):</label>
+          <input type="text" id="order-target-value" required placeholder="أدخل معرف الحساب هنا">
         </div>
 
         <div class="form-group">
-          <label id="lbl-package">الباقة / العرض:</label>
+          <label id="lbl-package">الباقة / الفئة:</label>
           <select id="order-package" required onchange="updateCalculatedPrice()"></select>
         </div>
 
@@ -95,14 +113,14 @@
     </div>
   </div>
 
-  <!-- User Auth Modal -->
+  <!-- User Account Modal -->
   <div id="auth-modal" class="modal">
     <div class="modal-content auth-box">
       <span class="close" onclick="closeAuthModal()">&times;</span>
-      <h3 id="auth-title">تسجيل الدخول / إنشاء حساب</h3>
+      <h3 id="auth-title">حساب العميل</h3>
       <div class="auth-tabs">
-        <button class="auth-tab-btn active" onclick="toggleAuthForm('login')">دخول</button>
-        <button class="auth-tab-btn" onclick="toggleAuthForm('register')">حساب جديد</button>
+        <button class="auth-tab-btn active" onclick="toggleAuthForm('login')">تسجيل دخول</button>
+        <button class="auth-tab-btn" onclick="toggleAuthForm('register')">إنشاء حساب</button>
       </div>
 
       <form id="login-form" onsubmit="handleUserLogin(event)">
@@ -130,20 +148,20 @@
 
       <div id="user-dashboard" class="hidden">
         <h4 id="welcome-user"></h4>
-        <h5>سجل طلباتك:</h5>
+        <h5 style="margin-top:10px;">أرشيف طلباتك والأكواد الرقمية المستلمة:</h5>
         <div id="user-orders-list"></div>
         <button onclick="logoutUser()" class="btn-secondary" style="margin-top:10px;">تسجيل خروج</button>
       </div>
     </div>
   </div>
 
-  <!-- Admin Dashboard Modal -->
+  <!-- Admin Modal -->
   <div id="admin-modal" class="modal">
     <div class="modal-content admin-dashboard">
       <span class="close" onclick="closeAdminModal()">&times;</span>
       
       <div id="admin-login-view">
-        <h3>تسجيل دخول لوحة الإدارة</h3>
+        <h3>لوحة تحكم المسؤول</h3>
         <form onsubmit="handleAdminLogin(event)">
           <div class="form-group">
             <input type="email" id="admin-email" placeholder="Admin Email" required>
@@ -151,33 +169,35 @@
           <div class="form-group">
             <input type="password" id="admin-pass" placeholder="Password" required>
           </div>
-          <button type="submit" class="btn-primary full-width">دخول لوحة التحكم</button>
+          <button type="submit" class="btn-primary full-width">دخول</button>
         </form>
       </div>
 
       <div id="admin-panel-view" class="hidden">
         <div class="admin-header">
-          <h3>لوحة تحكم المتجر (Admin)</h3>
+          <h3>لوحة الإدارة - Akatsuki Store</h3>
           <button onclick="logoutAdmin()" class="btn-danger-sm">خروج</button>
         </div>
 
         <div class="admin-tabs">
-          <button class="admin-tab active" onclick="switchAdminTab('products')">المنتجات والعروض</button>
-          <button class="admin-tab" onclick="switchAdminTab('settings')">إعدادات وتصميم</button>
-          <button class="admin-tab" onclick="switchAdminTab('orders')">إدارة الطلبات</button>
-          <button class="admin-tab" onclick="switchAdminTab('payments')">طرق الدفع</button>
+          <button class="admin-tab active" onclick="switchAdminTab('products')">المنتجات والبطاقات</button>
+          <button class="admin-tab" onclick="switchAdminTab('payments')">إدارة طرق الدفع وتفعيلها</button>
+          <button class="admin-tab" onclick="switchAdminTab('orders')">الطلبات والأكواد</button>
+          <button class="admin-tab" onclick="switchAdminTab('settings')">المظهر والتصميم</button>
         </div>
 
+        <!-- Tab 1: Products -->
         <div id="tab-admin-products" class="admin-tab-content">
-          <h4>إضافة / تعديل منتج</h4>
+          <h4>إضافة منتج / باقة / بطاقة</h4>
           <form id="product-form" onsubmit="saveProduct(event)">
             <input type="hidden" id="edit-product-id">
             <div class="form-row">
-              <input type="text" id="prod-name" placeholder="اسم اللعبة / التطبيق" required>
+              <input type="text" id="prod-name" placeholder="اسم المنتج / البطاقة" required>
               <select id="prod-cat" required>
-                <option value="games">ألعاب</option>
-                <option value="apps">تطبيقات</option>
-                <option value="subs">اشتراكات</option>
+                <option value="games">ألعاب (شحن ID)</option>
+                <option value="giftcards">بطاقات رقمية (Gift Cards - تسليم كود)</option>
+                <option value="apps">تطبيقات (شحن ID)</option>
+                <option value="subs">اشتراكات (تسليم حساب/كود)</option>
               </select>
             </div>
             <div class="form-group">
@@ -186,8 +206,8 @@
               <img id="prod-image-preview" class="image-preview" src="" alt="">
             </div>
             <div class="form-group">
-              <label>الباقات والعروض (افصل بين الباقة والسعر بنقطتين : وافصل بين العروض بفاصلة ,):</label>
-              <textarea id="prod-packages" placeholder="مثال: 80 Robux:1.20, 400 Robux:4.99" required></textarea>
+              <label>الباقات والأسعار بالدولار (افصل بين الباقة والسعر بنقطتين : وافصل بين الباقات بفاصلة ,):</label>
+              <textarea id="prod-packages" placeholder="مثال: $10 Gift Card:10.00, $25 Gift Card:25.00" required></textarea>
             </div>
             <button type="submit" class="btn-primary">حفظ المنتج</button>
           </form>
@@ -195,53 +215,47 @@
           <div id="admin-products-list"></div>
         </div>
 
+        <!-- Tab 2: Payment Methods Management -->
+        <div id="tab-admin-payments" class="admin-tab-content hidden">
+          <h4>إضافة طريقة دفع جديدة</h4>
+          <form id="new-payment-form" onsubmit="addNewPaymentMethod(event)">
+            <div class="form-group">
+              <input type="text" id="new-pay-name" placeholder="اسم طريقة الدفع (مثال: BaridiMob, RedotPay, Payeer)" required>
+            </div>
+            <div class="form-group">
+              <textarea id="new-pay-details" placeholder="تفاصيل وبيانات التحويل (رقم الحساب، الـ RIP، أو العنوان)" required></textarea>
+            </div>
+            <button type="submit" class="btn-primary">إضافة طريقة الدفع</button>
+          </form>
+          <hr style="margin:15px 0; border-color:var(--border-color);">
+          <h4>التحكم بطرق الدفع الحالية (تفعيل / إيقاف مؤقت):</h4>
+          <div id="admin-payments-list"></div>
+        </div>
+
+        <!-- Tab 3: Orders -->
+        <div id="tab-admin-orders" class="admin-tab-content hidden">
+          <h4>الطلبات والتحقق وإرسال الأكواد</h4>
+          <div id="admin-orders-table"></div>
+        </div>
+
+        <!-- Tab 4: Settings -->
         <div id="tab-admin-settings" class="admin-tab-content hidden">
-          <h4>تخصيص الواجهة</h4>
+          <h4>تخصيص الواجهة والصور</h4>
           <div class="form-group">
             <label>اسم المتجر:</label>
             <input type="text" id="setting-store-name">
           </div>
           <div class="form-group">
-            <label>صورة خلفية الهيدر / البانر:</label>
+            <label>خلفية البانر العلوي:</label>
             <input type="file" id="setting-hero-file" accept="image/*" onchange="handleImageUpload(event, 'hero-preview')">
             <img id="hero-preview" class="image-preview" src="" alt="">
           </div>
           <div class="form-group">
-            <label>صور معرض أسفل الموقع:</label>
+            <label>معرض صور أسفل الموقع:</label>
             <input type="file" id="setting-gallery-files" accept="image/*" multiple onchange="handleGalleryUpload(event)">
             <div id="footer-gallery-previews" class="gallery-preview-container"></div>
           </div>
-          <button onclick="saveStoreSettings()" class="btn-primary">حفظ التغييرات</button>
-        </div>
-
-        <div id="tab-admin-orders" class="admin-tab-content hidden">
-          <h4>الطلبات والتحقق من الدفع</h4>
-          <div id="admin-orders-table"></div>
-        </div>
-
-        <div id="tab-admin-payments" class="admin-tab-content hidden">
-          <h4>تعديل بيانات الدفع</h4>
-          <div class="form-group">
-            <label>Bybit Pay UID:</label>
-            <input type="text" id="pay-bybit-uid">
-          </div>
-          <div class="form-group">
-            <label>Bybit Wallet (BEP20):</label>
-            <input type="text" id="pay-bybit-bep20">
-          </div>
-          <div class="form-group">
-            <label>Binance Pay UID:</label>
-            <input type="text" id="pay-binance-uid">
-          </div>
-          <div class="form-group">
-            <label>Binance Wallet (BEP20):</label>
-            <input type="text" id="pay-binance-bep20">
-          </div>
-          <div class="form-group">
-            <label>PayPal Email:</label>
-            <input type="email" id="pay-paypal-email">
-          </div>
-          <button onclick="savePaymentSettings()" class="btn-primary">تحديث طرق الدفع</button>
+          <button onclick="saveStoreSettings()" class="btn-primary">حفظ الإعدادات</button>
         </div>
       </div>
     </div>
@@ -265,7 +279,7 @@
       </div>
       <div class="footer-col">
         <h4>تابع جديدنا</h4>
-        <p>عروض جديدة وتخفيضات يومية عبر صفحتنا الرسمية:</p>
+        <p>عروض وتخفيضات مستمرة عبر صفحتنا الرسمية:</p>
         <a href="https://www.facebook.com/profile.php?id=61571026619148" target="_blank" class="btn-facebook">
           <i class="fa-brands fa-facebook"></i> صفحتنا على فيسبوك
         </a>
