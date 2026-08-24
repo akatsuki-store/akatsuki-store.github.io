@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="store-title">Akatsuki-Store</title>
-  <link rel="stylesheet" href="style.css?v=2.0">
+  <link rel="stylesheet" href="style.css?v=3.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -50,6 +50,7 @@
     <div class="products-grid" id="products-container"></div>
   </main>
 
+  <!-- Order Modal -->
   <div id="order-modal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeOrderModal()">&times;</span>
@@ -106,6 +107,7 @@
     </div>
   </div>
 
+  <!-- User Modal -->
   <div id="auth-modal" class="modal">
     <div class="modal-content auth-box">
       <span class="close" onclick="closeAuthModal()">&times;</span>
@@ -137,6 +139,7 @@
     </div>
   </div>
 
+  <!-- Admin Modal -->
   <div id="admin-modal" class="modal">
     <div class="modal-content admin-dashboard">
       <span class="close" onclick="closeAdminModal()">&times;</span>
@@ -189,18 +192,23 @@
               <input type="url" id="prod-image-url" placeholder="https://i.postimg.cc/example.jpg" style="width:100%;">
             </div>
             <div style="margin:8px 0;">
-              <label>السعر الظاهر على البطاقة في الواجهة (اكتب مثلاً: 8$ أو 1900 da):</label>
-              <input type="text" id="prod-display-price" placeholder="مثال: 8$ أو 1900 da" style="width:100%;">
+              <label>السعر الظاهر على البطاقة في الواجهة (اكتب مثلاً: 6.79$ أو 1900 da):</label>
+              <input type="text" id="prod-display-price" placeholder="مثال: 6.79$ أو 1900 da" style="width:100%;">
             </div>
             <div style="margin:8px 0;">
-              <label>الباقات والأسعار (الباقة : السعر):</label>
-              <textarea id="prod-packages" placeholder="باقة 1 : 8.00" required style="width:100%; height:80px;"></textarea>
+              <label>الباقات والأسعار (اكتب اسم الباقة : السعر ، وافصل بفاصلة):</label>
+              <textarea id="prod-packages" placeholder="باقة 1 : 6.79" required style="width:100%; height:80px;"></textarea>
             </div>
             <button type="submit" class="btn-primary" id="btn-save-product">حفظ المنتج</button>
           </form>
           <hr style="margin:15px 0; border-color:var(--border-color);">
           <h4>قائمة المنتجات (اضغط تعديل لتعديل السعر مباشرة):</h4>
           <div id="admin-products-list"></div>
+          
+          <div style="margin-top:20px; padding:12px; background:rgba(229, 9, 20, 0.1); border:1px solid #e50914; border-radius:8px; text-align:center;">
+            <p style="font-size:0.8rem; margin-bottom:8px; color:#ff6b6b;">إذا علقت أي أسعار قديمة في هاتفك، اضغط هذا الزر لمسح الكاش وتحديث المتجر بالكامل فوراً:</p>
+            <button type="button" onclick="hardResetProducts()" style="background:#e50914; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:bold; cursor:pointer;">🧹 مسح البيانات وإعادة ضبط الأسعار الصحيحة</button>
+          </div>
         </div>
 
         <div id="tab-admin-payments" class="admin-tab-content hidden">
@@ -294,6 +302,6 @@
     </div>
   </footer>
 
-  <script src="app.js?v=2.0"></script>
+  <script src="app.js?v=3.0"></script>
 </body>
 </html>
