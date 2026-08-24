@@ -1,4 +1,4 @@
-// Akatsuki Store Engine - Fully Responsive with Receipt Notifications
+// Akatsuki Store Engine - Accurate Price Parser
 const DZD_RATE = 280;
 
 const DEFAULT_PRODUCTS = [
@@ -337,7 +337,7 @@ function handleOrderSubmit(e) {
     `📸 *ملاحظة:* تم إرفاق صورة وصل الدفع (Screenshot) مع هذه الرسالة لتأكيد الطلب.`
   );
 
-  alert("سيتم نقلك إلى واتساب لإرسال تفاصيل الطلب.. يرجى إرفاق صورة وصل التحويل في المحادثة لتأكيد شحن حسابك!");
+  alert("سيتم نقلك إلى واتساب.. يرجى إرفاق صورة وصل التحويل في المحادثة لتأكيد شحن حسابك!");
   closeOrderModal();
 
   const waUrl = `https://wa.me/${storeSettings.whatsapp || '213556334891'}?text=${waMsg}`;
@@ -407,7 +407,7 @@ function renderAdminPaymentsList() {
   `).join('');
 }
 
-// Product & Package Parser
+// Precise Product & Package Parser
 function saveProduct(e) {
   e.preventDefault();
   const id = document.getElementById('edit-product-id').value || 'p' + Date.now();
@@ -417,22 +417,33 @@ function saveProduct(e) {
   let imgUrl = document.getElementById('prod-image-url').value.trim();
   const rawPackages = document.getElementById('prod-packages').value;
 
-  const lines = rawPackages.split(/[\n,]+/).map(l => l.trim()).filter(l => l.length > 0);
+  const items = rawPackages.split(/[\n,]+/).map(l => l.trim()).filter(l => l.length > 0);
   const parsedPackages = [];
 
-  lines.forEach(line => {
-    let pkgName = line;
+  items.forEach(item => {
+    let pkgName = item;
     let priceUSD = 1.00;
 
-    const matchNumber = line.match(/(\d+[\.,]?\d*)\s*(da|دج|\$|usd)?/i);
-    if (line.includes(':')) {
-      const parts = line.split(':');
+    if (item.includes(':')) {
+      const parts = item.split(':');
       pkgName = parts[0].trim();
-      const rawP = parseFloat(parts[1].replace(/[^0-9\.]/g, '')) || 1.00;
-      priceUSD = (parts[1].toLowerCase().includes('da') || parts[1].includes('دج') || rawP > 60) ? (rawP / DZD_RATE) : rawP;
-    } else if (matchNumber) {
-      const val = parseFloat(matchNumber[1]);
-      priceUSD = (line.toLowerCase().includes('da') || line.includes('دج') || val > 60) ? (val / DZD_RATE) : val;
+      const rightSide = parts[1].trim();
+      const numMatch = rightSide.match(/(\d+[\.,]?\d*)/);
+      if (numMatch) {
+        const val = parseFloat(numMatch[1].replace(',', '.'));
+        if (rightSide.toLowerCase().includes('da') || rightSide.includes('دج') || val > 70) {
+          priceUSD = val / DZD_RATE;
+        } else {
+          priceUSD = val;
+        }
+      }
+    } else {
+      // If no colon, extract the LAST number in the string as price
+      const matches = item.match(/\d+[\.,]?\d*/g);
+      if (matches && matches.length > 0) {
+        const lastNum = parseFloat(matches[matches.length - 1].replace(',', '.'));
+        priceUSD = lastNum > 70 ? (lastNum / DZD_RATE) : lastNum;
+      }
     }
 
     parsedPackages.push({
@@ -465,7 +476,7 @@ function saveProduct(e) {
   renderProducts();
   renderAdminProductsList();
   document.getElementById('product-form').reset();
-  alert("✅ تم حفظ ونشر المنتج بنجاح في المتجر!");
+  alert("✅ تم حفظ ونشر المنتج بنجاح بالسعر المضبوط!");
 }
 
 function deleteProduct(id) {
