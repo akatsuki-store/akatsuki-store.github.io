@@ -1,12 +1,12 @@
 const DZD_RATE = 280;
 
-// Official direct image links matching Google AI Pro format
-const REAL_IMAGES = {
-  roblox: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Roblox_Logo_2022.svg/512px-Roblox_Logo_2022.png",
-  freefire: "https://play-lh.googleusercontent.com/yE7Z_b6B5h5_U3bX7n2q_9R5m5q8k4j1b9_y5m2k7f4b8_6c1v2b3n4m5=w500-h500-rw",
-  pubg: "https://play-lh.googleusercontent.com/JRd05pyBHqJgnKoziQnikkhKnioZf55n01Q_-Filter_781=w500-h500-rw",
-  tango: "https://play-lh.googleusercontent.com/y1v2b3n4m5_tango_live_stream_app_icon=w500-h500-rw",
-  superlive: "https://play-lh.googleusercontent.com/uR1_WkH13a3Z6B7q7B2k2mX2fW8vY9v4K7b1j_9_Y1y5m2k7f4b8_6c1v2b3n4m5=w500-h500-rw",
+// High quality embedded clean UI icons for games & apps
+const EMBEDDED_ASSETS = {
+  roblox: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' fill='%230055ff' rx='30'/%3E%3Cpolygon points='140,80 420,135 360,415 80,360' fill='%23ffffff'/%3E%3Cpolygon points='225,215 285,225 275,285 215,275' fill='%230055ff'/%3E%3C/svg%3E",
+  freefire: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Cdefs%3E%3ClinearGradient id='ff' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff9900'/%3E%3Cstop offset='100%25' stop-color='%23e50914'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='500' height='500' fill='%23111317' rx='30'/%3E%3Cpolygon points='250,70 390,190 250,420 110,190' fill='url(%23ff)' filter='drop-shadow(0 10px 20px rgba(229,9,20,0.5))'/%3E%3Cpolygon points='250,70 250,420 390,190' fill='%23ffffff' opacity='0.25'/%3E%3Ctext x='50%25' y='465' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='36' text-anchor='middle'%3EFREE FIRE%3C/text%3E%3C/svg%3E",
+  pubg: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' fill='%23111317' rx='30'/%3E%3Ccircle cx='250' cy='210' r='130' fill='%23f39c12'/%3E%3Ctext x='50%25' y='245' fill='%23111317' font-family='sans-serif' font-weight='900' font-size='75' text-anchor='middle'%3EPUBG%3C/text%3E%3Crect x='100' y='370' width='300' height='50' rx='10' fill='%23e50914'/%3E%3Ctext x='50%25' y='405' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='28' text-anchor='middle'%3EMOBILE UC%3C/text%3E%3C/svg%3E",
+  tango: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Cdefs%3E%3ClinearGradient id='tg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff0055'/%3E%3Cstop offset='100%25' stop-color='%23a200ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='500' height='500' fill='%23ffffff' rx='30'/%3E%3Cpath d='M150 140 c40 -40 160 -40 200 0 c15 15 15 40 0 55 c-50 50 -130 130 -130 180 c0 30 30 50 60 50 c25 0 45 -15 55 -35' fill='none' stroke='url(%23tg)' stroke-width='60' stroke-linecap='round'/%3E%3C/svg%3E",
+  superlive: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' fill='%231a73e8' rx='30'/%3E%3Ctext x='50%25' y='280' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='220' text-anchor='middle'%3ES%3C/text%3E%3Ctext x='50%25' y='400' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='45' text-anchor='middle' letter-spacing='4'%3ESUPERLIVE%3C/text%3E%3C/svg%3E",
   google: "https://i.postimg.cc/tgyXnxz4/file-000000003ef881f4a88496afad4a6fb1.png"
 };
 
@@ -16,7 +16,7 @@ const DEFAULT_PRODUCTS = [
     name: "Roblox Gift Card 🌍 Global",
     category: "giftcards",
     type: "giftcard",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Roblox_Logo_2022.svg/512px-Roblox_Logo_2022.png",
+    image: EMBEDDED_ASSETS.roblox,
     displayPrice: 8.97,
     packages: [
       { name: "400 Robux Gift Card", price: 8.97 },
@@ -32,7 +32,7 @@ const DEFAULT_PRODUCTS = [
     name: "Free Fire Diamonds 🌍 Direct UID",
     category: "games",
     type: "topup",
-    image: "https://cdn.icon-icons.com/icons2/3053/PNG/512/garena_free_fire_macos_bigsur_icon_189679.png",
+    image: EMBEDDED_ASSETS.freefire,
     displayPrice: 2.00,
     packages: [
       { name: "210+21 Diamonds", price: 2.00 },
@@ -46,7 +46,7 @@ const DEFAULT_PRODUCTS = [
     name: "PUBG Mobile UC 🌍 Global",
     category: "games",
     type: "topup",
-    image: "https://images.seeklogo.com/logo-png/33/2/pubg-mobile-logo-png_seeklogo-338275.png",
+    image: EMBEDDED_ASSETS.pubg,
     displayPrice: 2.14,
     packages: [
       { name: "120 UC", price: 2.14 },
@@ -62,7 +62,7 @@ const DEFAULT_PRODUCTS = [
     name: "Tango Live Coins 🌍 Top-Up",
     category: "apps",
     type: "topup",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Tango_me_logo.svg/512px-Tango_me_logo.svg.png",
+    image: EMBEDDED_ASSETS.tango,
     displayPrice: 2.86,
     packages: [
       { name: "300 Coins", price: 2.86 },
@@ -77,7 +77,7 @@ const DEFAULT_PRODUCTS = [
     name: "SuperLive Coins 🌍 Top-Up",
     category: "apps",
     type: "topup",
-    image: "https://play-lh.googleusercontent.com/uR1_WkH13a3Z6B7q7B2k2mX2fW8vY9v4K7b1j_9_Y1y5m2k7f4b8_6c1v2b3n4m5",
+    image: EMBEDDED_ASSETS.superlive,
     displayPrice: 6.79,
     packages: [
       { name: "605 Coins", price: 6.79 },
@@ -92,7 +92,7 @@ const DEFAULT_PRODUCTS = [
     name: "Google AI Pro 18 Months",
     category: "subs",
     type: "giftcard",
-    image: "https://i.postimg.cc/tgyXnxz4/file-000000003ef881f4a88496afad4a6fb1.png",
+    image: EMBEDDED_ASSETS.google,
     displayPrice: 6.79,
     packages: [
       { name: "اشتراك 18 شهر", price: 6.79 }
@@ -145,9 +145,9 @@ function safeSet(key, value) {
   }
 }
 
-// Force immediate update
+// Reset stored products to ensure clean rendering
 let products = DEFAULT_PRODUCTS;
-safeSet('ak_products_verified_v1', products);
+safeSet('ak_products_production_v1', products);
 
 let paymentMethods = safeGet('ak_payment_methods', DEFAULT_PAYMENTS);
 let storeSettings = safeGet('ak_settings', {
@@ -242,7 +242,9 @@ function renderProducts() {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
-      <img src="${p.image}" class="product-img" alt="${p.name}" style="height: 170px; width: 100%; object-fit: contain; background: #161b22; padding: 8px;">
+      <div style="background:#161b22; height:160px; display:flex; align-items:center; justify-content:center; border-top-left-radius:12px; border-top-right-radius:12px; overflow:hidden;">
+        <img src="${p.image}" class="product-img" alt="${p.name}" style="width:100%; height:100%; object-fit:contain; padding:6px;">
+      </div>
       <div class="product-info">
         <h3 class="product-title">${p.name}</h3>
         <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.4rem;">
@@ -594,7 +596,7 @@ function saveProduct(e) {
     name,
     category,
     type,
-    image: imgUrl || "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Roblox_Logo_2022.svg/512px-Roblox_Logo_2022.png",
+    image: imgUrl || EMBEDDED_ASSETS.roblox,
     displayPrice: customDisplayPrice,
     packages: parsedPackages
   };
@@ -605,7 +607,6 @@ function saveProduct(e) {
     products.push(newProdData);
   }
 
-  safeSet('ak_products_verified_v1', products);
   renderProducts();
   renderAdminProductsList();
   resetProductForm();
@@ -615,7 +616,6 @@ function saveProduct(e) {
 function deleteProduct(id) {
   if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
     products = products.filter(p => p.id !== id);
-    safeSet('ak_products_verified_v1', products);
     renderProducts();
     renderAdminProductsList();
   }
