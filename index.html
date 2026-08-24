@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title id="store-title">Akatsuki-Store</title>
-  <link rel="stylesheet" href="style.css?v=fresh_final_1">
+  <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -299,6 +299,683 @@
     </div>
   </footer>
 
-  <script src="app.js?v=live_real_posters"></script>
+  <!-- Complete Javascript Inlined to Eliminate Cache & File Desync Completely -->
+  <script>
+    const DZD_RATE = 280;
+
+    const EXACT_IMAGES = {
+      roblox: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' fill='%230055ff' rx='30'/%3E%3Cpolygon points='140,80 420,135 360,415 80,360' fill='%23ffffff'/%3E%3Cpolygon points='225,215 285,225 275,285 215,275' fill='%230055ff'/%3E%3C/svg%3E",
+      freefire: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Cdefs%3E%3ClinearGradient id='ff' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff9900'/%3E%3Cstop offset='100%25' stop-color='%23e50914'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='500' height='500' fill='%23111317' rx='30'/%3E%3Cpolygon points='250,70 390,190 250,420 110,190' fill='url(%23ff)' filter='drop-shadow(0 10px 20px rgba(229,9,20,0.5))'/%3E%3Cpolygon points='250,70 250,420 390,190' fill='%23ffffff' opacity='0.25'/%3E%3Ctext x='50%25' y='465' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='36' text-anchor='middle'%3EFREE FIRE%3C/text%3E%3C/svg%3E",
+      pubg: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' fill='%23111317' rx='30'/%3E%3Ccircle cx='250' cy='210' r='130' fill='%23f39c12'/%3E%3Ctext x='50%25' y='245' fill='%23111317' font-family='sans-serif' font-weight='900' font-size='75' text-anchor='middle'%3EPUBG%3C/text%3E%3Crect x='100' y='370' width='300' height='50' rx='10' fill='%23e50914'/%3E%3Ctext x='50%25' y='405' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='28' text-anchor='middle'%3EMOBILE UC%3C/text%3E%3C/svg%3E",
+      tango: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Cdefs%3E%3ClinearGradient id='tg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff0055'/%3E%3Cstop offset='100%25' stop-color='%23a200ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='500' height='500' fill='%23ffffff' rx='30'/%3E%3Cpath d='M150 140 c40 -40 160 -40 200 0 c15 15 15 40 0 55 c-50 50 -130 130 -130 180 c0 30 30 50 60 50 c25 0 45 -15 55 -35' fill='none' stroke='url(%23tg)' stroke-width='60' stroke-linecap='round'/%3E%3C/svg%3E",
+      superlive: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Crect width='500' height='500' fill='%231a73e8' rx='30'/%3E%3Ctext x='50%25' y='280' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='220' text-anchor='middle'%3ES%3C/text%3E%3Ctext x='50%25' y='400' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='45' text-anchor='middle' letter-spacing='4'%3ESUPERLIVE%3C/text%3E%3C/svg%3E",
+      google: "https://i.postimg.cc/tgyXnxz4/file-000000003ef881f4a88496afad4a6fb1.png"
+    };
+
+    const PRODUCTS_DATA = [
+      {
+        id: "p1",
+        name: "roblox gift card 🌍Global",
+        category: "giftcards",
+        type: "giftcard",
+        image: EXACT_IMAGES.roblox,
+        displayPrice: 8.97,
+        packages: [
+          { name: "400 Robux Gift Card", price: 8.97 },
+          { name: "800 Robux Gift Card", price: 12.93 },
+          { name: "1000 Robux Gift Card", price: 19.30 },
+          { name: "2000 Robux Gift Card", price: 32.81 },
+          { name: "4500 Robux Gift Card", price: 69.40 },
+          { name: "10000 Robux Gift Card", price: 140.96 }
+        ]
+      },
+      {
+        id: "p2",
+        name: "Freefier Diamonds 🌍cod global",
+        category: "giftcards",
+        type: "giftcard",
+        image: EXACT_IMAGES.freefire,
+        displayPrice: 2.00,
+        packages: [
+          { name: "210+21 Diamonds", price: 2.00 },
+          { name: "530+53 Diamonds", price: 5.00 },
+          { name: "1080+108 Diamonds", price: 10.00 },
+          { name: "2200+220 Diamonds", price: 21.00 }
+        ]
+      },
+      {
+        id: "p3",
+        name: "Pubg mobile UC cod 🌍Global",
+        category: "giftcards",
+        type: "giftcard",
+        image: EXACT_IMAGES.pubg,
+        displayPrice: 2.14,
+        packages: [
+          { name: "120 UC", price: 2.14 },
+          { name: "325 UC", price: 4.64 },
+          { name: "660 UC", price: 9.11 },
+          { name: "1800 UC", price: 21.43 },
+          { name: "3850 UC", price: 41.96 },
+          { name: "8100 UC", price: 83.21 }
+        ]
+      },
+      {
+        id: "p4",
+        name: "Tango global topup 🌍",
+        category: "apps",
+        type: "topup",
+        image: EXACT_IMAGES.tango,
+        displayPrice: 2.86,
+        packages: [
+          { name: "300 Coins", price: 2.86 },
+          { name: "750 Coins", price: 5.71 },
+          { name: "1500 Coins", price: 10.71 },
+          { name: "3750 Coins", price: 23.39 },
+          { name: "7500 Coins", price: 48.21 }
+        ]
+      },
+      {
+        id: "p5",
+        name: "superlive topup",
+        category: "apps",
+        type: "topup",
+        image: EXACT_IMAGES.superlive,
+        displayPrice: 6.79,
+        packages: [
+          { name: "605 Coins", price: 6.79 },
+          { name: "1230 Coins", price: 11.43 },
+          { name: "3125 Coins", price: 23.57 },
+          { name: "6250 Coins", price: 45.36 },
+          { name: "10000 Coins", price: 71.43 }
+        ]
+      },
+      {
+        id: "p6",
+        name: "Google ai Pro 18months",
+        category: "subs",
+        type: "giftcard",
+        image: EXACT_IMAGES.google,
+        displayPrice: 6.79,
+        packages: [
+          { name: "اشتراك 18 شهر", price: 6.79 }
+        ]
+      }
+    ];
+
+    const DEFAULT_PAYMENTS = [
+      { id: "baridimob", name: "بريدي موب BaridiMob", details: "RIP: 00799999002345678912\nNom: AKATSUKI STORE", enabled: true },
+      { id: "bybit", name: "Bybit", details: "UID: 396701175\nUSDT (BEP20): 0x7669599c20fff6834c45b0cfc6b7836466654c86", enabled: true },
+      { id: "binance", name: "Binance", details: "UID: 541429837\nUSDT (BEP20): 0xb7b84ff32227b6f0fb37eb1cadc29ab5006adcce", enabled: true },
+      { id: "paypal", name: "PayPal", details: "Email: bandouis055@gmail.com", enabled: true }
+    ];
+
+    function safeGet(key, fallback) {
+      try {
+        const item = localStorage.getItem(key);
+        return item ? JSON.parse(item) : fallback;
+      } catch (e) {
+        return fallback;
+      }
+    }
+
+    function safeSet(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // Force real items directly
+    let products = PRODUCTS_DATA;
+    let paymentMethods = safeGet('ak_payment_methods', DEFAULT_PAYMENTS);
+    let storeSettings = safeGet('ak_settings', {
+      name: "Akatsuki-Store",
+      logoUrl: "",
+      heroUrl: "",
+      galleryUrls: [],
+      heroTitle: "أفضل عروض الشحن والبطاقات الرقمية",
+      heroSubtitle: "تسليم فوري وموثوق | سعر الصرف: 1$ = 280 دج",
+      hideHeroText: false,
+      heroTextAlign: "center",
+      whatsapp: "213556334891"
+    });
+    let orders = safeGet('ak_orders', []);
+    let users = safeGet('ak_users', []);
+    let currentUser = safeGet('ak_current_user', null);
+
+    let currentCurrency = 'USD';
+    let activeCategory = 'all';
+    let selectedPaymentMethodId = '';
+    let selectedProduct = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderStoreBranding();
+      renderProducts();
+      renderFooterGallery();
+      updateUserUI();
+    });
+
+    function renderStoreBranding() {
+      const brandElem = document.getElementById('brand-name');
+      const titleElem = document.getElementById('store-title');
+      const logoElem = document.getElementById('brand-logo');
+      const heroBox = document.getElementById('hero-content-box');
+      const heroTitle = document.getElementById('hero-title');
+      const heroSub = document.getElementById('hero-subtitle');
+
+      if (brandElem) brandElem.innerText = storeSettings.name || 'Akatsuki-Store';
+      if (titleElem) titleElem.innerText = storeSettings.name || 'Akatsuki-Store';
+      
+      if (storeSettings.logoUrl && logoElem) {
+        logoElem.src = storeSettings.logoUrl;
+        logoElem.classList.remove('hidden');
+      } else if (logoElem) {
+        logoElem.classList.add('hidden');
+      }
+
+      const hero = document.getElementById('hero-section');
+      if (hero && storeSettings.heroUrl) {
+        hero.style.backgroundImage = `linear-gradient(rgba(11,13,16,0.6), rgba(11,13,16,0.85)), url('${storeSettings.heroUrl}')`;
+      }
+
+      if (heroBox) {
+        if (storeSettings.hideHeroText) {
+          heroBox.classList.add('hidden');
+        } else {
+          heroBox.classList.remove('hidden');
+          heroBox.style.textAlign = storeSettings.heroTextAlign || 'center';
+          if (heroTitle) heroTitle.innerText = storeSettings.heroTitle || "أفضل عروض الشحن والبطاقات الرقمية";
+          if (heroSub) heroSub.innerText = storeSettings.heroSubtitle || "تسليم فوري وموثوق | سعر الصرف: 1$ = 280 دج";
+        }
+      }
+    }
+
+    function formatPrice(usdPrice) {
+      if (currentCurrency === 'DZD') {
+        return `${Math.round(usdPrice * DZD_RATE).toLocaleString()} دج`;
+      }
+      return `$${usdPrice.toFixed(2)}`;
+    }
+
+    function changeCurrency(curr) {
+      currentCurrency = curr;
+      renderProducts();
+      if (selectedProduct) updateCalculatedPrice();
+    }
+
+    function renderProducts() {
+      const container = document.getElementById('products-container');
+      if (!container) return;
+      container.innerHTML = '';
+      
+      const filtered = activeCategory === 'all' 
+        ? products 
+        : products.filter(p => p.category === activeCategory);
+
+      filtered.forEach(p => {
+        let showPrice = (p.displayPrice !== undefined && p.displayPrice !== null && p.displayPrice > 0) 
+          ? p.displayPrice 
+          : (p.packages && p.packages.length > 0 ? p.packages[0].price : 1.00);
+
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <div style="background:#161b22; height:160px; display:flex; align-items:center; justify-content:center; border-top-left-radius:12px; border-top-right-radius:12px; overflow:hidden;">
+            <img src="${p.image}" class="product-img" alt="${p.name}" style="width:100%; height:100%; object-fit:contain; padding:4px;">
+          </div>
+          <div class="product-info">
+            <h3 class="product-title">${p.name}</h3>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.4rem;">
+              ${p.type === 'giftcard' ? '<i class="fa-solid fa-gift"></i> بطاقة كود رقمي' : '<i class="fa-solid fa-bolt"></i> شحن مباشر بالـ ID'}
+            </p>
+            <div class="product-pricing">
+              <span class="starting-price">${formatPrice(showPrice)}</span>
+              <button class="btn-primary" onclick="openOrderModal('${p.id}')">شراء / شحن</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterCategory(cat) {
+      activeCategory = cat;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(`tab-${cat}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      renderProducts();
+    }
+
+    function openOrderModal(productId) {
+      selectedProduct = products.find(p => p.id === productId);
+      if (!selectedProduct) return;
+
+      document.getElementById('order-product-id').value = selectedProduct.id;
+      document.getElementById('order-product-type').value = selectedProduct.type;
+      document.getElementById('modal-product-name').innerText = selectedProduct.name;
+      
+      const receiptElem = document.getElementById('order-receipt-file');
+      if (receiptElem) receiptElem.value = "";
+
+      const uidWarning = document.getElementById('uid-warning-box');
+      const gcInfo = document.getElementById('giftcard-info-box');
+      const targetLabel = document.getElementById('lbl-target-input');
+      const targetInput = document.getElementById('order-target-value');
+
+      if (selectedProduct.type === 'giftcard') {
+        if (uidWarning) uidWarning.classList.add('hidden');
+        if (gcInfo) gcInfo.classList.remove('hidden');
+        targetLabel.innerText = "البريد الإلكتروني لاستلام الكود / الحساب:";
+        targetInput.type = "email";
+        targetInput.placeholder = "أدخل بريدك الإلكتروني هنا";
+        targetInput.value = currentUser ? currentUser.email : "";
+      } else {
+        if (uidWarning) uidWarning.classList.remove('hidden');
+        if (gcInfo) gcInfo.classList.add('hidden');
+        targetLabel.innerText = "معرف الحساب / Player ID (UID):";
+        targetInput.type = "text";
+        targetInput.placeholder = "أدخل ID حسابك في اللعبة";
+        targetInput.value = "";
+      }
+
+      const pkgSelect = document.getElementById('order-package');
+      pkgSelect.innerHTML = '';
+      selectedProduct.packages.forEach((pkg, index) => {
+        const opt = document.createElement('option');
+        opt.value = index;
+        opt.innerText = `${pkg.name} - ${formatPrice(pkg.price)}`;
+        pkgSelect.appendChild(opt);
+      });
+
+      renderActivePaymentMethods();
+      updateCalculatedPrice();
+      document.getElementById('order-modal').style.display = 'flex';
+    }
+
+    function closeOrderModal() {
+      document.getElementById('order-modal').style.display = 'none';
+    }
+
+    function renderActivePaymentMethods() {
+      const container = document.getElementById('payment-options-container');
+      if (!container) return;
+      const activeMethods = paymentMethods.filter(m => m.enabled === true);
+      
+      if (activeMethods.length === 0) {
+        container.innerHTML = '<p style="color:#ff6b6b; grid-column:span 3; font-size:0.85rem;">لا توجد طرق دفع مفعلة حالياً.</p>';
+        document.getElementById('payment-details-box').innerHTML = '';
+        return;
+      }
+
+      if (!selectedPaymentMethodId || !activeMethods.find(m => m.id === selectedPaymentMethodId)) {
+        selectedPaymentMethodId = activeMethods[0].id;
+      }
+
+      container.innerHTML = activeMethods.map(m => `
+        <div class="pay-card ${selectedPaymentMethodId === m.id ? 'active' : ''}" onclick="selectPaymentMethod('${m.id}')">
+          ${m.name}
+        </div>
+      `).join('');
+
+      renderSelectedPaymentDetails();
+    }
+
+    function selectPaymentMethod(id) {
+      selectedPaymentMethodId = id;
+      renderActivePaymentMethods();
+    }
+
+    function renderSelectedPaymentDetails() {
+      const box = document.getElementById('payment-details-box');
+      if (!box) return;
+      const current = paymentMethods.find(m => m.id === selectedPaymentMethodId);
+      if (current) {
+        box.innerHTML = `
+          <div style="margin-bottom:6px; font-weight:bold; color:#fff;">بيانات التحويل (${current.name}):</div>
+          <pre style="font-family:inherit; white-space:pre-wrap; margin:0; color:#c9d1d9;">${current.details}</pre>
+        `;
+      }
+    }
+
+    function updateCalculatedPrice() {
+      if (!selectedProduct) return;
+      const pkgIndex = document.getElementById('order-package').value;
+      const qty = parseInt(document.getElementById('order-qty').value) || 1;
+      const usdTotal = selectedProduct.packages[pkgIndex].price * qty;
+      const dzdTotal = Math.round(usdTotal * DZD_RATE);
+
+      document.getElementById('order-total-price').innerText = `${formatPrice(usdTotal)} (${usdTotal.toFixed(2)}$ / ${dzdTotal.toLocaleString()} دج)`;
+    }
+
+    function handleOrderSubmit(e) {
+      e.preventDefault();
+      const fileInput = document.getElementById('order-receipt-file');
+      if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          processOrderFinal(event.target.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        processOrderFinal("");
+      }
+    }
+
+    function processOrderFinal(receiptImage) {
+      const targetVal = document.getElementById('order-target-value').value.trim();
+      const pkgIndex = document.getElementById('order-package').value;
+      const qty = document.getElementById('order-qty').value;
+      const pkg = selectedProduct.packages[pkgIndex];
+      const usdTotal = (pkg.price * qty).toFixed(2);
+      const dzdTotal = Math.round(pkg.price * qty * DZD_RATE).toLocaleString();
+
+      const selectedPayObj = paymentMethods.find(m => m.id === selectedPaymentMethodId);
+      const payName = selectedPayObj ? selectedPayObj.name : 'طريقة دفع';
+
+      const orderId = 'AK-' + Math.floor(100000 + Math.random() * 900000);
+      
+      const newOrder = {
+        id: orderId,
+        product: selectedProduct.name,
+        type: selectedProduct.type,
+        package: pkg.name,
+        quantity: qty,
+        targetValue: targetVal,
+        totalUSD: `$${usdTotal}`,
+        totalDZD: `${dzdTotal} دج`,
+        paymentMethod: payName,
+        receiptImg: receiptImage,
+        status: 'Pending Verification',
+        deliveredCode: '',
+        date: new Date().toLocaleDateString(),
+        userEmail: currentUser ? currentUser.email : (selectedProduct.type === 'giftcard' ? targetVal : 'Guest')
+      };
+
+      orders.push(newOrder);
+      safeSet('ak_orders', orders);
+
+      const targetFieldText = selectedProduct.type === 'giftcard' ? `إيميل الاستلام: ${targetVal}` : `معرف الحساب (UID): ${targetVal}`;
+
+      const waMsg = encodeURIComponent(
+        `*طلب جديد من Akatsuki-Store*\n` +
+        `رقم الطلب: ${orderId}\n` +
+        `نوع الطلب: ${selectedProduct.type === 'giftcard' ? 'بطاقة رقمية / Gift Card' : 'شحن ألعاب / Top-Up'}\n` +
+        `المنتج: ${selectedProduct.name}\n` +
+        `الباقة: ${pkg.name}\n` +
+        `الكمية: ${qty}\n` +
+        `${targetFieldText}\n` +
+        `طريقة الدفع: ${payName}\n` +
+        `المبلغ: $${usdTotal} (${dzdTotal} دج)\n\n` +
+        `✅ *ملاحظة:* تم إرسال الطلب مع وصل الدفع المرفق.`
+      );
+
+      alert("✅ تم إرسال طلبك بنجاح! جاري تحويلك إلى واتساب لتأكيد الشحن الفوري.");
+      closeOrderModal();
+
+      const waUrl = `https://wa.me/${storeSettings.whatsapp || '213556334891'}?text=${waMsg}`;
+      window.open(waUrl, '_blank');
+    }
+
+    function addNewPaymentMethod(e) {
+      e.preventDefault();
+      const name = document.getElementById('new-pay-name').value.trim();
+      const details = document.getElementById('new-pay-details').value.trim();
+
+      paymentMethods.push({
+        id: 'pay_' + Date.now(),
+        name,
+        details,
+        enabled: true
+      });
+
+      safeSet('ak_payment_methods', paymentMethods);
+      renderAdminPaymentsList();
+      renderActivePaymentMethods();
+      document.getElementById('new-payment-form').reset();
+      alert("تمت إضافة طريقة الدفع بنجاح!");
+    }
+
+    function togglePaymentStatus(id) {
+      const index = paymentMethods.findIndex(m => m.id === id);
+      if (index !== -1) {
+        paymentMethods[index].enabled = !paymentMethods[index].enabled;
+        safeSet('ak_payment_methods', paymentMethods);
+        renderAdminPaymentsList();
+        renderActivePaymentMethods();
+      }
+    }
+
+    function deletePaymentMethod(id) {
+      if (confirm("هل تريد حذف طريقة الدفع نهائياً؟")) {
+        paymentMethods = paymentMethods.filter(m => m.id !== id);
+        safeSet('ak_payment_methods', paymentMethods);
+        renderAdminPaymentsList();
+        renderActivePaymentMethods();
+      }
+    }
+
+    function renderAdminPaymentsList() {
+      const container = document.getElementById('admin-payments-list');
+      if (!container) return;
+      container.innerHTML = paymentMethods.map(m => `
+        <div style="background:var(--bg-color); padding:0.8rem; margin-bottom:0.6rem; border-radius:6px; display:flex; justify-content:space-between; align-items:center; border: 1px solid ${m.enabled ? '#30363d' : '#e50914'};">
+          <div style="max-width: 65%;">
+            <strong>${m.name}</strong> 
+            <span style="font-size:0.75rem; font-weight:bold; color:${m.enabled ? '#4BB543' : '#ff6b6b'}; margin-right:5px;">
+              ● ${m.enabled ? 'مفعلة وشغالة' : 'معطلة مؤقتاً'}
+            </span>
+            <p style="font-size:0.75rem; color:var(--text-muted); white-space:pre-wrap; margin-top:4px;">${m.details}</p>
+          </div>
+          <div style="display:flex; gap:6px; flex-shrink:0;">
+            <button onclick="togglePaymentStatus('${m.id}')" style="background:${m.enabled ? '#e50914' : '#4BB543'}; color:#fff; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold; font-size:0.8rem;">
+              ${m.enabled ? 'إيقاف' : 'تفعيل'}
+            </button>
+            <button onclick="deletePaymentMethod('${m.id}')" style="background:#2d333b; color:#8b949e; border:1px solid #444c56; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:0.8rem;">
+              حذف
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openAuthModal() {
+      document.getElementById('auth-modal').style.display = 'flex';
+      if (currentUser) showUserDashboard();
+    }
+
+    function closeAuthModal() {
+      document.getElementById('auth-modal').style.display = 'none';
+    }
+
+    function toggleAuthForm(mode) {
+      if (mode === 'login') {
+        document.getElementById('login-form').classList.remove('hidden');
+        document.getElementById('register-form').classList.add('hidden');
+      } else {
+        document.getElementById('login-form').classList.add('hidden');
+        document.getElementById('register-form').classList.remove('hidden');
+      }
+    }
+
+    function handleUserRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const pass = document.getElementById('reg-password').value;
+
+      if (users.find(u => u.email === email)) {
+        alert("هذا البريد مسجل مسبقاً!");
+        return;
+      }
+
+      const newUser = { name, email, pass };
+      users.push(newUser);
+      safeSet('ak_users', users);
+      currentUser = newUser;
+      safeSet('ak_current_user', currentUser);
+      updateUserUI();
+      showUserDashboard();
+    }
+
+    function handleUserLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const pass = document.getElementById('login-password').value;
+
+      const found = users.find(u => u.email === email && u.pass === pass);
+      if (found) {
+        currentUser = found;
+        safeSet('ak_current_user', currentUser);
+        updateUserUI();
+        showUserDashboard();
+      } else {
+        alert("بيانات الدخول غير صحيحة");
+      }
+    }
+
+    function showUserDashboard() {
+      document.getElementById('login-form').classList.add('hidden');
+      document.getElementById('register-form').classList.add('hidden');
+      document.getElementById('user-dashboard').classList.remove('hidden');
+      document.getElementById('welcome-user').innerText = `مرحباً بك، ${currentUser.name}`;
+
+      const list = document.getElementById('user-orders-list');
+      const userOrders = orders.filter(o => o.userEmail === currentUser.email || o.targetValue === currentUser.email);
+      
+      if (userOrders.length === 0) {
+        list.innerHTML = "<p>لا توجد طلبات سابقة بعد.</p>";
+      } else {
+        list.innerHTML = userOrders.map(o => `
+          <div style="background:var(--bg-color); padding:0.6rem; margin-bottom:0.5rem; border-radius:6px; border:1px solid var(--border-color);">
+            <strong>${o.product} (${o.package})</strong> - ${o.totalUSD} / ${o.totalDZD} <br>
+            <small>الحالة: <b>${o.status}</b> | التاريخ: ${o.date}</small>
+            ${o.deliveredCode ? `<div style="background:#162a19; color:#4BB543; padding:5px; margin-top:5px; border-radius:4px;">كود البطاقة المستلم: <b>${o.deliveredCode}</b></div>` : ''}
+          </div>
+        `).join('');
+      }
+    }
+
+    function logoutUser() {
+      currentUser = null;
+      localStorage.removeItem('ak_current_user');
+      location.reload();
+    }
+
+    function updateUserUI() {
+      if (currentUser) {
+        const userBtn = document.getElementById('user-btn-text');
+        if (userBtn) userBtn.innerText = currentUser.name;
+      }
+    }
+
+    function openAdminModal() {
+      document.getElementById('admin-modal').style.display = 'flex';
+    }
+
+    function closeAdminModal() {
+      document.getElementById('admin-modal').style.display = 'none';
+    }
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const em = document.getElementById('admin-email').value.trim();
+      const ps = document.getElementById('admin-pass').value;
+
+      if (em === "sifoudex46@gmail.com" && ps === "sifou0658613828") {
+        document.getElementById('admin-login-view').classList.add('hidden');
+        document.getElementById('admin-panel-view').classList.remove('hidden');
+        renderAdminPaymentsList();
+        renderAdminOrdersTable();
+        loadAdminSettingsInputs();
+      } else {
+        alert("خطأ في بيانات دخول الأدمن!");
+      }
+    }
+
+    function logoutAdmin() {
+      document.getElementById('admin-login-view').classList.remove('hidden');
+      document.getElementById('admin-panel-view').classList.add('hidden');
+      closeAdminModal();
+    }
+
+    function switchAdminTab(tab) {
+      document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+      
+      if (tab === 'payments') {
+        document.getElementById('tab-admin-payments').classList.remove('hidden');
+        renderAdminPaymentsList();
+      } else if (tab === 'orders') {
+        document.getElementById('tab-admin-orders').classList.remove('hidden');
+        renderAdminOrdersTable();
+      } else if (tab === 'settings') {
+        document.getElementById('tab-admin-settings').classList.remove('hidden');
+        loadAdminSettingsInputs();
+      }
+    }
+
+    function loadAdminSettingsInputs() {
+      const nameInput = document.getElementById('setting-store-name');
+      const logoInput = document.getElementById('setting-logo-url');
+      const heroInput = document.getElementById('setting-hero-url');
+      const galleryInput = document.getElementById('setting-gallery-urls');
+      const heroTitle = document.getElementById('setting-hero-title');
+      const heroSub = document.getElementById('setting-hero-sub');
+      const hideHeroText = document.getElementById('setting-hide-hero-text');
+      const heroAlign = document.getElementById('setting-hero-align');
+
+      if (nameInput) nameInput.value = storeSettings.name || '';
+      if (logoInput) logoInput.value = storeSettings.logoUrl || '';
+      if (heroInput) heroInput.value = storeSettings.heroUrl || '';
+      if (galleryInput) galleryInput.value = (storeSettings.galleryUrls || []).join(', ');
+      if (heroTitle) heroTitle.value = storeSettings.heroTitle || '';
+      if (heroSub) heroSub.value = storeSettings.heroSubtitle || '';
+      if (hideHeroText) hideHeroText.checked = storeSettings.hideHeroText || false;
+      if (heroAlign) heroAlign.value = storeSettings.heroTextAlign || 'center';
+    }
+
+    function saveStoreSettings() {
+      const name = document.getElementById('setting-store-name').value.trim();
+      const logoUrl = document.getElementById('setting-logo-url').value.trim();
+      const heroUrl = document.getElementById('setting-hero-url').value.trim();
+      const galleryRaw = document.getElementById('setting-gallery-urls').value.trim();
+      const heroTitle = document.getElementById('setting-hero-title').value.trim();
+      const heroSub = document.getElementById('setting-hero-sub').value.trim();
+      const hideHeroText = document.getElementById('setting-hide-hero-text').checked;
+      const heroTextAlign = document.getElementById('setting-hero-align').value;
+
+      if (name) storeSettings.name = name;
+      storeSettings.logoUrl = logoUrl;
+      storeSettings.heroUrl = heroUrl;
+      storeSettings.heroTitle = heroTitle;
+      storeSettings.heroSubtitle = heroSub;
+      storeSettings.hideHeroText = hideHeroText;
+      storeSettings.heroTextAlign = heroTextAlign;
+
+      if (galleryRaw) {
+        storeSettings.galleryUrls = galleryRaw.split(/[\n,]+/).map(u => u.trim()).filter(u => u.length > 0);
+      } else {
+        storeSettings.galleryUrls = [];
+      }
+
+      safeSet('ak_settings', storeSettings);
+      renderStoreBranding();
+      renderFooterGallery();
+      alert("✅ تم حفظ إعدادات المظهر بنجاح!");
+    }
+
+    function renderFooterGallery() {
+      const container = document.getElementById('bottom-gallery-container');
+      if (!container) return;
+      if (!storeSettings.galleryUrls || storeSettings.galleryUrls.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+      container.innerHTML = storeSettings.galleryUrls.map(url => `<img src="${url}" alt="Gallery item" onerror="this.style.display='none'">`).join('');
+    }
+  </script>
 </body>
 </html>
