@@ -1,7 +1,7 @@
 // Rate: 1 USD = 280 DZD
 const DZD_RATE = 280;
 
-const INITIAL_PRODUCTS = [
+const DEFAULT_PRODUCTS = [
   {
     id: "p1",
     name: "Roblox (Robux)",
@@ -22,9 +22,9 @@ const INITIAL_PRODUCTS = [
     type: "giftcard",
     image: "https://images.unsplash.com/photo-1612287233207-6f8b5f36e4f3?w=500",
     packages: [
-      { name: "$10 Global Digital Card", price: 10.00 },
-      { name: "$25 Global Digital Card", price: 25.00 },
-      { name: "$50 Global Digital Card", price: 50.00 }
+      { name: "$10 Digital Card", price: 10.00 },
+      { name: "$25 Digital Card", price: 25.00 },
+      { name: "$50 Digital Card", price: 50.00 }
     ]
   },
   {
@@ -84,8 +84,8 @@ const INITIAL_PRODUCTS = [
     type: "giftcard",
     image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=500",
     packages: [
-      { name: "1 Month Pro Account", price: 3.50 },
-      { name: "12 Months Pro Account", price: 22.00 }
+      { name: "1 Month Pro", price: 3.50 },
+      { name: "12 Months Pro", price: 22.00 }
     ]
   },
   {
@@ -100,7 +100,7 @@ const INITIAL_PRODUCTS = [
   }
 ];
 
-const INITIAL_PAYMENT_METHODS = [
+const DEFAULT_PAYMENTS = [
   {
     id: "bybit",
     name: "Bybit",
@@ -121,11 +121,12 @@ const INITIAL_PAYMENT_METHODS = [
   }
 ];
 
-// --- State ---
-let products = JSON.parse(localStorage.getItem('ak_products')) || INITIAL_PRODUCTS;
-let paymentMethods = JSON.parse(localStorage.getItem('ak_payment_methods')) || INITIAL_PAYMENT_METHODS;
+// Persistent App State
+let products = JSON.parse(localStorage.getItem('ak_products')) || DEFAULT_PRODUCTS;
+let paymentMethods = JSON.parse(localStorage.getItem('ak_payment_methods')) || DEFAULT_PAYMENTS;
 let storeSettings = JSON.parse(localStorage.getItem('ak_settings')) || {
   name: "Akatsuki-Store",
+  logoImage: "",
   heroImage: "",
   gallery: [],
   whatsapp: "213556334891"
@@ -138,6 +139,7 @@ let currentCurrency = 'USD';
 let currentLang = 'ar';
 let activeCategory = 'all';
 let selectedPaymentMethodId = '';
+let selectedProduct = null;
 
 const I18N = {
   ar: {
@@ -174,16 +176,31 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function renderStoreBranding() {
-  document.getElementById('brand-name').innerText = storeSettings.name;
-  document.getElementById('store-title').innerText = storeSettings.name;
-  if (storeSettings.heroImage) {
-    document.getElementById('hero-section').style.backgroundImage = `url(${storeSettings.heroImage})`;
+  const brandElem = document.getElementById('brand-name');
+  const titleElem = document.getElementById('store-title');
+  const logoElem = document.getElementById('brand-logo');
+
+  if (brandElem) brandElem.innerText = storeSettings.name;
+  if (titleElem) titleElem.innerText = storeSettings.name;
+  
+  if (storeSettings.logoImage && logoElem) {
+    logoElem.src = storeSettings.logoImage;
+    logoElem.classList.remove('hidden');
+  } else if (logoElem) {
+    logoElem.classList.add('hidden');
+  }
+
+  const hero = document.getElementById('hero-section');
+  if (hero && storeSettings.heroImage) {
+    hero.style.backgroundImage = `linear-gradient(rgba(13,15,18,0.7), rgba(13,15,18,0.9)), url('${storeSettings.heroImage}')`;
+    hero.style.backgroundSize = 'cover';
+    hero.style.backgroundPosition = 'center';
   }
 }
 
 function formatPrice(usdPrice) {
   if (currentCurrency === 'DZD') {
-    return `${(usdPrice * DZD_RATE).toLocaleString()} دج`;
+    return `${Math.round(usdPrice * DZD_RATE).toLocaleString()} دج`;
   }
   return `$${usdPrice.toFixed(2)}`;
 }
@@ -198,6 +215,7 @@ function changeCurrency(curr) {
 
 function renderProducts() {
   const container = document.getElementById('products-container');
+  if (!container) return;
   container.innerHTML = '';
   
   const filtered = activeCategory === 'all' 
@@ -209,11 +227,11 @@ function renderProducts() {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
-      <img src="${p.image}" class="product-img" alt="${p.name}">
+      <img src="${p.image}" class="product-img" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500'">
       <div class="product-info">
         <h3 class="product-title">${p.name}</h3>
         <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          ${p.type === 'giftcard' ? '<i class="fa-solid fa-gift"></i> تسليم عبر كود رقمي' : '<i class="fa-solid fa-bolt"></i> شحن مباشر بالـ ID'}
+          ${p.type === 'giftcard' ? '<i class="fa-solid fa-gift"></i> بطاقة كود رقمي' : '<i class="fa-solid fa-bolt"></i> شحن مباشر بالـ ID'}
         </p>
         <div class="product-pricing">
           <span class="starting-price">${formatPrice(minPrice)}</span>
@@ -228,7 +246,8 @@ function renderProducts() {
 function filterCategory(cat) {
   activeCategory = cat;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(`tab-${cat}`).classList.add('active');
+  const activeBtn = document.getElementById(`tab-${cat}`);
+  if (activeBtn) activeBtn.classList.add('active');
   renderProducts();
 }
 
@@ -243,9 +262,50 @@ function changeLanguage(lang) {
   renderProducts();
 }
 
-// --- Dynamic Order Form (Top-up vs Gift Card) ---
-let selectedProduct = null;
+// Ultra Lightweight Image Compressor (Prevents LocalStorage Limits)
+function handleImageUpload(e, previewId) {
+  const file = e.target.files[0];
+  if (!file) return;
 
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const max_dim = 600;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > max_dim) {
+          height *= max_dim / width;
+          width = max_dim;
+        }
+      } else {
+        if (height > max_dim) {
+          width *= max_dim / height;
+          height = max_dim;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+      const previewImg = document.getElementById(previewId);
+      if (previewImg) {
+        previewImg.src = compressedBase64;
+        previewImg.style.display = 'block';
+      }
+    };
+    img.src = evt.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// Order System
 function openOrderModal(productId) {
   selectedProduct = products.find(p => p.id === productId);
   if (!selectedProduct) return;
@@ -262,10 +322,10 @@ function openOrderModal(productId) {
   if (selectedProduct.type === 'giftcard') {
     uidWarning.classList.add('hidden');
     gcInfo.classList.remove('hidden');
-    targetLabel.innerText = "البريد الإلكتروني لاستلام الكود / التفاصيل:";
+    targetLabel.innerText = "البريد الإلكتروني لاستلام الكود / الحساب:";
     targetInput.type = "email";
-    targetInput.placeholder = "example@gmail.com";
-    if (currentUser) targetInput.value = currentUser.email;
+    targetInput.placeholder = "أدخل بريدك الإلكتروني هنا";
+    targetInput.value = currentUser ? currentUser.email : "";
   } else {
     uidWarning.classList.remove('hidden');
     gcInfo.classList.add('hidden');
@@ -295,10 +355,10 @@ function closeOrderModal() {
 
 function renderActivePaymentMethods() {
   const container = document.getElementById('payment-options-container');
-  const activeMethods = paymentMethods.filter(m => m.enabled);
+  const activeMethods = paymentMethods.filter(m => m.enabled === true);
   
   if (activeMethods.length === 0) {
-    container.innerHTML = '<p style="color:#ff6b6b;">لا توجد طرق دفع مفعلة حالياً.</p>';
+    container.innerHTML = '<p style="color:#ff6b6b; grid-column:span 3; font-size:0.85rem;">لا توجد طرق دفع مفعلة حالياً.</p>';
     document.getElementById('payment-details-box').innerHTML = '';
     return;
   }
@@ -325,7 +385,7 @@ function renderSelectedPaymentDetails() {
   const box = document.getElementById('payment-details-box');
   const current = paymentMethods.find(m => m.id === selectedPaymentMethodId);
   if (current) {
-    box.innerHTML = `<pre style="font-family:inherit; white-space:pre-wrap;">${current.details}</pre>`;
+    box.innerHTML = `<pre style="font-family:inherit; white-space:pre-wrap; margin:0;">${current.details}</pre>`;
   }
 }
 
@@ -334,8 +394,9 @@ function updateCalculatedPrice() {
   const pkgIndex = document.getElementById('order-package').value;
   const qty = parseInt(document.getElementById('order-qty').value) || 1;
   const usdTotal = selectedProduct.packages[pkgIndex].price * qty;
-  
-  document.getElementById('order-total-price').innerText = `${formatPrice(usdTotal)} (${usdTotal.toFixed(2)}$)`;
+  const dzdTotal = Math.round(usdTotal * DZD_RATE);
+
+  document.getElementById('order-total-price').innerText = `${formatPrice(usdTotal)} (${usdTotal.toFixed(2)}$ / ${dzdTotal.toLocaleString()} دج)`;
 }
 
 function handleOrderSubmit(e) {
@@ -345,10 +406,10 @@ function handleOrderSubmit(e) {
   const qty = document.getElementById('order-qty').value;
   const pkg = selectedProduct.packages[pkgIndex];
   const usdTotal = (pkg.price * qty).toFixed(2);
-  const dzdTotal = (pkg.price * qty * DZD_RATE).toLocaleString();
+  const dzdTotal = Math.round(pkg.price * qty * DZD_RATE).toLocaleString();
 
   const selectedPayObj = paymentMethods.find(m => m.id === selectedPaymentMethodId);
-  const payName = selectedPayObj ? selectedPayObj.name : 'Unknown';
+  const payName = selectedPayObj ? selectedPayObj.name : 'طريقة دفع';
 
   const orderId = 'AK-' + Math.floor(100000 + Math.random() * 900000);
   
@@ -376,14 +437,14 @@ function handleOrderSubmit(e) {
   const waMsg = encodeURIComponent(
     `*طلب جديد من Akatsuki-Store*\n` +
     `رقم الطلب: ${orderId}\n` +
-    `نوع المنتج: ${selectedProduct.type === 'giftcard' ? 'بطاقة رقمية / Gift Card' : 'شحن ألعاب / Top-Up'}\n` +
+    `نوع الطلب: ${selectedProduct.type === 'giftcard' ? 'بطاقة رقمية / Gift Card' : 'شحن ألعاب / Top-Up'}\n` +
     `المنتج: ${selectedProduct.name}\n` +
     `الباقة: ${pkg.name}\n` +
     `الكمية: ${qty}\n` +
     `${targetFieldText}\n` +
     `طريقة الدفع: ${payName}\n` +
     `المبلغ: $${usdTotal} (${dzdTotal} دج)\n\n` +
-    `تم إرسال إثبات الدفع مع هذه الرسالة.`
+    `ملاحظة: تم إرسال إثبات الدفع مع هذه الرسالة.`
   );
 
   alert(I18N[currentLang].orderWait);
@@ -393,7 +454,7 @@ function handleOrderSubmit(e) {
   window.open(waUrl, '_blank');
 }
 
-// --- Payment Management (Admin) ---
+// Payment Admin System
 function addNewPaymentMethod(e) {
   e.preventDefault();
   const name = document.getElementById('new-pay-name').value.trim();
@@ -408,16 +469,18 @@ function addNewPaymentMethod(e) {
 
   localStorage.setItem('ak_payment_methods', JSON.stringify(paymentMethods));
   renderAdminPaymentsList();
+  renderActivePaymentMethods();
   document.getElementById('new-payment-form').reset();
   alert("تمت إضافة طريقة الدفع بنجاح!");
 }
 
 function togglePaymentStatus(id) {
-  const pay = paymentMethods.find(m => m.id === id);
-  if (pay) {
-    pay.enabled = !pay.enabled;
+  const index = paymentMethods.findIndex(m => m.id === id);
+  if (index !== -1) {
+    paymentMethods[index].enabled = !paymentMethods[index].enabled;
     localStorage.setItem('ak_payment_methods', JSON.stringify(paymentMethods));
     renderAdminPaymentsList();
+    renderActivePaymentMethods();
   }
 }
 
@@ -426,33 +489,98 @@ function deletePaymentMethod(id) {
     paymentMethods = paymentMethods.filter(m => m.id !== id);
     localStorage.setItem('ak_payment_methods', JSON.stringify(paymentMethods));
     renderAdminPaymentsList();
+    renderActivePaymentMethods();
   }
 }
 
 function renderAdminPaymentsList() {
   const container = document.getElementById('admin-payments-list');
+  if (!container) return;
   container.innerHTML = paymentMethods.map(m => `
-    <div style="background:var(--bg-color); padding:0.8rem; margin-bottom:0.6rem; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-      <div>
+    <div style="background:var(--bg-color); padding:0.8rem; margin-bottom:0.6rem; border-radius:6px; display:flex; justify-content:space-between; align-items:center; border: 1px solid ${m.enabled ? '#30363d' : '#e50914'};">
+      <div style="max-width: 65%;">
         <strong>${m.name}</strong> 
-        <span style="font-size:0.75rem; color:${m.enabled ? '#4BB543' : '#ff6b6b'};">
-          (${m.enabled ? 'مفعلة' : 'معطلة مؤقتاً'})
+        <span style="font-size:0.75rem; font-weight:bold; color:${m.enabled ? '#4BB543' : '#ff6b6b'}; margin-right:5px;">
+          ● ${m.enabled ? 'مفعلة وشغالة' : 'معطلة مؤقتاً'}
         </span>
-        <p style="font-size:0.75rem; color:var(--text-muted); white-space:pre-wrap;">${m.details}</p>
+        <p style="font-size:0.75rem; color:var(--text-muted); white-space:pre-wrap; margin-top:4px;">${m.details}</p>
       </div>
-      <div style="display:flex; gap:5px;">
-        <button onclick="togglePaymentStatus('${m.id}')" style="background:${m.enabled ? '#e50914' : '#4BB543'}; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;">
-          ${m.enabled ? 'إلغاء تنشيط' : 'تفعيل'}
+      <div style="display:flex; gap:6px; flex-shrink:0;">
+        <button onclick="togglePaymentStatus('${m.id}')" style="background:${m.enabled ? '#e50914' : '#4BB543'}; color:#fff; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold; font-size:0.8rem;">
+          ${m.enabled ? 'إيقاف' : 'تفعيل'}
         </button>
-        <button onclick="deletePaymentMethod('${m.id}')" style="background:#333; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;">حذف</button>
+        <button onclick="deletePaymentMethod('${m.id}')" style="background:#2d333b; color:#8b949e; border:1px solid #444c56; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:0.8rem;">
+          حذف
+        </button>
       </div>
     </div>
   `).join('');
 }
 
-// --- Order Fulfillment & Code Delivery (Admin) ---
+// Admin Products
+function saveProduct(e) {
+  e.preventDefault();
+  const id = document.getElementById('edit-product-id').value || 'p' + Date.now();
+  const name = document.getElementById('prod-name').value.trim();
+  const category = document.getElementById('prod-cat').value;
+  const type = (category === 'giftcards' || category === 'subs') ? 'giftcard' : 'topup';
+  const imgPreview = document.getElementById('prod-image-preview');
+  const imageSrc = (imgPreview && imgPreview.src && imgPreview.style.display !== 'none') ? imgPreview.src : "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500";
+  const packagesRaw = document.getElementById('prod-packages').value;
+
+  const parsedPackages = packagesRaw.split(',').map(item => {
+    const [pkgName, price] = item.split(':');
+    return { name: pkgName.trim(), price: parseFloat(price.trim()) };
+  });
+
+  const existingIdx = products.findIndex(p => p.id === id);
+  const newProdData = {
+    id,
+    name,
+    category,
+    type,
+    image: imageSrc,
+    packages: parsedPackages
+  };
+
+  if (existingIdx > -1) {
+    products[existingIdx] = newProdData;
+  } else {
+    products.push(newProdData);
+  }
+
+  localStorage.setItem('ak_products', JSON.stringify(products));
+  renderProducts();
+  renderAdminProductsList();
+  document.getElementById('product-form').reset();
+  if (imgPreview) imgPreview.style.display = 'none';
+  alert("تم حفظ المنتج بنجاح!");
+}
+
+function deleteProduct(id) {
+  if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
+    products = products.filter(p => p.id !== id);
+    localStorage.setItem('ak_products', JSON.stringify(products));
+    renderProducts();
+    renderAdminProductsList();
+  }
+}
+
+function renderAdminProductsList() {
+  const container = document.getElementById('admin-products-list');
+  if (!container) return;
+  container.innerHTML = products.map(p => `
+    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-color); padding:0.5rem; margin-bottom:0.5rem; border-radius:6px;">
+      <span>${p.name} (${p.category})</span>
+      <button onclick="deleteProduct('${p.id}')" style="background:#e50914; border:none; color:#fff; padding:4px 8px; border-radius:4px; cursor:pointer;">حذف</button>
+    </div>
+  `).join('');
+}
+
+// Admin Orders
 function renderAdminOrdersTable() {
   const table = document.getElementById('admin-orders-table');
+  if (!table) return;
   if (orders.length === 0) {
     table.innerHTML = "<p>لا توجد طلبات واردة بعد.</p>";
     return;
@@ -465,7 +593,7 @@ function renderAdminOrdersTable() {
       <p>${o.type === 'giftcard' ? 'إيميل العميل' : 'معرف UID'}: <code>${o.targetValue}</code></p>
       <p>المبلغ: <strong>${o.totalUSD} / ${o.totalDZD}</strong> (طريقة الدفع: ${o.paymentMethod})</p>
       <p>الحالة: <span style="color:${o.status === 'Completed' ? '#4BB543' : '#ffaa00'}">${o.status}</span></p>
-      ${o.deliveredCode ? `<p>الكود المرسل: <b style="color:#4BB543;">${o.deliveredCode}</b></p>` : ''}
+      ${o.deliveredCode ? `<p>الكود المسلّم: <b style="color:#4BB543;">${o.deliveredCode}</b></p>` : ''}
       
       <div style="margin-top:0.5rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
         <button onclick="approveOrder('${o.id}')" class="btn-primary" style="padding:4px 8px; font-size:0.8rem;">تأكيد الدفع</button>
@@ -486,7 +614,7 @@ function approveOrder(id) {
 }
 
 function promptDeliverCode(id) {
-  const code = prompt("أدخل كود البطاقة / بيانات الاشتراك لتسليمها لحساب العميل:");
+  const code = prompt("أدخل كود البطاقة أو بيانات الحساب لإرسالها لحساب العميل:");
   if (code) {
     const order = orders.find(o => o.id === id);
     if (order) {
@@ -499,78 +627,7 @@ function promptDeliverCode(id) {
   }
 }
 
-// --- Products & Images Handling ---
-function saveProduct(e) {
-  e.preventDefault();
-  const id = document.getElementById('edit-product-id').value || 'p' + Date.now();
-  const name = document.getElementById('prod-name').value.trim();
-  const category = document.getElementById('prod-cat').value;
-  const type = (category === 'giftcards' || category === 'subs') ? 'giftcard' : 'topup';
-  const imgPreview = document.getElementById('prod-image-preview').src;
-  const packagesRaw = document.getElementById('prod-packages').value;
-
-  const parsedPackages = packagesRaw.split(',').map(item => {
-    const [pkgName, price] = item.split(':');
-    return { name: pkgName.trim(), price: parseFloat(price.trim()) };
-  });
-
-  const existingIdx = products.findIndex(p => p.id === id);
-  const newProdData = {
-    id,
-    name,
-    category,
-    type,
-    image: imgPreview || "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
-    packages: parsedPackages
-  };
-
-  if (existingIdx > -1) {
-    products[existingIdx] = newProdData;
-  } else {
-    products.push(newProdData);
-  }
-
-  localStorage.setItem('ak_products', JSON.stringify(products));
-  renderProducts();
-  renderAdminProductsList();
-  document.getElementById('product-form').reset();
-  document.getElementById('prod-image-preview').style.display = 'none';
-  alert("تم حفظ المنتج بنجاح!");
-}
-
-function deleteProduct(id) {
-  if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
-    products = products.filter(p => p.id !== id);
-    localStorage.setItem('ak_products', JSON.stringify(products));
-    renderProducts();
-    renderAdminProductsList();
-  }
-}
-
-function renderAdminProductsList() {
-  const container = document.getElementById('admin-products-list');
-  container.innerHTML = products.map(p => `
-    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-color); padding:0.5rem; margin-bottom:0.5rem; border-radius:6px;">
-      <span>${p.name} (${p.category} - ${p.type})</span>
-      <button onclick="deleteProduct('${p.id}')" style="background:#e50914; border:none; color:#fff; padding:4px 8px; border-radius:4px; cursor:pointer;">حذف</button>
-    </div>
-  `).join('');
-}
-
-function handleImageUpload(e, previewId) {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      const img = document.getElementById(previewId);
-      img.src = evt.target.result;
-      img.style.display = 'block';
-    };
-    reader.readAsDataURL(file);
-  }
-}
-
-// --- User Auth & Dashboard ---
+// User Accounts
 function openAuthModal() {
   document.getElementById('auth-modal').style.display = 'flex';
   if (currentUser) showUserDashboard();
@@ -660,11 +717,12 @@ function logoutUser() {
 
 function updateUserUI() {
   if (currentUser) {
-    document.getElementById('user-btn-text').innerText = currentUser.name;
+    const userBtn = document.getElementById('user-btn-text');
+    if (userBtn) userBtn.innerText = currentUser.name;
   }
 }
 
-// --- Admin Authentication & Controls ---
+// Admin Panel Access
 function openAdminModal() {
   document.getElementById('admin-modal').style.display = 'flex';
 }
@@ -684,6 +742,7 @@ function handleAdminLogin(e) {
     renderAdminProductsList();
     renderAdminPaymentsList();
     renderAdminOrdersTable();
+    loadAdminSettingsInputs();
   } else {
     alert("خطأ في بيانات دخول الأدمن!");
   }
@@ -710,19 +769,31 @@ function switchAdminTab(tab) {
     renderAdminOrdersTable();
   } else if (tab === 'settings') {
     document.getElementById('tab-admin-settings').classList.remove('hidden');
+    loadAdminSettingsInputs();
   }
+}
+
+function loadAdminSettingsInputs() {
+  const nameInput = document.getElementById('setting-store-name');
+  if (nameInput) nameInput.value = storeSettings.name;
 }
 
 function saveStoreSettings() {
   const name = document.getElementById('setting-store-name').value.trim();
-  const heroImg = document.getElementById('hero-preview').src;
+  const logoPreview = document.getElementById('logo-preview');
+  const heroPreview = document.getElementById('hero-preview');
 
   if (name) storeSettings.name = name;
-  if (heroImg && heroImg !== window.location.href) storeSettings.heroImage = heroImg;
+  if (logoPreview && logoPreview.src && logoPreview.style.display !== 'none') {
+    storeSettings.logoImage = logoPreview.src;
+  }
+  if (heroPreview && heroPreview.src && heroPreview.style.display !== 'none') {
+    storeSettings.heroImage = heroPreview.src;
+  }
 
   localStorage.setItem('ak_settings', JSON.stringify(storeSettings));
   renderStoreBranding();
-  alert("تم حفظ إعدادات المتجر!");
+  alert("تم حفظ إعدادات المظهر والشعار والخلفية بنجاح!");
 }
 
 function handleGalleryUpload(e) {
@@ -730,9 +801,18 @@ function handleGalleryUpload(e) {
   files.forEach(file => {
     const reader = new FileReader();
     reader.onload = function(evt) {
-      storeSettings.gallery.push(evt.target.result);
-      localStorage.setItem('ak_settings', JSON.stringify(storeSettings));
-      renderFooterGallery();
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 400;
+        canvas.height = 300;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, 400, 300);
+        storeSettings.gallery.push(canvas.toDataURL('image/jpeg', 0.65));
+        localStorage.setItem('ak_settings', JSON.stringify(storeSettings));
+        renderFooterGallery();
+      };
+      img.src = evt.target.result;
     };
     reader.readAsDataURL(file);
   });
@@ -740,6 +820,7 @@ function handleGalleryUpload(e) {
 
 function renderFooterGallery() {
   const container = document.getElementById('bottom-gallery-container');
+  if (!container) return;
   if (!storeSettings.gallery || storeSettings.gallery.length === 0) return;
   container.innerHTML = storeSettings.gallery.map(src => `<img src="${src}" alt="Gallery item">`).join('');
 }
