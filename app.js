@@ -1,13 +1,13 @@
-const DZD_RATE = 280;
+ const DZD_RATE = 280;
 
-// SVG Data URIs - Never Blocked, Ultra-Fast, 100% Reliable
+// SVG Visual Cards for high reliability across all mobile devices
 const ICONS = {
-  roblox: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23111317'/%3E%3Cpath d='M118 64l276 56-56 276L62 340z' fill='%23e50914'/%3E%3Cpolygon points='226,206 286,218 274,278 214,266' fill='%23111317'/%3E%3C/svg%3E",
-  freefire: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23111317'/%3E%3Cpath d='M256 60c0 0-80 90-80 170 0 44 36 80 80 80s80-36 80-80c0-80-80-170-80-170z' fill='%23ff9900'/%3E%3Cpath d='M256 160c0 0-40 45-40 85 0 22 18 40 40 40s40-18 40-40c0-40-40-85-40-85z' fill='%23ff3300'/%3E%3Ctext x='50%25' y='82%25' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='55' text-anchor='middle'%3EFREE FIRE%3C/text%3E%3C/svg%3E",
-  pubg: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23111317'/%3E%3Ccircle cx='256' cy='220' r='140' fill='%23f39c12'/%3E%3Ctext x='50%25' y='250' fill='%23111317' font-family='sans-serif' font-weight='900' font-size='80' text-anchor='middle'%3EPUBG%3C/text%3E%3Ctext x='50%25' y='420' fill='%23ffffff' font-family='sans-serif' font-weight='bold' font-size='50' text-anchor='middle'%3EMOBILE UC%3C/text%3E%3C/svg%3E",
-  tango: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23111317'/%3E%3Ccircle cx='256' cy='220' r='130' fill='%23ff2e63'/%3E%3Ctext x='50%25' y='260' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='120' text-anchor='middle'%3ET%3C/text%3E%3Ctext x='50%25' y='420' fill='%23ffffff' font-family='sans-serif' font-weight='bold' font-size='50' text-anchor='middle'%3ETANGO LIVE%3C/text%3E%3C/svg%3E",
-  superlive: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23111317'/%3E%3Crect x='100' y='90' width='312' height='260' rx='40' fill='%2300b4d8'/%3E%3Ctext x='50%25' y='260' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='130' text-anchor='middle'%3ES%3C/text%3E%3Ctext x='50%25' y='420' fill='%23ffffff' font-family='sans-serif' font-weight='bold' font-size='50' text-anchor='middle'%3ESUPERLIVE%3C/text%3E%3C/svg%3E",
-  google: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23111317'/%3E%3Cpath d='M256 60L300 200L440 256L300 312L256 452L212 312L72 256L212 200Z' fill='url(%23g)'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234285F4'/%3E%3Cstop offset='50%25' stop-color='%239B51E0'/%3E%3Cstop offset='100%25' stop-color='%23EA4335'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ctext x='50%25' y='460' fill='%23ffffff' font-family='sans-serif' font-weight='bold' font-size='42' text-anchor='middle'%3EGOOGLE AI PRO%3C/text%3E%3C/svg%3E"
+  roblox: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='30' fill='%23111317'/%3E%3Cpath d='M118 64l276 56-56 276L62 340z' fill='%23e50914'/%3E%3Cpolygon points='226,206 286,218 274,278 214,266' fill='%23111317'/%3E%3C/svg%3E",
+  freefire: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='30' fill='%23111317'/%3E%3Cpath d='M256 60c0 0-80 90-80 170 0 44 36 80 80 80s80-36 80-80c0-80-80-170-80-170z' fill='%23ff9900'/%3E%3Cpath d='M256 160c0 0-40 45-40 85 0 22 18 40 40 40s40-18 40-40c0-40-40-85-40-85z' fill='%23ff3300'/%3E%3Ctext x='50%25' y='82%25' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='55' text-anchor='middle'%3EFREE FIRE%3C/text%3E%3C/svg%3E",
+  pubg: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='30' fill='%23111317'/%3E%3Ccircle cx='256' cy='220' r='140' fill='%23f39c12'/%3E%3Ctext x='50%25' y='250' fill='%23111317' font-family='sans-serif' font-weight='900' font-size='80' text-anchor='middle'%3EPUBG%3C/text%3E%3Ctext x='50%25' y='420' fill='%23ffffff' font-family='sans-serif' font-weight='bold' font-size='50' text-anchor='middle'%3EMOBILE UC%3C/text%3E%3C/svg%3E",
+  tango: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='30' fill='%23111317'/%3E%3Ccircle cx='256' cy='220' r='130' fill='%23ff2e63'/%3E%3Ctext x='50%25' y='260' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='120' text-anchor='middle'%3ET%3C/text%3E%3Ctext x='50%25' y='420' fill='%23ffffff' font-family='sans-serif' font-weight='bold' font-size='50' text-anchor='middle'%3ETANGO LIVE%3C/text%3E%3C/svg%3E",
+  superlive: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='30' fill='%23111317'/%3E%3Crect x='100' y='90' width='312' height='260' rx='40' fill='%2300b4d8'/%3E%3Ctext x='50%25' y='260' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='130' text-anchor='middle'%3ES%3C/text%3E%3Ctext x='50%25' y='420' fill='%23ffffff' font-family='sans-serif' font-weight='bold' font-size='50' text-anchor='middle'%3ESUPERLIVE%3C/text%3E%3C/svg%3E",
+  google: "https://i.postimg.cc/tgyXnxz4/file-000000003ef881f4a88496afad4a6fb1.png"
 };
 
 const DEFAULT_PRODUCTS = [
@@ -145,10 +145,15 @@ function safeSet(key, value) {
   }
 }
 
-// Set latest verified products directly
-let products = DEFAULT_PRODUCTS;
-safeSet('ak_products_v7', products);
+// Clean old cache traces automatically
+localStorage.removeItem('ak_products');
+localStorage.removeItem('ak_products_v3');
+localStorage.removeItem('ak_products_v4');
+localStorage.removeItem('ak_products_v5');
+localStorage.removeItem('ak_products_v6');
+localStorage.removeItem('ak_products_v7');
 
+let products = DEFAULT_PRODUCTS;
 let paymentMethods = safeGet('ak_payment_methods', DEFAULT_PAYMENTS);
 let storeSettings = safeGet('ak_settings', {
   name: "Akatsuki-Store",
@@ -427,7 +432,7 @@ function processOrderFinal(receiptImage) {
     `${targetFieldText}\n` +
     `طريقة الدفع: ${payName}\n` +
     `المبلغ: $${usdTotal} (${dzdTotal} دج)\n\n` +
-    `✅ *ملاحظة:* تم إرفاق وصل الدفع مع الطلب.`
+    `✅ *ملاحظة:* تم إرسال الطلب مع وصل الدفع المرفق.`
   );
 
   alert("✅ تم إرسال طلبك بنجاح! جاري تحويلك إلى واتساب لتأكيد الشحن الفوري.");
@@ -605,7 +610,6 @@ function saveProduct(e) {
     products.push(newProdData);
   }
 
-  safeSet('ak_products_v7', products);
   renderProducts();
   renderAdminProductsList();
   resetProductForm();
@@ -615,19 +619,8 @@ function saveProduct(e) {
 function deleteProduct(id) {
   if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
     products = products.filter(p => p.id !== id);
-    safeSet('ak_products_v7', products);
     renderProducts();
     renderAdminProductsList();
-  }
-}
-
-function hardResetProducts() {
-  if (confirm("هل تريد إعادة ضبط جميع المنتجات وتحميل الأسعار والصور الصحيحة؟")) {
-    products = DEFAULT_PRODUCTS;
-    safeSet('ak_products_v7', products);
-    renderProducts();
-    renderAdminProductsList();
-    alert("✅ تم ضبط جميع المنتجات والصور بنجاح!");
   }
 }
 
