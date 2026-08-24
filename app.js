@@ -1,4 +1,3 @@
-// Akatsuki Store Engine - Edit Product & Custom Display Price
 const DZD_RATE = 280;
 
 const DEFAULT_PRODUCTS = [
@@ -195,7 +194,6 @@ function filterCategory(cat) {
   renderProducts();
 }
 
-// Order Modal System
 function openOrderModal(productId) {
   selectedProduct = products.find(p => p.id === productId);
   if (!selectedProduct) return;
@@ -349,7 +347,6 @@ function handleOrderSubmit(e) {
   window.open(waUrl, '_blank');
 }
 
-// Payment Methods Control
 function addNewPaymentMethod(e) {
   e.preventDefault();
   const name = document.getElementById('new-pay-name').value.trim();
@@ -412,7 +409,6 @@ function renderAdminPaymentsList() {
   `).join('');
 }
 
-// Edit & Save Products
 function editProduct(id) {
   const prod = products.find(p => p.id === id);
   if (!prod) return;
@@ -428,14 +424,12 @@ function editProduct(id) {
     document.getElementById('prod-display-price').value = '';
   }
 
-  // Format packages back into text
   const pkgText = (prod.packages || []).map(p => `${p.name} : ${p.price}`).join(' , ');
   document.getElementById('prod-packages').value = pkgText;
 
   document.getElementById('form-product-title').innerText = `تعديل منتج: ${prod.name}`;
   document.getElementById('btn-save-product').innerText = "تحديث وتعديل المنتج";
 
-  // Scroll to form smoothly
   document.getElementById('tab-admin-products').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -456,7 +450,6 @@ function saveProduct(e) {
   const displayPriceRaw = document.getElementById('prod-display-price').value.trim();
   const rawPackages = document.getElementById('prod-packages').value;
 
-  // Parse Custom Display Price if entered
   let customDisplayPrice = null;
   if (displayPriceRaw) {
     const num = parseFloat(displayPriceRaw.replace(/[^0-9\.]/g, ''));
@@ -555,7 +548,6 @@ function renderAdminProductsList() {
   `).join('');
 }
 
-// Orders Admin
 function renderAdminOrdersTable() {
   const table = document.getElementById('admin-orders-table');
   if (!table) return;
@@ -605,7 +597,6 @@ function promptDeliverCode(id) {
   }
 }
 
-// User Accounts
 function openAuthModal() {
   document.getElementById('auth-modal').style.display = 'flex';
   if (currentUser) showUserDashboard();
@@ -696,7 +687,6 @@ function updateUserUI() {
   }
 }
 
-// Admin Panel Access
 function openAdminModal() {
   document.getElementById('admin-modal').style.display = 'flex';
 }
@@ -794,7 +784,7 @@ function saveStoreSettings() {
   safeSet('ak_settings', storeSettings);
   renderStoreBranding();
   renderFooterGallery();
-  alert("✅ تم حفظ إعدادات المظهر والنصوص بنجاح!");
+  alert("✅ تم حفظ إعدادات المظهر بنجاح!");
 }
 
 function renderFooterGallery() {
