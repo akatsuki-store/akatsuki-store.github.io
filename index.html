@@ -90,7 +90,7 @@
         </div>
 
         <div style="margin: 12px 0; font-size:1.1rem;">
-          <span id="lbl-total">المجموع: </span>
+          <span id="lbl-total">المجموع المطلوب تحويله: </span>
           <strong id="order-total-price" style="color:#4BB543;">$0.00</strong>
         </div>
 
@@ -99,9 +99,15 @@
           <div class="payment-methods" id="payment-options-container"></div>
         </div>
 
-        <div id="payment-details-box" style="background:#0b0d10; padding:10px; border-radius:6px; margin-bottom:12px; font-size:0.85rem;"></div>
+        <div id="payment-details-box" style="background:#0b0d10; padding:12px; border-radius:8px; margin-bottom:12px; font-size:0.85rem; border:1px solid var(--border-color);"></div>
 
-        <button type="submit" class="btn-primary full-width" id="btn-confirm-order">إتمام الطلب والإرسال للواتساب</button>
+        <!-- Payment Receipt Warning Box -->
+        <div class="receipt-notice-box" style="background: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b; color: #fbbf24; border-radius: 8px; padding: 10px; margin-bottom: 14px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-camera" style="font-size: 1.1rem;"></i>
+          <span><strong>ملاحظة هامة:</strong> بعد إتمام عملية التحويل، يرجى إرسال <u>صورة وصل الدفع (Screenshot)</u> في محادثة الواتساب لتأكيد وشحن طلبك مباشرة.</span>
+        </div>
+
+        <button type="submit" class="btn-primary full-width" id="btn-confirm-order"><i class="fa-brands fa-whatsapp"></i> إرسال الطلب وإرفاق الوصل على واتساب</button>
       </form>
     </div>
   </div>
