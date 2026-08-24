@@ -1,13 +1,22 @@
 const DZD_RATE = 280;
 
-// Forced latest products list with official direct images
+// Official HD Game & App Posters
+const REAL_GAME_IMAGES = {
+  roblox: "https://cdn2.steamgriddb.com/thumb/84ce57a627a1b0236a9b40742f7d54b6.jpg",
+  freefire: "https://cdn2.steamgriddb.com/thumb/b2c0f2095f92ffb1e6cb7bc4ee29eb93.jpg",
+  pubg: "https://cdn2.steamgriddb.com/thumb/92df270ecdb2fc464c01d4a0a54ff896.jpg",
+  tango: "https://play-lh.googleusercontent.com/yE7Z_b6B5h5_U3bX7n2q_9R5m5q8k4j1b9_y5m2k7f4b8_6c1v2b3n4m5=w400-h400",
+  superlive: "https://play-lh.googleusercontent.com/k6b3n6_J2v5m9Q8_y5m2k7f4b8_6c1v2b3n4m5=w400-h400",
+  google: "https://i.postimg.cc/tgyXnxz4/file-000000003ef881f4a88496afad4a6fb1.png"
+};
+
 const STORE_PRODUCTS = [
   {
     id: "p1",
     name: "Roblox Gift Card 🌍 Global",
     category: "giftcards",
     type: "giftcard",
-    image: "https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=600&q=80",
+    image: "https://cdn2.steamgriddb.com/thumb/84ce57a627a1b0236a9b40742f7d54b6.jpg",
     displayPrice: 8.97,
     packages: [
       { name: "400 Robux Gift Card", price: 8.97 },
@@ -23,7 +32,7 @@ const STORE_PRODUCTS = [
     name: "Free Fire Diamonds 🌍 Direct UID",
     category: "games",
     type: "topup",
-    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80",
+    image: "https://cdn2.steamgriddb.com/thumb/b2c0f2095f92ffb1e6cb7bc4ee29eb93.jpg",
     displayPrice: 2.00,
     packages: [
       { name: "210+21 Diamonds", price: 2.00 },
@@ -37,7 +46,7 @@ const STORE_PRODUCTS = [
     name: "PUBG Mobile UC 🌍 Global",
     category: "games",
     type: "topup",
-    image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=600&q=80",
+    image: "https://cdn2.steamgriddb.com/thumb/92df270ecdb2fc464c01d4a0a54ff896.jpg",
     displayPrice: 2.14,
     packages: [
       { name: "120 UC", price: 2.14 },
@@ -53,7 +62,7 @@ const STORE_PRODUCTS = [
     name: "Tango Live Coins 🌍 Top-Up",
     category: "apps",
     type: "topup",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+    image: "https://play-lh.googleusercontent.com/yE7Z_b6B5h5_U3bX7n2q_9R5m5q8k4j1b9_y5m2k7f4b8_6c1v2b3n4m5=w400-h400",
     displayPrice: 2.86,
     packages: [
       { name: "300 Coins", price: 2.86 },
@@ -68,7 +77,7 @@ const STORE_PRODUCTS = [
     name: "SuperLive Coins 🌍 Top-Up",
     category: "apps",
     type: "topup",
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80",
+    image: "https://play-lh.googleusercontent.com/k6b3n6_J2v5m9Q8_y5m2k7f4b8_6c1v2b3n4m5=w400-h400",
     displayPrice: 6.79,
     packages: [
       { name: "605 Coins", price: 6.79 },
@@ -83,7 +92,7 @@ const STORE_PRODUCTS = [
     name: "Google AI Pro 18 Months",
     category: "subs",
     type: "giftcard",
-    image: "https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=600&q=80",
+    image: "https://i.postimg.cc/tgyXnxz4/file-000000003ef881f4a88496afad4a6fb1.png",
     displayPrice: 6.79,
     packages: [
       { name: "اشتراك 18 شهر", price: 6.79 }
@@ -136,7 +145,6 @@ function safeSet(key, value) {
   }
 }
 
-// Overwrite directly without relying on old storage keys
 let products = STORE_PRODUCTS;
 let paymentMethods = safeGet('ak_payment_methods', DEFAULT_PAYMENTS);
 let storeSettings = safeGet('ak_settings', {
@@ -583,7 +591,7 @@ function saveProduct(e) {
     name,
     category,
     type,
-    image: imgUrl || "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80",
+    image: imgUrl || "https://cdn2.steamgriddb.com/thumb/84ce57a627a1b0236a9b40742f7d54b6.jpg",
     displayPrice: customDisplayPrice,
     packages: parsedPackages
   };
@@ -597,7 +605,7 @@ function saveProduct(e) {
   renderProducts();
   renderAdminProductsList();
   resetProductForm();
-  alert("✅ تم تحديث ونشر المنتج بنجاح!");
+  alert("✅ تم حفظ وتحديث المنتج بنجاح!");
 }
 
 function deleteProduct(id) {
