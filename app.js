@@ -3,16 +3,18 @@ const DZD_RATE = 280;
 const DEFAULT_PRODUCTS = [
   {
     id: "p1",
-    name: "Roblox (Robux)",
-    category: "games",
-    type: "topup",
+    name: "Roblox Gift Card (Global)",
+    category: "giftcards",
+    type: "giftcard",
     image: "https://images.unsplash.com/photo-1612287233207-6f8b5f36e4f3?w=500",
-    displayPrice: 1.20,
+    displayPrice: 8.97,
     packages: [
-      { name: "80 Robux", price: 1.20 },
-      { name: "400 Robux", price: 4.99 },
-      { name: "800 Robux", price: 9.80 },
-      { name: "2000 Robux", price: 23.50 }
+      { name: "400 Robux Gift Card", price: 8.97 },
+      { name: "800 Robux Gift Card", price: 12.93 },
+      { name: "1000 Robux Gift Card", price: 19.30 },
+      { name: "2000 Robux Gift Card", price: 32.81 },
+      { name: "4500 Robux Gift Card", price: 69.40 },
+      { name: "10000 Robux Gift Card", price: 140.96 }
     ]
   },
   {
@@ -23,10 +25,67 @@ const DEFAULT_PRODUCTS = [
     image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
     displayPrice: 2.00,
     packages: [
-      { name: "210+21 Diamond", price: 2.00 },
-      { name: "530+53 Diamond", price: 5.00 },
-      { name: "1080+108 Diamond", price: 10.00 },
-      { name: "2200+220 Diamond", price: 21.00 }
+      { name: "210+21 Diamonds", price: 2.00 },
+      { name: "530+53 Diamonds", price: 5.00 },
+      { name: "1080+108 Diamonds", price: 10.00 },
+      { name: "2200+220 Diamonds", price: 21.00 }
+    ]
+  },
+  {
+    id: "p3",
+    name: "Pubg Mobile UC Global",
+    category: "games",
+    type: "topup",
+    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
+    displayPrice: 2.14,
+    packages: [
+      { name: "120 UC", price: 2.14 },
+      { name: "325 UC", price: 4.64 },
+      { name: "660 UC", price: 9.11 },
+      { name: "1800 UC", price: 21.43 },
+      { name: "3850 UC", price: 41.96 },
+      { name: "8100 UC", price: 83.21 }
+    ]
+  },
+  {
+    id: "p4",
+    name: "Tango Global Topup",
+    category: "apps",
+    type: "topup",
+    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
+    displayPrice: 2.86,
+    packages: [
+      { name: "300 Coins", price: 2.86 },
+      { name: "750 Coins", price: 5.71 },
+      { name: "1500 Coins", price: 10.71 },
+      { name: "3750 Coins", price: 23.39 },
+      { name: "7500 Coins", price: 48.21 }
+    ]
+  },
+  {
+    id: "p5",
+    name: "SuperLive Topup",
+    category: "apps",
+    type: "topup",
+    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
+    displayPrice: 6.79,
+    packages: [
+      { name: "605 Coins", price: 6.79 },
+      { name: "1230 Coins", price: 11.43 },
+      { name: "3125 Coins", price: 23.57 },
+      { name: "6250 Coins", price: 45.36 },
+      { name: "10000 Coins", price: 71.43 }
+    ]
+  },
+  {
+    id: "p6",
+    name: "Google AI Pro 18 Months",
+    category: "subs",
+    type: "giftcard",
+    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
+    displayPrice: 6.79,
+    packages: [
+      { name: "اشتراك 18 شهر", price: 6.79 }
     ]
   }
 ];
@@ -76,7 +135,7 @@ function safeSet(key, value) {
   }
 }
 
-let products = safeGet('ak_products', DEFAULT_PRODUCTS);
+let products = safeGet('ak_products_v3', DEFAULT_PRODUCTS);
 let paymentMethods = safeGet('ak_payment_methods', DEFAULT_PAYMENTS);
 let storeSettings = safeGet('ak_settings', {
   name: "Akatsuki-Store",
@@ -163,9 +222,9 @@ function renderProducts() {
     : products.filter(p => p.category === activeCategory);
 
   filtered.forEach(p => {
-    let showPrice = p.displayPrice !== undefined && p.displayPrice !== null && p.displayPrice > 0 
+    let showPrice = (p.displayPrice !== undefined && p.displayPrice !== null && p.displayPrice > 0) 
       ? p.displayPrice 
-      : (p.packages && p.packages.length > 0 ? Math.min(...p.packages.map(pkg => pkg.price)) : 1.00);
+      : (p.packages && p.packages.length > 0 ? p.packages[0].price : 1.00);
 
     const card = document.createElement('div');
     card.className = 'product-card';
@@ -515,7 +574,7 @@ function saveProduct(e) {
     products.push(newProdData);
   }
 
-  safeSet('ak_products', products);
+  safeSet('ak_products_v3', products);
   renderProducts();
   renderAdminProductsList();
   resetProductForm();
@@ -525,9 +584,21 @@ function saveProduct(e) {
 function deleteProduct(id) {
   if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
     products = products.filter(p => p.id !== id);
-    safeSet('ak_products', products);
+    safeSet('ak_products_v3', products);
     renderProducts();
     renderAdminProductsList();
+  }
+}
+
+function hardResetProducts() {
+  if (confirm("هل تريد إعادة ضبط جميع المنتجات وتحميل الأسعار الصحيحة؟")) {
+    localStorage.removeItem('ak_products');
+    localStorage.removeItem('ak_products_v3');
+    products = DEFAULT_PRODUCTS;
+    safeSet('ak_products_v3', products);
+    renderProducts();
+    renderAdminProductsList();
+    alert("✅ تم مسح البيانات القديمة وضبط جميع المنتجات والأسعار الصحيحة بنجاح!");
   }
 }
 
