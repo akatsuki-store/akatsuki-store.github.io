@@ -121,7 +121,7 @@ const DEFAULT_PAYMENTS = [
   }
 ];
 
-// Persistent App State
+// App State
 let products = JSON.parse(localStorage.getItem('ak_products')) || DEFAULT_PRODUCTS;
 let paymentMethods = JSON.parse(localStorage.getItem('ak_payment_methods')) || DEFAULT_PAYMENTS;
 let storeSettings = JSON.parse(localStorage.getItem('ak_settings')) || {
@@ -208,9 +208,7 @@ function formatPrice(usdPrice) {
 function changeCurrency(curr) {
   currentCurrency = curr;
   renderProducts();
-  if (selectedProduct) {
-    updateCalculatedPrice();
-  }
+  if (selectedProduct) updateCalculatedPrice();
 }
 
 function renderProducts() {
@@ -262,45 +260,19 @@ function changeLanguage(lang) {
   renderProducts();
 }
 
-// Ultra Lightweight Image Compressor (Prevents LocalStorage Limits)
+// Fixed Universal Mobile File & Image Reader
 function handleImageUpload(e, previewId) {
   const file = e.target.files[0];
   if (!file) return;
 
   const reader = new FileReader();
   reader.onload = function(evt) {
-    const img = new Image();
-    img.onload = function() {
-      const canvas = document.createElement('canvas');
-      const max_dim = 600;
-      let width = img.width;
-      let height = img.height;
-
-      if (width > height) {
-        if (width > max_dim) {
-          height *= max_dim / width;
-          width = max_dim;
-        }
-      } else {
-        if (height > max_dim) {
-          width *= max_dim / height;
-          height = max_dim;
-        }
-      }
-
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, width, height);
-
-      const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
-      const previewImg = document.getElementById(previewId);
-      if (previewImg) {
-        previewImg.src = compressedBase64;
-        previewImg.style.display = 'block';
-      }
-    };
-    img.src = evt.target.result;
+    const dataUrl = evt.target.result;
+    const previewImg = document.getElementById(previewId);
+    if (previewImg) {
+      previewImg.src = dataUrl;
+      previewImg.style.display = 'block';
+    }
   };
   reader.readAsDataURL(file);
 }
@@ -454,7 +426,7 @@ function handleOrderSubmit(e) {
   window.open(waUrl, '_blank');
 }
 
-// Payment Admin System
+// Payment Admin
 function addNewPaymentMethod(e) {
   e.preventDefault();
   const name = document.getElementById('new-pay-name').value.trim();
@@ -517,7 +489,7 @@ function renderAdminPaymentsList() {
   `).join('');
 }
 
-// Admin Products
+// Products Admin
 function saveProduct(e) {
   e.preventDefault();
   const id = document.getElementById('edit-product-id').value || 'p' + Date.now();
@@ -525,9 +497,14 @@ function saveProduct(e) {
   const category = document.getElementById('prod-cat').value;
   const type = (category === 'giftcards' || category === 'subs') ? 'giftcard' : 'topup';
   const imgPreview = document.getElementById('prod-image-preview');
-  const imageSrc = (imgPreview && imgPreview.src && imgPreview.style.display !== 'none') ? imgPreview.src : "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500";
-  const packagesRaw = document.getElementById('prod-packages').value;
+  
+  // Use uploaded image, or maintain fallback
+  let imageSrc = "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500";
+  if (imgPreview && imgPreview.src && imgPreview.src !== "" && !imgPreview.src.endsWith(window.location.href)) {
+    imageSrc = imgPreview.src;
+  }
 
+  const packagesRaw = document.getElementById('prod-packages').value;
   const parsedPackages = packagesRaw.split(',').map(item => {
     const [pkgName, price] = item.split(':');
     return { name: pkgName.trim(), price: parseFloat(price.trim()) };
@@ -553,7 +530,10 @@ function saveProduct(e) {
   renderProducts();
   renderAdminProductsList();
   document.getElementById('product-form').reset();
-  if (imgPreview) imgPreview.style.display = 'none';
+  if (imgPreview) {
+    imgPreview.src = '';
+    imgPreview.style.display = 'none';
+  }
   alert("تم حفظ المنتج بنجاح!");
 }
 
@@ -577,7 +557,7 @@ function renderAdminProductsList() {
   `).join('');
 }
 
-// Admin Orders
+// Orders Admin
 function renderAdminOrdersTable() {
   const table = document.getElementById('admin-orders-table');
   if (!table) return;
@@ -784,10 +764,10 @@ function saveStoreSettings() {
   const heroPreview = document.getElementById('hero-preview');
 
   if (name) storeSettings.name = name;
-  if (logoPreview && logoPreview.src && logoPreview.style.display !== 'none') {
+  if (logoPreview && logoPreview.src && logoPreview.src !== "" && !logoPreview.src.endsWith(window.location.href)) {
     storeSettings.logoImage = logoPreview.src;
   }
-  if (heroPreview && heroPreview.src && heroPreview.style.display !== 'none') {
+  if (heroPreview && heroPreview.src && heroPreview.src !== "" && !heroPreview.src.endsWith(window.location.href)) {
     storeSettings.heroImage = heroPreview.src;
   }
 
@@ -801,18 +781,9 @@ function handleGalleryUpload(e) {
   files.forEach(file => {
     const reader = new FileReader();
     reader.onload = function(evt) {
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        canvas.width = 400;
-        canvas.height = 300;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, 400, 300);
-        storeSettings.gallery.push(canvas.toDataURL('image/jpeg', 0.65));
-        localStorage.setItem('ak_settings', JSON.stringify(storeSettings));
-        renderFooterGallery();
-      };
-      img.src = evt.target.result;
+      storeSettings.gallery.push(evt.target.result);
+      localStorage.setItem('ak_settings', JSON.stringify(storeSettings));
+      renderFooterGallery();
     };
     reader.readAsDataURL(file);
   });
