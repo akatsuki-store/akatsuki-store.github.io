@@ -1,4 +1,4 @@
-// Akatsuki Store Engine - Smart Parser Edition
+// Akatsuki Store Engine - Fully Responsive & Customizable
 const DZD_RATE = 280;
 
 const DEFAULT_PRODUCTS = [
@@ -22,10 +22,10 @@ const DEFAULT_PRODUCTS = [
     type: "topup",
     image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
     packages: [
-      { name: "100+10 Diamonds", price: 0.99 },
-      { name: "310+31 Diamonds", price: 2.85 },
-      { name: "520+52 Diamonds", price: 4.70 },
-      { name: "1060+106 Diamonds", price: 9.40 }
+      { name: "210+21 Diamond", price: 2.00 },
+      { name: "530+53 Diamond", price: 5.00 },
+      { name: "1080+108 Diamond", price: 10.00 },
+      { name: "2200+220 Diamond", price: 21.00 }
     ]
   }
 ];
@@ -65,7 +65,6 @@ function safeSet(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
     return true;
   } catch (e) {
-    console.error("Storage error:", e);
     return false;
   }
 }
@@ -77,6 +76,10 @@ let storeSettings = safeGet('ak_settings', {
   logoUrl: "",
   heroUrl: "",
   galleryUrls: [],
+  heroTitle: "أفضل عروض الشحن والبطاقات الرقمية",
+  heroSubtitle: "تسليم فوري وموثوق | سعر الصرف: 1$ = 280 دج",
+  hideHeroText: false,
+  heroTextAlign: "center",
   whatsapp: "213556334891"
 });
 let orders = safeGet('ak_orders', []);
@@ -84,37 +87,9 @@ let users = safeGet('ak_users', []);
 let currentUser = safeGet('ak_current_user', null);
 
 let currentCurrency = 'USD';
-let currentLang = 'ar';
 let activeCategory = 'all';
 let selectedPaymentMethodId = '';
 let selectedProduct = null;
-
-const I18N = {
-  ar: {
-    heroTitle: "أفضل عروض الشحن والبطاقات الرقمية",
-    heroSub: "تسليم فوري وموثوق | سعر الصرف: 1$ = 280 دج",
-    uidWarning: "تنبيه هام: الرجاء التأكد جيداً من صحة المعرف (UID). المتجر لا يتحمل أي مسؤولية عن الأخطاء المدخلة.",
-    antiScam: "حذاري: محاولة النصب أو إرسال وصولات دفع وهمية سيؤدي إلى حظرك نهائياً من المتجر.",
-    orderWait: "جاري التحقق من عملية الدفع، الرجاء الانتظار...",
-    chargeBtn: "شراء / شحن"
-  },
-  en: {
-    heroTitle: "Top Digital Top-Ups & Gift Cards",
-    heroSub: "Instant & Reliable Delivery | Rate: $1 = 280 DZD",
-    uidWarning: "Warning: Please verify your UID accurately. The store is not liable for wrong account IDs.",
-    antiScam: "Warning: Any fraudulent attempt will result in a permanent account ban.",
-    orderWait: "Verifying payment proof, please hold on...",
-    chargeBtn: "Order Now"
-  },
-  fr: {
-    heroTitle: "Meilleures offres de recharges et cartes cadeaux",
-    heroSub: "Livraison rapide et sécurisée | Taux: 1$ = 280 DZD",
-    uidWarning: "Attention: Vérifiez attentivement votre UID. La boutique décline toute責任.",
-    antiScam: "Attention: Toute tentative d'escroquerie entraînera un bannissement définitif.",
-    orderWait: "Vérification du paiement en cours, veuillez patienter...",
-    chargeBtn: "Commander"
-  }
-};
 
 document.addEventListener('DOMContentLoaded', () => {
   renderStoreBranding();
@@ -127,9 +102,12 @@ function renderStoreBranding() {
   const brandElem = document.getElementById('brand-name');
   const titleElem = document.getElementById('store-title');
   const logoElem = document.getElementById('brand-logo');
+  const heroBox = document.getElementById('hero-content-box');
+  const heroTitle = document.getElementById('hero-title');
+  const heroSub = document.getElementById('hero-subtitle');
 
-  if (brandElem) brandElem.innerText = storeSettings.name;
-  if (titleElem) titleElem.innerText = storeSettings.name;
+  if (brandElem) brandElem.innerText = storeSettings.name || 'Akatsuki-Store';
+  if (titleElem) titleElem.innerText = storeSettings.name || 'Akatsuki-Store';
   
   if (storeSettings.logoUrl && logoElem) {
     logoElem.src = storeSettings.logoUrl;
@@ -140,9 +118,19 @@ function renderStoreBranding() {
 
   const hero = document.getElementById('hero-section');
   if (hero && storeSettings.heroUrl) {
-    hero.style.backgroundImage = `linear-gradient(rgba(13,15,18,0.7), rgba(13,15,18,0.9)), url('${storeSettings.heroUrl}')`;
-    hero.style.backgroundSize = 'cover';
-    hero.style.backgroundPosition = 'center';
+    hero.style.backgroundImage = `linear-gradient(rgba(11,13,16,0.6), rgba(11,13,16,0.85)), url('${storeSettings.heroUrl}')`;
+  }
+
+  // Handle Hero Banner Text Visibility & Alignment
+  if (heroBox) {
+    if (storeSettings.hideHeroText) {
+      heroBox.classList.add('hidden');
+    } else {
+      heroBox.classList.remove('hidden');
+      heroBox.style.textAlign = storeSettings.heroTextAlign || 'center';
+      if (heroTitle) heroTitle.innerText = storeSettings.heroTitle || "أفضل عروض الشحن والبطاقات الرقمية";
+      if (heroSub) heroSub.innerText = storeSettings.heroSubtitle || "تسليم فوري وموثوق | سعر الصرف: 1$ = 280 دج";
+    }
   }
 }
 
@@ -176,12 +164,12 @@ function renderProducts() {
       <img src="${p.image}" class="product-img" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500'">
       <div class="product-info">
         <h3 class="product-title">${p.name}</h3>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.4rem;">
           ${p.type === 'giftcard' ? '<i class="fa-solid fa-gift"></i> بطاقة كود رقمي' : '<i class="fa-solid fa-bolt"></i> شحن مباشر بالـ ID'}
         </p>
         <div class="product-pricing">
           <span class="starting-price">${formatPrice(minPrice)}</span>
-          <button class="btn-primary" onclick="openOrderModal('${p.id}')">${I18N[currentLang].chargeBtn}</button>
+          <button class="btn-primary" onclick="openOrderModal('${p.id}')">شراء / شحن</button>
         </div>
       </div>
     `;
@@ -194,17 +182,6 @@ function filterCategory(cat) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   const activeBtn = document.getElementById(`tab-${cat}`);
   if (activeBtn) activeBtn.classList.add('active');
-  renderProducts();
-}
-
-function changeLanguage(lang) {
-  currentLang = lang;
-  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-  document.documentElement.lang = lang;
-  document.getElementById('hero-title').innerText = I18N[lang].heroTitle;
-  document.getElementById('hero-subtitle').innerText = I18N[lang].heroSub;
-  document.getElementById('uid-warning').innerText = I18N[lang].uidWarning;
-  document.getElementById('anti-scam-text').innerText = I18N[lang].antiScam;
   renderProducts();
 }
 
@@ -352,7 +329,7 @@ function handleOrderSubmit(e) {
     `ملاحظة: تم إرسال إثبات الدفع مع هذه الرسالة.`
   );
 
-  alert(I18N[currentLang].orderWait);
+  alert("جاري التحقق من عملية الدفع، الرجاء الانتظار...");
   closeOrderModal();
 
   const waUrl = `https://wa.me/${storeSettings.whatsapp || '213556334891'}?text=${waMsg}`;
@@ -422,76 +399,65 @@ function renderAdminPaymentsList() {
   `).join('');
 }
 
-// Ultra-Smart Product & Package Parser (Never Fails)
+// Product & Package Parser
 function saveProduct(e) {
   e.preventDefault();
-  try {
-    const id = document.getElementById('edit-product-id').value || 'p' + Date.now();
-    const name = document.getElementById('prod-name').value.trim();
-    const category = document.getElementById('prod-cat').value;
-    const type = (category === 'giftcards' || category === 'subs') ? 'giftcard' : 'topup';
-    let imgUrl = document.getElementById('prod-image-url').value.trim();
-    const rawPackages = document.getElementById('prod-packages').value;
+  const id = document.getElementById('edit-product-id').value || 'p' + Date.now();
+  const name = document.getElementById('prod-name').value.trim();
+  const category = document.getElementById('prod-cat').value;
+  const type = (category === 'giftcards' || category === 'subs') ? 'giftcard' : 'topup';
+  let imgUrl = document.getElementById('prod-image-url').value.trim();
+  const rawPackages = document.getElementById('prod-packages').value;
 
-    // Splits by lines or commas
-    const lines = rawPackages.split(/[\n,]+/).map(l => l.trim()).filter(l => l.length > 0);
-    const parsedPackages = [];
+  const lines = rawPackages.split(/[\n,]+/).map(l => l.trim()).filter(l => l.length > 0);
+  const parsedPackages = [];
 
-    lines.forEach(line => {
-      let pkgName = line;
-      let priceUSD = 1.00;
+  lines.forEach(line => {
+    let pkgName = line;
+    let priceUSD = 1.00;
 
-      // Extract numbers
-      const matchNumber = line.match(/(\d+[\.,]?\d*)\s*(da|دج|\$|usd)?/i);
-      if (line.includes(':')) {
-        const parts = line.split(':');
-        pkgName = parts[0].trim();
-        const rawP = parseFloat(parts[1].replace(/[^0-9\.]/g, '')) || 1.00;
-        priceUSD = (parts[1].toLowerCase().includes('da') || parts[1].includes('دج') || rawP > 60) ? (rawP / DZD_RATE) : rawP;
-      } else if (matchNumber) {
-        const val = parseFloat(matchNumber[1]);
-        if (line.toLowerCase().includes('da') || line.includes('دج') || val > 60) {
-          priceUSD = val / DZD_RATE;
-        } else {
-          priceUSD = val;
-        }
-      }
+    const matchNumber = line.match(/(\d+[\.,]?\d*)\s*(da|دج|\$|usd)?/i);
+    if (line.includes(':')) {
+      const parts = line.split(':');
+      pkgName = parts[0].trim();
+      const rawP = parseFloat(parts[1].replace(/[^0-9\.]/g, '')) || 1.00;
+      priceUSD = (parts[1].toLowerCase().includes('da') || parts[1].includes('دج') || rawP > 60) ? (rawP / DZD_RATE) : rawP;
+    } else if (matchNumber) {
+      const val = parseFloat(matchNumber[1]);
+      priceUSD = (line.toLowerCase().includes('da') || line.includes('دج') || val > 60) ? (val / DZD_RATE) : val;
+    }
 
-      parsedPackages.push({
-        name: pkgName,
-        price: parseFloat(priceUSD.toFixed(2))
-      });
+    parsedPackages.push({
+      name: pkgName,
+      price: parseFloat(priceUSD.toFixed(2))
     });
+  });
 
-    if (parsedPackages.length === 0) {
-      parsedPackages.push({ name: name, price: 1.00 });
-    }
-
-    const existingIdx = products.findIndex(p => p.id === id);
-    const newProdData = {
-      id,
-      name,
-      category,
-      type,
-      image: imgUrl || "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
-      packages: parsedPackages
-    };
-
-    if (existingIdx > -1) {
-      products[existingIdx] = newProdData;
-    } else {
-      products.push(newProdData);
-    }
-
-    safeSet('ak_products', products);
-    renderProducts();
-    renderAdminProductsList();
-    document.getElementById('product-form').reset();
-    alert("✅ تم حفظ ونشر المنتج بنجاح في المتجر!");
-  } catch (err) {
-    console.error("Save product error:", err);
-    alert("تم حفظ المنتج بنجاح!");
+  if (parsedPackages.length === 0) {
+    parsedPackages.push({ name: name, price: 1.00 });
   }
+
+  const existingIdx = products.findIndex(p => p.id === id);
+  const newProdData = {
+    id,
+    name,
+    category,
+    type,
+    image: imgUrl || "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
+    packages: parsedPackages
+  };
+
+  if (existingIdx > -1) {
+    products[existingIdx] = newProdData;
+  } else {
+    products.push(newProdData);
+  }
+
+  safeSet('ak_products', products);
+  renderProducts();
+  renderAdminProductsList();
+  document.getElementById('product-form').reset();
+  alert("✅ تم حفظ ونشر المنتج بنجاح في المتجر!");
 }
 
 function deleteProduct(id) {
@@ -575,13 +541,10 @@ function closeAuthModal() {
 }
 
 function toggleAuthForm(mode) {
-  document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
   if (mode === 'login') {
-    document.querySelector('.auth-tab-btn:nth-child(1)').classList.add('active');
     document.getElementById('login-form').classList.remove('hidden');
     document.getElementById('register-form').classList.add('hidden');
   } else {
-    document.querySelector('.auth-tab-btn:nth-child(2)').classList.add('active');
     document.getElementById('login-form').classList.add('hidden');
     document.getElementById('register-form').classList.remove('hidden');
   }
@@ -626,7 +589,6 @@ function handleUserLogin(e) {
 function showUserDashboard() {
   document.getElementById('login-form').classList.add('hidden');
   document.getElementById('register-form').classList.add('hidden');
-  document.querySelector('.auth-tabs').classList.add('hidden');
   document.getElementById('user-dashboard').classList.remove('hidden');
   document.getElementById('welcome-user').innerText = `مرحباً بك، ${currentUser.name}`;
 
@@ -659,7 +621,7 @@ function updateUserUI() {
   }
 }
 
-// Admin Panel
+// Admin Panel Access
 function openAdminModal() {
   document.getElementById('admin-modal').style.display = 'flex';
 }
@@ -715,11 +677,19 @@ function loadAdminSettingsInputs() {
   const logoInput = document.getElementById('setting-logo-url');
   const heroInput = document.getElementById('setting-hero-url');
   const galleryInput = document.getElementById('setting-gallery-urls');
+  const heroTitle = document.getElementById('setting-hero-title');
+  const heroSub = document.getElementById('setting-hero-sub');
+  const hideHeroText = document.getElementById('setting-hide-hero-text');
+  const heroAlign = document.getElementById('setting-hero-align');
 
   if (nameInput) nameInput.value = storeSettings.name || '';
   if (logoInput) logoInput.value = storeSettings.logoUrl || '';
   if (heroInput) heroInput.value = storeSettings.heroUrl || '';
   if (galleryInput) galleryInput.value = (storeSettings.galleryUrls || []).join(', ');
+  if (heroTitle) heroTitle.value = storeSettings.heroTitle || '';
+  if (heroSub) heroSub.value = storeSettings.heroSubtitle || '';
+  if (hideHeroText) hideHeroText.checked = storeSettings.hideHeroText || false;
+  if (heroAlign) heroAlign.value = storeSettings.heroTextAlign || 'center';
 }
 
 function saveStoreSettings() {
@@ -727,10 +697,18 @@ function saveStoreSettings() {
   const logoUrl = document.getElementById('setting-logo-url').value.trim();
   const heroUrl = document.getElementById('setting-hero-url').value.trim();
   const galleryRaw = document.getElementById('setting-gallery-urls').value.trim();
+  const heroTitle = document.getElementById('setting-hero-title').value.trim();
+  const heroSub = document.getElementById('setting-hero-sub').value.trim();
+  const hideHeroText = document.getElementById('setting-hide-hero-text').checked;
+  const heroTextAlign = document.getElementById('setting-hero-align').value;
 
   if (name) storeSettings.name = name;
   storeSettings.logoUrl = logoUrl;
   storeSettings.heroUrl = heroUrl;
+  storeSettings.heroTitle = heroTitle;
+  storeSettings.heroSubtitle = heroSub;
+  storeSettings.hideHeroText = hideHeroText;
+  storeSettings.heroTextAlign = heroTextAlign;
 
   if (galleryRaw) {
     storeSettings.galleryUrls = galleryRaw.split(/[\n,]+/).map(u => u.trim()).filter(u => u.length > 0);
@@ -741,7 +719,7 @@ function saveStoreSettings() {
   safeSet('ak_settings', storeSettings);
   renderStoreBranding();
   renderFooterGallery();
-  alert("✅ تم حفظ إعدادات الروابط والمظهر بنجاح!");
+  alert("✅ تم حفظ إعدادات المظهر والنصوص بنجاح!");
 }
 
 function renderFooterGallery() {
