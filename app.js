@@ -1,4 +1,4 @@
-// Rate: 1 USD = 280 DZD
+ // Rate: 1 USD = 280 DZD
 const DZD_RATE = 280;
 
 const DEFAULT_PRODUCTS = [
@@ -121,6 +121,20 @@ const DEFAULT_PAYMENTS = [
   }
 ];
 
+// Clean memory safely
+function cleanStorage() {
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      const val = localStorage.getItem(k);
+      if (val && val.length > 50000) { // purge old heavy base64 strings
+        localStorage.removeItem(k);
+      }
+    }
+  } catch(e) {}
+}
+cleanStorage();
+
 function safeGet(key, fallback) {
   try {
     const item = localStorage.getItem(key);
@@ -135,7 +149,7 @@ function safeSet(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
     return true;
   } catch (e) {
-    console.error("Storage error:", e);
+    alert("تحذير: الذاكرة ممتلئة! يرجى مسح بعض المنتجات القديمة.");
     return false;
   }
 }
@@ -499,7 +513,7 @@ function saveProduct(e) {
   const name = document.getElementById('prod-name').value.trim();
   const category = document.getElementById('prod-cat').value;
   const type = (category === 'giftcards' || category === 'subs') ? 'giftcard' : 'topup';
-  const imgUrl = document.getElementById('prod-image-url').value.trim();
+  let imgUrl = document.getElementById('prod-image-url').value.trim();
   const packagesRaw = document.getElementById('prod-packages').value.trim();
 
   const parsedPackages = packagesRaw.split(',').map(item => {
