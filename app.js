@@ -1,22 +1,12 @@
 const DZD_RATE = 280;
 
-// Official HD Game & App Posters
-const REAL_GAME_IMAGES = {
-  roblox: "https://cdn2.steamgriddb.com/thumb/84ce57a627a1b0236a9b40742f7d54b6.jpg",
-  freefire: "https://cdn2.steamgriddb.com/thumb/b2c0f2095f92ffb1e6cb7bc4ee29eb93.jpg",
-  pubg: "https://cdn2.steamgriddb.com/thumb/92df270ecdb2fc464c01d4a0a54ff896.jpg",
-  tango: "https://play-lh.googleusercontent.com/yE7Z_b6B5h5_U3bX7n2q_9R5m5q8k4j1b9_y5m2k7f4b8_6c1v2b3n4m5=w400-h400",
-  superlive: "https://play-lh.googleusercontent.com/k6b3n6_J2v5m9Q8_y5m2k7f4b8_6c1v2b3n4m5=w400-h400",
-  google: "https://i.postimg.cc/tgyXnxz4/file-000000003ef881f4a88496afad4a6fb1.png"
-};
-
 const STORE_PRODUCTS = [
   {
     id: "p1",
-    name: "Roblox Gift Card 🌍 Global",
+    name: "roblox gift card 🌍Global",
     category: "giftcards",
     type: "giftcard",
-    image: "https://cdn2.steamgriddb.com/thumb/84ce57a627a1b0236a9b40742f7d54b6.jpg",
+    image: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f3ae.png",
     displayPrice: 8.97,
     packages: [
       { name: "400 Robux Gift Card", price: 8.97 },
@@ -29,10 +19,10 @@ const STORE_PRODUCTS = [
   },
   {
     id: "p2",
-    name: "Free Fire Diamonds 🌍 Direct UID",
-    category: "games",
-    type: "topup",
-    image: "https://cdn2.steamgriddb.com/thumb/b2c0f2095f92ffb1e6cb7bc4ee29eb93.jpg",
+    name: "Freefier Diamonds 🌍cod global",
+    category: "giftcards",
+    type: "giftcard",
+    image: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f525.png",
     displayPrice: 2.00,
     packages: [
       { name: "210+21 Diamonds", price: 2.00 },
@@ -43,10 +33,10 @@ const STORE_PRODUCTS = [
   },
   {
     id: "p3",
-    name: "PUBG Mobile UC 🌍 Global",
-    category: "games",
-    type: "topup",
-    image: "https://cdn2.steamgriddb.com/thumb/92df270ecdb2fc464c01d4a0a54ff896.jpg",
+    name: "Pubg mobile UC cod 🌍Global",
+    category: "giftcards",
+    type: "giftcard",
+    image: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f52b.png",
     displayPrice: 2.14,
     packages: [
       { name: "120 UC", price: 2.14 },
@@ -59,10 +49,10 @@ const STORE_PRODUCTS = [
   },
   {
     id: "p4",
-    name: "Tango Live Coins 🌍 Top-Up",
+    name: "Tango global topup 🌍",
     category: "apps",
     type: "topup",
-    image: "https://play-lh.googleusercontent.com/yE7Z_b6B5h5_U3bX7n2q_9R5m5q8k4j1b9_y5m2k7f4b8_6c1v2b3n4m5=w400-h400",
+    image: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4f9.png",
     displayPrice: 2.86,
     packages: [
       { name: "300 Coins", price: 2.86 },
@@ -74,10 +64,10 @@ const STORE_PRODUCTS = [
   },
   {
     id: "p5",
-    name: "SuperLive Coins 🌍 Top-Up",
+    name: "superlive topup",
     category: "apps",
     type: "topup",
-    image: "https://play-lh.googleusercontent.com/k6b3n6_J2v5m9Q8_y5m2k7f4b8_6c1v2b3n4m5=w400-h400",
+    image: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2b50.png",
     displayPrice: 6.79,
     packages: [
       { name: "605 Coins", price: 6.79 },
@@ -89,10 +79,10 @@ const STORE_PRODUCTS = [
   },
   {
     id: "p6",
-    name: "Google AI Pro 18 Months",
+    name: "Google ai Pro 18months",
     category: "subs",
     type: "giftcard",
-    image: "https://i.postimg.cc/tgyXnxz4/file-000000003ef881f4a88496afad4a6fb1.png",
+    image: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f916.png",
     displayPrice: 6.79,
     packages: [
       { name: "اشتراك 18 شهر", price: 6.79 }
@@ -144,6 +134,9 @@ function safeSet(key, value) {
     return false;
   }
 }
+
+// مسح كامل للذاكرة القديمة حتى لا تعود الصور الخاطئة
+localStorage.clear();
 
 let products = STORE_PRODUCTS;
 let paymentMethods = safeGet('ak_payment_methods', DEFAULT_PAYMENTS);
@@ -239,7 +232,9 @@ function renderProducts() {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
-      <img src="${p.image}" class="product-img" alt="${p.name}" style="object-fit: cover; height: 160px; width: 100%;">
+      <div style="background:#161b22; display:flex; align-items:center; justify-content:center; height:140px; border-top-left-radius:12px; border-top-right-radius:12px;">
+        <img src="${p.image}" alt="${p.name}" style="width:64px; height:64px; object-fit:contain;">
+      </div>
       <div class="product-info">
         <h3 class="product-title">${p.name}</h3>
         <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.4rem;">
@@ -591,7 +586,7 @@ function saveProduct(e) {
     name,
     category,
     type,
-    image: imgUrl || "https://cdn2.steamgriddb.com/thumb/84ce57a627a1b0236a9b40742f7d54b6.jpg",
+    image: imgUrl || "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f3ae.png",
     displayPrice: customDisplayPrice,
     packages: parsedPackages
   };
