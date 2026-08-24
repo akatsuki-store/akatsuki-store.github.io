@@ -1,22 +1,13 @@
 const DZD_RATE = 280;
 
-// High-Definition Official Banners (Cloudinary / CDN) - 100% Reliable & Fast
-const PRO_IMAGES = {
-  roblox: "https://images.unsplash.com/photo-1560253023-3ec5d502959f?q=80&w=800&auto=format&fit=crop",
-  freefire: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop",
-  pubg: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800&auto=format&fit=crop",
-  tango: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop",
-  superlive: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop",
-  google: "https://i.postimg.cc/tgyXnxz4/file-000000003ef881f4a88496afad4a6fb1.png"
-};
-
-const DEFAULT_PRODUCTS = [
+// Forced latest products list with official direct images
+const STORE_PRODUCTS = [
   {
     id: "p1",
     name: "Roblox Gift Card 🌍 Global",
     category: "giftcards",
     type: "giftcard",
-    image: "https://images.unsplash.com/photo-1560253023-3ec5d502959f?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=600&q=80",
     displayPrice: 8.97,
     packages: [
       { name: "400 Robux Gift Card", price: 8.97 },
@@ -32,7 +23,7 @@ const DEFAULT_PRODUCTS = [
     name: "Free Fire Diamonds 🌍 Direct UID",
     category: "games",
     type: "topup",
-    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80",
     displayPrice: 2.00,
     packages: [
       { name: "210+21 Diamonds", price: 2.00 },
@@ -43,10 +34,10 @@ const DEFAULT_PRODUCTS = [
   },
   {
     id: "p3",
-    name: "PUBG Mobile UC 🌍 Direct Top-Up",
+    name: "PUBG Mobile UC 🌍 Global",
     category: "games",
     type: "topup",
-    image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=600&q=80",
     displayPrice: 2.14,
     packages: [
       { name: "120 UC", price: 2.14 },
@@ -62,7 +53,7 @@ const DEFAULT_PRODUCTS = [
     name: "Tango Live Coins 🌍 Top-Up",
     category: "apps",
     type: "topup",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
     displayPrice: 2.86,
     packages: [
       { name: "300 Coins", price: 2.86 },
@@ -77,7 +68,7 @@ const DEFAULT_PRODUCTS = [
     name: "SuperLive Coins 🌍 Top-Up",
     category: "apps",
     type: "topup",
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80",
     displayPrice: 6.79,
     packages: [
       { name: "605 Coins", price: 6.79 },
@@ -89,10 +80,10 @@ const DEFAULT_PRODUCTS = [
   },
   {
     id: "p6",
-    name: "Google AI Pro 18 Months (Gemini)",
+    name: "Google AI Pro 18 Months",
     category: "subs",
     type: "giftcard",
-    image: "https://i.postimg.cc/tgyXnxz4/file-000000003ef881f4a88496afad4a6fb1.png",
+    image: "https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=600&q=80",
     displayPrice: 6.79,
     packages: [
       { name: "اشتراك 18 شهر", price: 6.79 }
@@ -145,10 +136,8 @@ function safeSet(key, value) {
   }
 }
 
-// Reset products cleanly
-let products = DEFAULT_PRODUCTS;
-safeSet('ak_products_pro', products);
-
+// Overwrite directly without relying on old storage keys
+let products = STORE_PRODUCTS;
 let paymentMethods = safeGet('ak_payment_methods', DEFAULT_PAYMENTS);
 let storeSettings = safeGet('ak_settings', {
   name: "Akatsuki-Store",
@@ -242,7 +231,7 @@ function renderProducts() {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
-      <img src="${p.image}" class="product-img" alt="${p.name}" style="object-fit: cover; height: 160px;">
+      <img src="${p.image}" class="product-img" alt="${p.name}" style="object-fit: cover; height: 160px; width: 100%;">
       <div class="product-info">
         <h3 class="product-title">${p.name}</h3>
         <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.4rem;">
@@ -594,7 +583,7 @@ function saveProduct(e) {
     name,
     category,
     type,
-    image: imgUrl || "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop",
+    image: imgUrl || "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80",
     displayPrice: customDisplayPrice,
     packages: parsedPackages
   };
@@ -605,7 +594,6 @@ function saveProduct(e) {
     products.push(newProdData);
   }
 
-  safeSet('ak_products_pro', products);
   renderProducts();
   renderAdminProductsList();
   resetProductForm();
@@ -615,7 +603,6 @@ function saveProduct(e) {
 function deleteProduct(id) {
   if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
     products = products.filter(p => p.id !== id);
-    safeSet('ak_products_pro', products);
     renderProducts();
     renderAdminProductsList();
   }
