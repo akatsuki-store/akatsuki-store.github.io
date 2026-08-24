@@ -1,12 +1,27 @@
 const DZD_RATE = 280;
 
-const STORE_PRODUCTS = [
+// High-End Neon Posters Built Directly for Fast Mobile Loading
+const POSTERS = {
+  roblox: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cdefs%3E%3ClinearGradient id='bg1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2312080a'/%3E%3Cstop offset='100%25' stop-color='%23050508'/%3E%3C/linearGradient%3E%3ClinearGradient id='redGlow' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff1a2a'/%3E%3Cstop offset='100%25' stop-color='%2399000d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' rx='24' fill='url(%23bg1)' stroke='%23e50914' stroke-width='4'/%3E%3Ccircle cx='300' cy='240' r='130' fill='%23e50914' opacity='0.15' filter='blur(30px)'/%3E%3Cpath d='M190 120 l220 44 -44 220 -220 -44 z' fill='url(%23redGlow)' filter='drop-shadow(0 15px 25px rgba(229,9,20,0.6))'/%3E%3Cpolygon points='275,230 325,240 315,290 265,280' fill='%23050508'/%3E%3Ctext x='50%25' y='440' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='38' text-anchor='middle' letter-spacing='2'%3EROBLOX GIFT CARD%3C/text%3E%3Crect x='130' y='475' width='340' height='46' rx='23' fill='%231b1f24' stroke='%2330363d' stroke-width='2'/%3E%3Ctext x='50%25' y='506' fill='%2300ff88' font-family='sans-serif' font-weight='bold' font-size='22' text-anchor='middle'%3Eتسليم فوري لكود البطاقة ⚡%3C/text%3E%3Ctext x='50%25' y='560' fill='%23ff3344' font-family='sans-serif' font-weight='bold' font-size='24' text-anchor='middle'%3EGlobal Code | Akatsuki Store%3C/text%3E%3C/svg%3E",
+  
+  freefire: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cdefs%3E%3ClinearGradient id='bg2' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23150d00'/%3E%3Cstop offset='100%25' stop-color='%23050508'/%3E%3C/linearGradient%3E%3ClinearGradient id='fireGlow' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff9900'/%3E%3Cstop offset='100%25' stop-color='%23ff2200'/%3E%3C/linearGradient%3E%3ClinearGradient id='diaGlow' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300f0ff'/%3E%3Cstop offset='100%25' stop-color='%230072ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' rx='24' fill='url(%23bg2)' stroke='%23ff7700' stroke-width='4'/%3E%3Ccircle cx='300' cy='220' r='140' fill='%23ff5500' opacity='0.2' filter='blur(30px)'/%3E%3Cpolygon points='300,100 420,200 300,340 180,200' fill='url(%23diaGlow)' filter='drop-shadow(0 15px 30px rgba(0,240,255,0.7))'/%3E%3Cpolygon points='300,100 300,340 420,200' fill='%23ffffff' opacity='0.25'/%3E%3Cpath d='M300 230 c-30 -40 -60 -10 -60 30 c0 33 27 60 60 60 s60 -27 60 -60 c0 -40 -30 -70 -60 -30 z' fill='url(%23fireGlow)'/%3E%3Ctext x='50%25' y='430' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='38' text-anchor='middle' letter-spacing='2'%3EFREE FIRE DIAMONDS%3C/text%3E%3Crect x='130' y='470' width='340' height='46' rx='23' fill='%231b1f24' stroke='%2330363d' stroke-width='2'/%3E%3Ctext x='50%25' y='501' fill='%23ff9900' font-family='sans-serif' font-weight='bold' font-size='22' text-anchor='middle'%3Eشحن مباشر رسمي بالـ UID ⚡%3C/text%3E%3Ctext x='50%25' y='555' fill='%2300f0ff' font-family='sans-serif' font-weight='bold' font-size='24' text-anchor='middle'%3EInstant Auto Top-Up%3C/text%3E%3C/svg%3E",
+  
+  pubg: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cdefs%3E%3ClinearGradient id='bg3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23141000'/%3E%3Cstop offset='100%25' stop-color='%23050508'/%3E%3C/linearGradient%3E%3ClinearGradient id='goldGlow' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffd700'/%3E%3Cstop offset='100%25' stop-color='%23ff8800'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' rx='24' fill='url(%23bg3)' stroke='%23f39c12' stroke-width='4'/%3E%3Ccircle cx='300' cy='220' r='140' fill='%23f39c12' opacity='0.18' filter='blur(30px)'/%3E%3Ccircle cx='300' cy='220' r='110' fill='url(%23goldGlow)' filter='drop-shadow(0 15px 30px rgba(243,156,18,0.7))'/%3E%3Ctext x='50%25' y='250' fill='%23050508' font-family='sans-serif' font-weight='900' font-size='75' text-anchor='middle' letter-spacing='3'%3EUC%3C/text%3E%3Ctext x='50%25' y='430' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='38' text-anchor='middle' letter-spacing='2'%3EPUBG MOBILE UC%3C/text%3E%3Crect x='130' y='470' width='340' height='46' rx='23' fill='%231b1f24' stroke='%2330363d' stroke-width='2'/%3E%3Ctext x='50%25' y='501' fill='%2300ff88' font-family='sans-serif' font-weight='bold' font-size='22' text-anchor='middle'%3Eبطاقة كود رقمي Global ⚡%3C/text%3E%3Ctext x='50%25' y='555' fill='%23ffd700' font-family='sans-serif' font-weight='bold' font-size='24' text-anchor='middle'%3EMidasbuy Code | Akatsuki Store%3C/text%3E%3C/svg%3E",
+  
+  tango: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cdefs%3E%3ClinearGradient id='bg4' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%231a0011'/%3E%3Cstop offset='100%25' stop-color='%23050508'/%3E%3C/linearGradient%3E%3ClinearGradient id='pinkGlow' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff2a75'/%3E%3Cstop offset='100%25' stop-color='%239400d3'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' rx='24' fill='url(%23bg4)' stroke='%23ff2a75' stroke-width='4'/%3E%3Ccircle cx='300' cy='220' r='140' fill='%23ff2a75' opacity='0.2' filter='blur(30px)'/%3E%3Crect x='180' y='100' width='240' height='240' rx='60' fill='url(%23pinkGlow)' filter='drop-shadow(0 15px 30px rgba(255,42,117,0.7))'/%3E%3Ctext x='50%25' y='275' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='140' text-anchor='middle'%3ET%3C/text%3E%3Ctext x='50%25' y='430' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='38' text-anchor='middle' letter-spacing='2'%3ETANGO LIVE COINS%3C/text%3E%3Crect x='130' y='470' width='340' height='46' rx='23' fill='%231b1f24' stroke='%2330363d' stroke-width='2'/%3E%3Ctext x='50%25' y='501' fill='%23ff2a75' font-family='sans-serif' font-weight='bold' font-size='22' text-anchor='middle'%3Eشحن فوري بالـ Account ID ⚡%3C/text%3E%3Ctext x='50%25' y='555' fill='%2300f0ff' font-family='sans-serif' font-weight='bold' font-size='24' text-anchor='middle'%3EOfficial Coins Recharge%3C/text%3E%3C/svg%3E",
+  
+  superlive: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cdefs%3E%3ClinearGradient id='bg5' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300121a'/%3E%3Cstop offset='100%25' stop-color='%23050508'/%3E%3C/linearGradient%3E%3ClinearGradient id='cyanGlow' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300d4ff'/%3E%3Cstop offset='100%25' stop-color='%230055ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='600' rx='24' fill='url(%23bg5)' stroke='%2300d4ff' stroke-width='4'/%3E%3Ccircle cx='300' cy='220' r='140' fill='%2300d4ff' opacity='0.2' filter='blur(30px)'/%3E%3Crect x='180' y='100' width='240' height='240' rx='60' fill='url(%23cyanGlow)' filter='drop-shadow(0 15px 30px rgba(0,212,255,0.7))'/%3E%3Ctext x='50%25' y='275' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='140' text-anchor='middle'%3ES%3C/text%3E%3Ctext x='50%25' y='430' fill='%23ffffff' font-family='sans-serif' font-weight='900' font-size='38' text-anchor='middle' letter-spacing='2'%3ESUPERLIVE COINS%3C/text%3E%3Crect x='130' y='470' width='340' height='46' rx='23' fill='%231b1f24' stroke='%2330363d' stroke-width='2'/%3E%3Ctext x='50%25' y='501' fill='%2300d4ff' font-family='sans-serif' font-weight='bold' font-size='22' text-anchor='middle'%3Eشحن مباشر بالـ User ID ⚡%3C/text%3E%3Ctext x='50%25' y='555' fill='%2300ff88' font-family='sans-serif' font-weight='bold' font-size='24' text-anchor='middle'%3ESafe & Instant Top-Up%3C/text%3E%3C/svg%3E",
+
+  google: "https://i.postimg.cc/tgyXnxz4/file-000000003ef881f4a88496afad4a6fb1.png"
+};
+
+const DEFAULT_PRODUCTS = [
   {
     id: "p1",
-    name: "roblox gift card 🌍Global",
+    name: "Roblox Gift Card 🌍 Global",
     category: "giftcards",
     type: "giftcard",
-    image: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f3ae.png",
+    image: POSTERS.roblox,
     displayPrice: 8.97,
     packages: [
       { name: "400 Robux Gift Card", price: 8.97 },
@@ -19,10 +34,10 @@ const STORE_PRODUCTS = [
   },
   {
     id: "p2",
-    name: "Freefier Diamonds 🌍cod global",
-    category: "giftcards",
-    type: "giftcard",
-    image: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f525.png",
+    name: "Free Fire Diamonds 🌍 Direct UID",
+    category: "games",
+    type: "topup",
+    image: POSTERS.freefire,
     displayPrice: 2.00,
     packages: [
       { name: "210+21 Diamonds", price: 2.00 },
@@ -33,10 +48,10 @@ const STORE_PRODUCTS = [
   },
   {
     id: "p3",
-    name: "Pubg mobile UC cod 🌍Global",
-    category: "giftcards",
-    type: "giftcard",
-    image: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f52b.png",
+    name: "PUBG Mobile UC 🌍 Global",
+    category: "games",
+    type: "topup",
+    image: POSTERS.pubg,
     displayPrice: 2.14,
     packages: [
       { name: "120 UC", price: 2.14 },
@@ -49,10 +64,10 @@ const STORE_PRODUCTS = [
   },
   {
     id: "p4",
-    name: "Tango global topup 🌍",
+    name: "Tango Live Coins 🌍 Top-Up",
     category: "apps",
     type: "topup",
-    image: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4f9.png",
+    image: POSTERS.tango,
     displayPrice: 2.86,
     packages: [
       { name: "300 Coins", price: 2.86 },
@@ -64,10 +79,10 @@ const STORE_PRODUCTS = [
   },
   {
     id: "p5",
-    name: "superlive topup",
+    name: "SuperLive Coins 🌍 Top-Up",
     category: "apps",
     type: "topup",
-    image: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2b50.png",
+    image: POSTERS.superlive,
     displayPrice: 6.79,
     packages: [
       { name: "605 Coins", price: 6.79 },
@@ -79,10 +94,10 @@ const STORE_PRODUCTS = [
   },
   {
     id: "p6",
-    name: "Google ai Pro 18months",
+    name: "Google AI Pro 18 Months",
     category: "subs",
     type: "giftcard",
-    image: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f916.png",
+    image: POSTERS.google,
     displayPrice: 6.79,
     packages: [
       { name: "اشتراك 18 شهر", price: 6.79 }
@@ -135,10 +150,7 @@ function safeSet(key, value) {
   }
 }
 
-// مسح كامل للذاكرة القديمة حتى لا تعود الصور الخاطئة
-localStorage.clear();
-
-let products = STORE_PRODUCTS;
+let products = DEFAULT_PRODUCTS;
 let paymentMethods = safeGet('ak_payment_methods', DEFAULT_PAYMENTS);
 let storeSettings = safeGet('ak_settings', {
   name: "Akatsuki-Store",
@@ -232,9 +244,7 @@ function renderProducts() {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
-      <div style="background:#161b22; display:flex; align-items:center; justify-content:center; height:140px; border-top-left-radius:12px; border-top-right-radius:12px;">
-        <img src="${p.image}" alt="${p.name}" style="width:64px; height:64px; object-fit:contain;">
-      </div>
+      <img src="${p.image}" class="product-img" alt="${p.name}" style="height: 180px; width: 100%; object-fit: cover; border-top-left-radius: 12px; border-top-right-radius: 12px;">
       <div class="product-info">
         <h3 class="product-title">${p.name}</h3>
         <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.4rem;">
@@ -586,7 +596,7 @@ function saveProduct(e) {
     name,
     category,
     type,
-    image: imgUrl || "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f3ae.png",
+    image: imgUrl || POSTERS.roblox,
     displayPrice: customDisplayPrice,
     packages: parsedPackages
   };
