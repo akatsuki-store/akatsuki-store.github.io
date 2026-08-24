@@ -1,10 +1,10 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="store-title">Akatsuki-Store</title>
-  <link rel="stylesheet" href="style.css?v=5.0">
+  <link rel="stylesheet" href="style.css?v=999">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -98,10 +98,9 @@
 
         <div class="form-group" style="margin-bottom:14px; background: rgba(229, 9, 20, 0.08); padding: 12px; border-radius: 8px; border: 1px dashed #e50914;">
           <label style="color: #ff6b6b; font-weight: bold; display: block; margin-bottom: 6px;">
-            <i class="fa-solid fa-cloud-arrow-up"></i> رفع وصل الدفع / سكرين شوت (إجباري لإتمام الطلب):
+            <i class="fa-solid fa-cloud-arrow-up"></i> رفع وصل الدفع / سكرين شوت (إجباري):
           </label>
           <input type="file" id="order-receipt-file" accept="image/*" required style="width: 100%; padding: 6px; background: #161b22;">
-          <small style="color: var(--text-muted); display: block; margin-top: 4px;">لن يتم قبول الطلب بدون إرفاق صورة واضحة لعملية التحويل.</small>
         </div>
 
         <button type="submit" class="btn-primary full-width" id="btn-confirm-order"><i class="fa-brands fa-whatsapp"></i> إرسال وتأكيد الطلب</button>
@@ -188,34 +187,29 @@
               </select>
             </div>
             <div style="margin:8px 0;">
-              <label>رابط صورة المنتج (Direct Image URL):</label>
-              <input type="url" id="prod-image-url" placeholder="https://i.postimg.cc/example.jpg" style="width:100%;">
+              <label>رابط صورة المنتج:</label>
+              <input type="url" id="prod-image-url" placeholder="رابط الصورة" style="width:100%;">
             </div>
             <div style="margin:8px 0;">
-              <label>السعر الظاهر على البطاقة في الواجهة (اكتب مثلاً: 6.79$ أو 1900 da):</label>
+              <label>السعر الظاهر على الواجهة:</label>
               <input type="text" id="prod-display-price" placeholder="مثال: 6.79$ أو 1900 da" style="width:100%;">
             </div>
             <div style="margin:8px 0;">
-              <label>الباقات والأسعار (اكتب اسم الباقة : السعر ، وافصل بفاصلة):</label>
+              <label>الباقات والأسعار:</label>
               <textarea id="prod-packages" placeholder="باقة 1 : 6.79" required style="width:100%; height:80px;"></textarea>
             </div>
             <button type="submit" class="btn-primary" id="btn-save-product">حفظ المنتج</button>
           </form>
           <hr style="margin:15px 0; border-color:var(--border-color);">
-          <h4>قائمة المنتجات (اضغط تعديل لتعديل السعر مباشرة):</h4>
+          <h4>قائمة المنتجات:</h4>
           <div id="admin-products-list"></div>
-          
-          <div style="margin-top:20px; padding:12px; background:rgba(229, 9, 20, 0.1); border:1px solid #e50914; border-radius:8px; text-align:center;">
-            <p style="font-size:0.8rem; margin-bottom:8px; color:#ff6b6b;">إذا علقت أي أسعار قديمة في هاتفك، اضغط هذا الزر لمسح الكاش وتحديث المتجر بالكامل فوراً:</p>
-            <button type="button" onclick="hardResetProducts()" style="background:#e50914; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:bold; cursor:pointer;">🧹 مسح البيانات وإعادة ضبط الأسعار الصحيحة</button>
-          </div>
         </div>
 
         <div id="tab-admin-payments" class="admin-tab-content hidden">
           <h4>إضافة طريقة دفع جديدة</h4>
           <form id="new-payment-form" onsubmit="addNewPaymentMethod(event)">
             <div style="margin:10px 0;">
-              <input type="text" id="new-pay-name" placeholder="اسم طريقة الدفع (مثال: بريدي موب BaridiMob)" required style="width:100%;">
+              <input type="text" id="new-pay-name" placeholder="اسم طريقة الدفع" required style="width:100%;">
             </div>
             <div style="margin:10px 0;">
               <textarea id="new-pay-details" placeholder="بيانات التحويل" required style="width:100%;"></textarea>
@@ -264,11 +258,11 @@
             <input type="url" id="setting-logo-url" style="width:100%;">
           </div>
           <div style="margin:10px 0;">
-            <label>رابط صورة خلفية البانر العلوي (Hero Banner URL):</label>
+            <label>رابط صورة خلفية البانر العلوي:</label>
             <input type="url" id="setting-hero-url" style="width:100%;">
           </div>
           <div style="margin:10px 0;">
-            <label>روابط صور معرض أسفل الموقع (مفصولة بفاصلة):</label>
+            <label>روابط صور معرض أسفل الموقع:</label>
             <textarea id="setting-gallery-urls" style="width:100%;"></textarea>
           </div>
           <button onclick="saveStoreSettings()" class="btn-primary">حفظ إعدادات المظهر</button>
@@ -302,6 +296,7 @@
     </div>
   </footer>
 
-  <script src="app.js?v=5.0"></script>
+  <!-- Force direct reload bypass cache -->
+  <script src="app.js?v=force_update_100"></script>
 </body>
 </html>
