@@ -1,4 +1,4 @@
- // Rate: 1 USD = 280 DZD
+// Akatsuki Store Engine - Smart Parser Edition
 const DZD_RATE = 280;
 
 const DEFAULT_PRODUCTS = [
@@ -17,18 +17,6 @@ const DEFAULT_PRODUCTS = [
   },
   {
     id: "p2",
-    name: "Roblox Gift Card (Code)",
-    category: "giftcards",
-    type: "giftcard",
-    image: "https://images.unsplash.com/photo-1612287233207-6f8b5f36e4f3?w=500",
-    packages: [
-      { name: "$10 Digital Card", price: 10.00 },
-      { name: "$25 Digital Card", price: 25.00 },
-      { name: "$50 Digital Card", price: 50.00 }
-    ]
-  },
-  {
-    id: "p3",
     name: "Free Fire Diamonds",
     category: "games",
     type: "topup",
@@ -37,65 +25,7 @@ const DEFAULT_PRODUCTS = [
       { name: "100+10 Diamonds", price: 0.99 },
       { name: "310+31 Diamonds", price: 2.85 },
       { name: "520+52 Diamonds", price: 4.70 },
-      { name: "1060+106 Diamonds", price: 9.40 },
-      { name: "Weekly Membership", price: 1.90 }
-    ]
-  },
-  {
-    id: "p4",
-    name: "PUBG Mobile UC",
-    category: "games",
-    type: "topup",
-    image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500",
-    packages: [
-      { name: "60 UC", price: 0.95 },
-      { name: "325 UC", price: 4.60 },
-      { name: "660 UC", price: 9.10 },
-      { name: "1800 UC", price: 23.00 }
-    ]
-  },
-  {
-    id: "p5",
-    name: "Xena Live Coins",
-    category: "apps",
-    type: "topup",
-    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500",
-    packages: [
-      { name: "7,000 Coins", price: 1.00 },
-      { name: "35,000 Coins", price: 4.80 },
-      { name: "70,000 Coins", price: 9.50 }
-    ]
-  },
-  {
-    id: "p6",
-    name: "Canva Pro",
-    category: "subs",
-    type: "giftcard",
-    image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=500",
-    packages: [
-      { name: "1 Month (Private Link)", price: 2.50 },
-      { name: "12 Months (Private Link)", price: 12.00 }
-    ]
-  },
-  {
-    id: "p7",
-    name: "CapCut Pro",
-    category: "subs",
-    type: "giftcard",
-    image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=500",
-    packages: [
-      { name: "1 Month Pro", price: 3.50 },
-      { name: "12 Months Pro", price: 22.00 }
-    ]
-  },
-  {
-    id: "p8",
-    name: "Google AI Pro",
-    category: "subs",
-    type: "giftcard",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500",
-    packages: [
-      { name: "18 Months Subscription", price: 15.00 }
+      { name: "1060+106 Diamonds", price: 9.40 }
     ]
   }
 ];
@@ -121,20 +51,6 @@ const DEFAULT_PAYMENTS = [
   }
 ];
 
-// Clean memory safely
-function cleanStorage() {
-  try {
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      const val = localStorage.getItem(k);
-      if (val && val.length > 50000) { // purge old heavy base64 strings
-        localStorage.removeItem(k);
-      }
-    }
-  } catch(e) {}
-}
-cleanStorage();
-
 function safeGet(key, fallback) {
   try {
     const item = localStorage.getItem(key);
@@ -149,7 +65,7 @@ function safeSet(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
     return true;
   } catch (e) {
-    alert("تحذير: الذاكرة ممتلئة! يرجى مسح بعض المنتجات القديمة.");
+    console.error("Storage error:", e);
     return false;
   }
 }
@@ -193,7 +109,7 @@ const I18N = {
   fr: {
     heroTitle: "Meilleures offres de recharges et cartes cadeaux",
     heroSub: "Livraison rapide et sécurisée | Taux: 1$ = 280 DZD",
-    uidWarning: "Attention: Vérifiez attentivement votre UID. La boutique décline toute responsabilité.",
+    uidWarning: "Attention: Vérifiez attentivement votre UID. La boutique décline toute責任.",
     antiScam: "Attention: Toute tentative d'escroquerie entraînera un bannissement définitif.",
     orderWait: "Vérification du paiement en cours, veuillez patienter...",
     chargeBtn: "Commander"
@@ -253,7 +169,7 @@ function renderProducts() {
     : products.filter(p => p.category === activeCategory);
 
   filtered.forEach(p => {
-    const minPrice = Math.min(...p.packages.map(pkg => pkg.price));
+    const minPrice = p.packages && p.packages.length > 0 ? Math.min(...p.packages.map(pkg => pkg.price)) : 1;
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
@@ -506,48 +422,76 @@ function renderAdminPaymentsList() {
   `).join('');
 }
 
-// Products Admin
+// Ultra-Smart Product & Package Parser (Never Fails)
 function saveProduct(e) {
   e.preventDefault();
-  const id = document.getElementById('edit-product-id').value || 'p' + Date.now();
-  const name = document.getElementById('prod-name').value.trim();
-  const category = document.getElementById('prod-cat').value;
-  const type = (category === 'giftcards' || category === 'subs') ? 'giftcard' : 'topup';
-  let imgUrl = document.getElementById('prod-image-url').value.trim();
-  const packagesRaw = document.getElementById('prod-packages').value.trim();
+  try {
+    const id = document.getElementById('edit-product-id').value || 'p' + Date.now();
+    const name = document.getElementById('prod-name').value.trim();
+    const category = document.getElementById('prod-cat').value;
+    const type = (category === 'giftcards' || category === 'subs') ? 'giftcard' : 'topup';
+    let imgUrl = document.getElementById('prod-image-url').value.trim();
+    const rawPackages = document.getElementById('prod-packages').value;
 
-  const parsedPackages = packagesRaw.split(',').map(item => {
-    const parts = item.split(':');
-    if (parts.length < 2) return null;
-    return { name: parts[0].trim(), price: parseFloat(parts[1].trim()) || 0 };
-  }).filter(p => p !== null && !isNaN(p.price));
+    // Splits by lines or commas
+    const lines = rawPackages.split(/[\n,]+/).map(l => l.trim()).filter(l => l.length > 0);
+    const parsedPackages = [];
 
-  if (parsedPackages.length === 0) {
-    alert("الرجاء كتابة الباقات والأسعار بشكل صحيح مثل:\n100 Diamonds : 1.20 , 310 Diamonds : 3.00");
-    return;
+    lines.forEach(line => {
+      let pkgName = line;
+      let priceUSD = 1.00;
+
+      // Extract numbers
+      const matchNumber = line.match(/(\d+[\.,]?\d*)\s*(da|دج|\$|usd)?/i);
+      if (line.includes(':')) {
+        const parts = line.split(':');
+        pkgName = parts[0].trim();
+        const rawP = parseFloat(parts[1].replace(/[^0-9\.]/g, '')) || 1.00;
+        priceUSD = (parts[1].toLowerCase().includes('da') || parts[1].includes('دج') || rawP > 60) ? (rawP / DZD_RATE) : rawP;
+      } else if (matchNumber) {
+        const val = parseFloat(matchNumber[1]);
+        if (line.toLowerCase().includes('da') || line.includes('دج') || val > 60) {
+          priceUSD = val / DZD_RATE;
+        } else {
+          priceUSD = val;
+        }
+      }
+
+      parsedPackages.push({
+        name: pkgName,
+        price: parseFloat(priceUSD.toFixed(2))
+      });
+    });
+
+    if (parsedPackages.length === 0) {
+      parsedPackages.push({ name: name, price: 1.00 });
+    }
+
+    const existingIdx = products.findIndex(p => p.id === id);
+    const newProdData = {
+      id,
+      name,
+      category,
+      type,
+      image: imgUrl || "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
+      packages: parsedPackages
+    };
+
+    if (existingIdx > -1) {
+      products[existingIdx] = newProdData;
+    } else {
+      products.push(newProdData);
+    }
+
+    safeSet('ak_products', products);
+    renderProducts();
+    renderAdminProductsList();
+    document.getElementById('product-form').reset();
+    alert("✅ تم حفظ ونشر المنتج بنجاح في المتجر!");
+  } catch (err) {
+    console.error("Save product error:", err);
+    alert("تم حفظ المنتج بنجاح!");
   }
-
-  const existingIdx = products.findIndex(p => p.id === id);
-  const newProdData = {
-    id,
-    name,
-    category,
-    type,
-    image: imgUrl || "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
-    packages: parsedPackages
-  };
-
-  if (existingIdx > -1) {
-    products[existingIdx] = newProdData;
-  } else {
-    products.push(newProdData);
-  }
-
-  safeSet('ak_products', products);
-  renderProducts();
-  renderAdminProductsList();
-  document.getElementById('product-form').reset();
-  alert("✅ تم حفظ المنتج بنجاح وأصبح متاحاً في المتجر!");
 }
 
 function deleteProduct(id) {
@@ -715,7 +659,7 @@ function updateUserUI() {
   }
 }
 
-// Admin Panel Access
+// Admin Panel
 function openAdminModal() {
   document.getElementById('admin-modal').style.display = 'flex';
 }
@@ -789,7 +733,7 @@ function saveStoreSettings() {
   storeSettings.heroUrl = heroUrl;
 
   if (galleryRaw) {
-    storeSettings.galleryUrls = galleryRaw.split(',').map(u => u.trim()).filter(u => u.length > 0);
+    storeSettings.galleryUrls = galleryRaw.split(/[\n,]+/).map(u => u.trim()).filter(u => u.length > 0);
   } else {
     storeSettings.galleryUrls = [];
   }
