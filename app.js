@@ -121,19 +121,37 @@ const DEFAULT_PAYMENTS = [
   }
 ];
 
-// App State
-let products = JSON.parse(localStorage.getItem('ak_products')) || DEFAULT_PRODUCTS;
-let paymentMethods = JSON.parse(localStorage.getItem('ak_payment_methods')) || DEFAULT_PAYMENTS;
-let storeSettings = JSON.parse(localStorage.getItem('ak_settings')) || {
+function safeGet(key, fallback) {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function safeSet(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch (e) {
+    console.error("Storage error:", e);
+    return false;
+  }
+}
+
+let products = safeGet('ak_products', DEFAULT_PRODUCTS);
+let paymentMethods = safeGet('ak_payment_methods', DEFAULT_PAYMENTS);
+let storeSettings = safeGet('ak_settings', {
   name: "Akatsuki-Store",
-  logoImage: "",
-  heroImage: "",
-  gallery: [],
+  logoUrl: "",
+  heroUrl: "",
+  galleryUrls: [],
   whatsapp: "213556334891"
-};
-let orders = JSON.parse(localStorage.getItem('ak_orders')) || [];
-let users = JSON.parse(localStorage.getItem('ak_users')) || [];
-let currentUser = JSON.parse(localStorage.getItem('ak_current_user')) || null;
+});
+let orders = safeGet('ak_orders', []);
+let users = safeGet('ak_users', []);
+let currentUser = safeGet('ak_current_user', null);
 
 let currentCurrency = 'USD';
 let currentLang = 'ar';
@@ -183,16 +201,16 @@ function renderStoreBranding() {
   if (brandElem) brandElem.innerText = storeSettings.name;
   if (titleElem) titleElem.innerText = storeSettings.name;
   
-  if (storeSettings.logoImage && logoElem) {
-    logoElem.src = storeSettings.logoImage;
+  if (storeSettings.logoUrl && logoElem) {
+    logoElem.src = storeSettings.logoUrl;
     logoElem.classList.remove('hidden');
   } else if (logoElem) {
     logoElem.classList.add('hidden');
   }
 
   const hero = document.getElementById('hero-section');
-  if (hero && storeSettings.heroImage) {
-    hero.style.backgroundImage = `linear-gradient(rgba(13,15,18,0.7), rgba(13,15,18,0.9)), url('${storeSettings.heroImage}')`;
+  if (hero && storeSettings.heroUrl) {
+    hero.style.backgroundImage = `linear-gradient(rgba(13,15,18,0.7), rgba(13,15,18,0.9)), url('${storeSettings.heroUrl}')`;
     hero.style.backgroundSize = 'cover';
     hero.style.backgroundPosition = 'center';
   }
@@ -260,23 +278,6 @@ function changeLanguage(lang) {
   renderProducts();
 }
 
-// Fixed Universal Mobile File & Image Reader
-function handleImageUpload(e, previewId) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = function(evt) {
-    const dataUrl = evt.target.result;
-    const previewImg = document.getElementById(previewId);
-    if (previewImg) {
-      previewImg.src = dataUrl;
-      previewImg.style.display = 'block';
-    }
-  };
-  reader.readAsDataURL(file);
-}
-
 // Order System
 function openOrderModal(productId) {
   selectedProduct = products.find(p => p.id === productId);
@@ -292,15 +293,15 @@ function openOrderModal(productId) {
   const targetInput = document.getElementById('order-target-value');
 
   if (selectedProduct.type === 'giftcard') {
-    uidWarning.classList.add('hidden');
-    gcInfo.classList.remove('hidden');
+    if (uidWarning) uidWarning.classList.add('hidden');
+    if (gcInfo) gcInfo.classList.remove('hidden');
     targetLabel.innerText = "البريد الإلكتروني لاستلام الكود / الحساب:";
     targetInput.type = "email";
     targetInput.placeholder = "أدخل بريدك الإلكتروني هنا";
     targetInput.value = currentUser ? currentUser.email : "";
   } else {
-    uidWarning.classList.remove('hidden');
-    gcInfo.classList.add('hidden');
+    if (uidWarning) uidWarning.classList.remove('hidden');
+    if (gcInfo) gcInfo.classList.add('hidden');
     targetLabel.innerText = "معرف الحساب / Player ID (UID):";
     targetInput.type = "text";
     targetInput.placeholder = "أدخل ID حسابك في اللعبة";
@@ -327,6 +328,7 @@ function closeOrderModal() {
 
 function renderActivePaymentMethods() {
   const container = document.getElementById('payment-options-container');
+  if (!container) return;
   const activeMethods = paymentMethods.filter(m => m.enabled === true);
   
   if (activeMethods.length === 0) {
@@ -355,6 +357,7 @@ function selectPaymentMethod(id) {
 
 function renderSelectedPaymentDetails() {
   const box = document.getElementById('payment-details-box');
+  if (!box) return;
   const current = paymentMethods.find(m => m.id === selectedPaymentMethodId);
   if (current) {
     box.innerHTML = `<pre style="font-family:inherit; white-space:pre-wrap; margin:0;">${current.details}</pre>`;
@@ -402,7 +405,7 @@ function handleOrderSubmit(e) {
   };
 
   orders.push(newOrder);
-  localStorage.setItem('ak_orders', JSON.stringify(orders));
+  safeSet('ak_orders', orders);
 
   const targetFieldText = selectedProduct.type === 'giftcard' ? `إيميل الاستلام: ${targetVal}` : `معرف الحساب (UID): ${targetVal}`;
 
@@ -426,7 +429,7 @@ function handleOrderSubmit(e) {
   window.open(waUrl, '_blank');
 }
 
-// Payment Admin
+// Payment Methods Control
 function addNewPaymentMethod(e) {
   e.preventDefault();
   const name = document.getElementById('new-pay-name').value.trim();
@@ -439,7 +442,7 @@ function addNewPaymentMethod(e) {
     enabled: true
   });
 
-  localStorage.setItem('ak_payment_methods', JSON.stringify(paymentMethods));
+  safeSet('ak_payment_methods', paymentMethods);
   renderAdminPaymentsList();
   renderActivePaymentMethods();
   document.getElementById('new-payment-form').reset();
@@ -450,7 +453,7 @@ function togglePaymentStatus(id) {
   const index = paymentMethods.findIndex(m => m.id === id);
   if (index !== -1) {
     paymentMethods[index].enabled = !paymentMethods[index].enabled;
-    localStorage.setItem('ak_payment_methods', JSON.stringify(paymentMethods));
+    safeSet('ak_payment_methods', paymentMethods);
     renderAdminPaymentsList();
     renderActivePaymentMethods();
   }
@@ -459,7 +462,7 @@ function togglePaymentStatus(id) {
 function deletePaymentMethod(id) {
   if (confirm("هل تريد حذف طريقة الدفع نهائياً؟")) {
     paymentMethods = paymentMethods.filter(m => m.id !== id);
-    localStorage.setItem('ak_payment_methods', JSON.stringify(paymentMethods));
+    safeSet('ak_payment_methods', paymentMethods);
     renderAdminPaymentsList();
     renderActivePaymentMethods();
   }
@@ -496,19 +499,19 @@ function saveProduct(e) {
   const name = document.getElementById('prod-name').value.trim();
   const category = document.getElementById('prod-cat').value;
   const type = (category === 'giftcards' || category === 'subs') ? 'giftcard' : 'topup';
-  const imgPreview = document.getElementById('prod-image-preview');
-  
-  // Use uploaded image, or maintain fallback
-  let imageSrc = "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500";
-  if (imgPreview && imgPreview.src && imgPreview.src !== "" && !imgPreview.src.endsWith(window.location.href)) {
-    imageSrc = imgPreview.src;
-  }
+  const imgUrl = document.getElementById('prod-image-url').value.trim();
+  const packagesRaw = document.getElementById('prod-packages').value.trim();
 
-  const packagesRaw = document.getElementById('prod-packages').value;
   const parsedPackages = packagesRaw.split(',').map(item => {
-    const [pkgName, price] = item.split(':');
-    return { name: pkgName.trim(), price: parseFloat(price.trim()) };
-  });
+    const parts = item.split(':');
+    if (parts.length < 2) return null;
+    return { name: parts[0].trim(), price: parseFloat(parts[1].trim()) || 0 };
+  }).filter(p => p !== null && !isNaN(p.price));
+
+  if (parsedPackages.length === 0) {
+    alert("الرجاء كتابة الباقات والأسعار بشكل صحيح مثل:\n100 Diamonds : 1.20 , 310 Diamonds : 3.00");
+    return;
+  }
 
   const existingIdx = products.findIndex(p => p.id === id);
   const newProdData = {
@@ -516,7 +519,7 @@ function saveProduct(e) {
     name,
     category,
     type,
-    image: imageSrc,
+    image: imgUrl || "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
     packages: parsedPackages
   };
 
@@ -526,21 +529,17 @@ function saveProduct(e) {
     products.push(newProdData);
   }
 
-  localStorage.setItem('ak_products', JSON.stringify(products));
+  safeSet('ak_products', products);
   renderProducts();
   renderAdminProductsList();
   document.getElementById('product-form').reset();
-  if (imgPreview) {
-    imgPreview.src = '';
-    imgPreview.style.display = 'none';
-  }
-  alert("تم حفظ المنتج بنجاح!");
+  alert("✅ تم حفظ المنتج بنجاح وأصبح متاحاً في المتجر!");
 }
 
 function deleteProduct(id) {
   if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
     products = products.filter(p => p.id !== id);
-    localStorage.setItem('ak_products', JSON.stringify(products));
+    safeSet('ak_products', products);
     renderProducts();
     renderAdminProductsList();
   }
@@ -587,7 +586,7 @@ function approveOrder(id) {
   const order = orders.find(o => o.id === id);
   if (order) {
     order.status = 'Completed';
-    localStorage.setItem('ak_orders', JSON.stringify(orders));
+    safeSet('ak_orders', orders);
     renderAdminOrdersTable();
     alert("تم تأكيد الدفع بنجاح!");
   }
@@ -600,7 +599,7 @@ function promptDeliverCode(id) {
     if (order) {
       order.deliveredCode = code;
       order.status = 'Completed';
-      localStorage.setItem('ak_orders', JSON.stringify(orders));
+      safeSet('ak_orders', orders);
       renderAdminOrdersTable();
       alert("تم تسليم الكود للطلب بنجاح! سيظهر في حساب العميل مباشرة.");
     }
@@ -643,9 +642,9 @@ function handleUserRegister(e) {
 
   const newUser = { name, email, pass };
   users.push(newUser);
-  localStorage.setItem('ak_users', JSON.stringify(users));
+  safeSet('ak_users', users);
   currentUser = newUser;
-  localStorage.setItem('ak_current_user', JSON.stringify(currentUser));
+  safeSet('ak_current_user', currentUser);
   updateUserUI();
   showUserDashboard();
 }
@@ -658,7 +657,7 @@ function handleUserLogin(e) {
   const found = users.find(u => u.email === email && u.pass === pass);
   if (found) {
     currentUser = found;
-    localStorage.setItem('ak_current_user', JSON.stringify(currentUser));
+    safeSet('ak_current_user', currentUser);
     updateUserUI();
     showUserDashboard();
   } else {
@@ -755,43 +754,44 @@ function switchAdminTab(tab) {
 
 function loadAdminSettingsInputs() {
   const nameInput = document.getElementById('setting-store-name');
-  if (nameInput) nameInput.value = storeSettings.name;
+  const logoInput = document.getElementById('setting-logo-url');
+  const heroInput = document.getElementById('setting-hero-url');
+  const galleryInput = document.getElementById('setting-gallery-urls');
+
+  if (nameInput) nameInput.value = storeSettings.name || '';
+  if (logoInput) logoInput.value = storeSettings.logoUrl || '';
+  if (heroInput) heroInput.value = storeSettings.heroUrl || '';
+  if (galleryInput) galleryInput.value = (storeSettings.galleryUrls || []).join(', ');
 }
 
 function saveStoreSettings() {
   const name = document.getElementById('setting-store-name').value.trim();
-  const logoPreview = document.getElementById('logo-preview');
-  const heroPreview = document.getElementById('hero-preview');
+  const logoUrl = document.getElementById('setting-logo-url').value.trim();
+  const heroUrl = document.getElementById('setting-hero-url').value.trim();
+  const galleryRaw = document.getElementById('setting-gallery-urls').value.trim();
 
   if (name) storeSettings.name = name;
-  if (logoPreview && logoPreview.src && logoPreview.src !== "" && !logoPreview.src.endsWith(window.location.href)) {
-    storeSettings.logoImage = logoPreview.src;
-  }
-  if (heroPreview && heroPreview.src && heroPreview.src !== "" && !heroPreview.src.endsWith(window.location.href)) {
-    storeSettings.heroImage = heroPreview.src;
+  storeSettings.logoUrl = logoUrl;
+  storeSettings.heroUrl = heroUrl;
+
+  if (galleryRaw) {
+    storeSettings.galleryUrls = galleryRaw.split(',').map(u => u.trim()).filter(u => u.length > 0);
+  } else {
+    storeSettings.galleryUrls = [];
   }
 
-  localStorage.setItem('ak_settings', JSON.stringify(storeSettings));
+  safeSet('ak_settings', storeSettings);
   renderStoreBranding();
-  alert("تم حفظ إعدادات المظهر والشعار والخلفية بنجاح!");
-}
-
-function handleGalleryUpload(e) {
-  const files = Array.from(e.target.files);
-  files.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      storeSettings.gallery.push(evt.target.result);
-      localStorage.setItem('ak_settings', JSON.stringify(storeSettings));
-      renderFooterGallery();
-    };
-    reader.readAsDataURL(file);
-  });
+  renderFooterGallery();
+  alert("✅ تم حفظ إعدادات الروابط والمظهر بنجاح!");
 }
 
 function renderFooterGallery() {
   const container = document.getElementById('bottom-gallery-container');
   if (!container) return;
-  if (!storeSettings.gallery || storeSettings.gallery.length === 0) return;
-  container.innerHTML = storeSettings.gallery.map(src => `<img src="${src}" alt="Gallery item">`).join('');
+  if (!storeSettings.galleryUrls || storeSettings.galleryUrls.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+  container.innerHTML = storeSettings.galleryUrls.map(url => `<img src="${url}" alt="Gallery item" onerror="this.style.display='none'">`).join('');
 }
