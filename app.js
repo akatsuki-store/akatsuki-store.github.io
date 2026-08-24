@@ -1,4 +1,4 @@
-// Akatsuki Store Engine - Accurate Price Parser
+// Akatsuki Store Engine - Edit Product & Custom Display Price
 const DZD_RATE = 280;
 
 const DEFAULT_PRODUCTS = [
@@ -8,6 +8,7 @@ const DEFAULT_PRODUCTS = [
     category: "games",
     type: "topup",
     image: "https://images.unsplash.com/photo-1612287233207-6f8b5f36e4f3?w=500",
+    displayPrice: 1.20,
     packages: [
       { name: "80 Robux", price: 1.20 },
       { name: "400 Robux", price: 4.99 },
@@ -21,6 +22,7 @@ const DEFAULT_PRODUCTS = [
     category: "games",
     type: "topup",
     image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
+    displayPrice: 2.00,
     packages: [
       { name: "210+21 Diamond", price: 2.00 },
       { name: "530+53 Diamond", price: 5.00 },
@@ -162,7 +164,10 @@ function renderProducts() {
     : products.filter(p => p.category === activeCategory);
 
   filtered.forEach(p => {
-    const minPrice = p.packages && p.packages.length > 0 ? Math.min(...p.packages.map(pkg => pkg.price)) : 1;
+    let showPrice = p.displayPrice !== undefined && p.displayPrice !== null && p.displayPrice > 0 
+      ? p.displayPrice 
+      : (p.packages && p.packages.length > 0 ? Math.min(...p.packages.map(pkg => pkg.price)) : 1.00);
+
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
@@ -173,7 +178,7 @@ function renderProducts() {
           ${p.type === 'giftcard' ? '<i class="fa-solid fa-gift"></i> بطاقة كود رقمي' : '<i class="fa-solid fa-bolt"></i> شحن مباشر بالـ ID'}
         </p>
         <div class="product-pricing">
-          <span class="starting-price">${formatPrice(minPrice)}</span>
+          <span class="starting-price">${formatPrice(showPrice)}</span>
           <button class="btn-primary" onclick="openOrderModal('${p.id}')">شراء / شحن</button>
         </div>
       </div>
@@ -407,7 +412,40 @@ function renderAdminPaymentsList() {
   `).join('');
 }
 
-// Precise Product & Package Parser
+// Edit & Save Products
+function editProduct(id) {
+  const prod = products.find(p => p.id === id);
+  if (!prod) return;
+
+  document.getElementById('edit-product-id').value = prod.id;
+  document.getElementById('prod-name').value = prod.name;
+  document.getElementById('prod-cat').value = prod.category;
+  document.getElementById('prod-image-url').value = prod.image || '';
+  
+  if (prod.displayPrice) {
+    document.getElementById('prod-display-price').value = prod.displayPrice;
+  } else {
+    document.getElementById('prod-display-price').value = '';
+  }
+
+  // Format packages back into text
+  const pkgText = (prod.packages || []).map(p => `${p.name} : ${p.price}`).join(' , ');
+  document.getElementById('prod-packages').value = pkgText;
+
+  document.getElementById('form-product-title').innerText = `تعديل منتج: ${prod.name}`;
+  document.getElementById('btn-save-product').innerText = "تحديث وتعديل المنتج";
+
+  // Scroll to form smoothly
+  document.getElementById('tab-admin-products').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetProductForm() {
+  document.getElementById('edit-product-id').value = '';
+  document.getElementById('product-form').reset();
+  document.getElementById('form-product-title').innerText = "إضافة أو تعديل منتج / بطاقة";
+  document.getElementById('btn-save-product').innerText = "حفظ المنتج";
+}
+
 function saveProduct(e) {
   e.preventDefault();
   const id = document.getElementById('edit-product-id').value || 'p' + Date.now();
@@ -415,7 +453,19 @@ function saveProduct(e) {
   const category = document.getElementById('prod-cat').value;
   const type = (category === 'giftcards' || category === 'subs') ? 'giftcard' : 'topup';
   let imgUrl = document.getElementById('prod-image-url').value.trim();
+  const displayPriceRaw = document.getElementById('prod-display-price').value.trim();
   const rawPackages = document.getElementById('prod-packages').value;
+
+  // Parse Custom Display Price if entered
+  let customDisplayPrice = null;
+  if (displayPriceRaw) {
+    const num = parseFloat(displayPriceRaw.replace(/[^0-9\.]/g, ''));
+    if (!isNaN(num)) {
+      customDisplayPrice = (displayPriceRaw.toLowerCase().includes('da') || displayPriceRaw.includes('دج') || num > 70) 
+        ? parseFloat((num / DZD_RATE).toFixed(2)) 
+        : num;
+    }
+  }
 
   const items = rawPackages.split(/[\n,]+/).map(l => l.trim()).filter(l => l.length > 0);
   const parsedPackages = [];
@@ -438,7 +488,6 @@ function saveProduct(e) {
         }
       }
     } else {
-      // If no colon, extract the LAST number in the string as price
       const matches = item.match(/\d+[\.,]?\d*/g);
       if (matches && matches.length > 0) {
         const lastNum = parseFloat(matches[matches.length - 1].replace(',', '.'));
@@ -463,6 +512,7 @@ function saveProduct(e) {
     category,
     type,
     image: imgUrl || "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
+    displayPrice: customDisplayPrice,
     packages: parsedPackages
   };
 
@@ -475,8 +525,8 @@ function saveProduct(e) {
   safeSet('ak_products', products);
   renderProducts();
   renderAdminProductsList();
-  document.getElementById('product-form').reset();
-  alert("✅ تم حفظ ونشر المنتج بنجاح بالسعر المضبوط!");
+  resetProductForm();
+  alert("✅ تم تحديث ونشر المنتج بنجاح!");
 }
 
 function deleteProduct(id) {
@@ -492,9 +542,15 @@ function renderAdminProductsList() {
   const container = document.getElementById('admin-products-list');
   if (!container) return;
   container.innerHTML = products.map(p => `
-    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-color); padding:0.5rem; margin-bottom:0.5rem; border-radius:6px;">
-      <span>${p.name} (${p.category})</span>
-      <button onclick="deleteProduct('${p.id}')" style="background:#e50914; border:none; color:#fff; padding:4px 8px; border-radius:4px; cursor:pointer;">حذف</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-color); padding:0.6rem; margin-bottom:0.5rem; border-radius:6px; border:1px solid #21262d;">
+      <div>
+        <strong>${p.name}</strong> 
+        <span style="font-size:0.75rem; color:#4BB543; margin-right:8px;">(السعر: ${formatPrice(p.displayPrice || (p.packages[0] ? p.packages[0].price : 1))})</span>
+      </div>
+      <div style="display:flex; gap:6px;">
+        <button onclick="editProduct('${p.id}')" style="background:#1f6feb; border:none; color:#fff; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold; font-size:0.8rem;">تعديل</button>
+        <button onclick="deleteProduct('${p.id}')" style="background:#e50914; border:none; color:#fff; padding:4px 8px; border-radius:4px; cursor:pointer; font-size:0.8rem;">حذف</button>
+      </div>
     </div>
   `).join('');
 }
