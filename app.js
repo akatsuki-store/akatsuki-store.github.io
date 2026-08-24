@@ -6,7 +6,7 @@ const DEFAULT_PRODUCTS = [
     name: "roblox gift card 🌍Global",
     category: "giftcards",
     type: "giftcard",
-    image: "https://i.postimg.cc/FHWC5tnx/cd2ab173c7310cd2530c013e6dc1b7f8.jpg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Roblox_player_icon_black.svg/1200px-Roblox_player_icon_black.svg.png",
     displayPrice: 8.97,
     packages: [
       { name: "400 Robux Gift Card", price: 8.97 },
@@ -22,7 +22,7 @@ const DEFAULT_PRODUCTS = [
     name: "Freefier Diamonds 🌍cod global",
     category: "giftcards",
     type: "giftcard",
-    image: "https://i.postimg.cc/xdmvsWr1/35bb5af231507e04fa472687d360b560.jpg",
+    image: "https://cdn.icon-icons.com/icons2/3053/PNG/512/garena_free_fire_macos_bigsur_icon_189679.png",
     displayPrice: 2.00,
     packages: [
       { name: "210+21 Diamonds", price: 2.00 },
@@ -36,7 +36,7 @@ const DEFAULT_PRODUCTS = [
     name: "Pubg mobile UC cod 🌍Global",
     category: "giftcards",
     type: "giftcard",
-    image: "https://i.postimg.cc/R0x60h8h/cd99be37586aef305db6c2bacb38fec3.jpg",
+    image: "https://images.seeklogo.com/logo-png/33/2/pubg-mobile-logo-png_seeklogo-338275.png",
     displayPrice: 2.14,
     packages: [
       { name: "120 UC", price: 2.14 },
@@ -52,7 +52,7 @@ const DEFAULT_PRODUCTS = [
     name: "Tango global topup 🌍",
     category: "apps",
     type: "topup",
-    image: "https://i.postimg.cc/CKvRs75L/ba0d0bc083118e61690a7025e2926847.jpg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Tango_me_logo.svg/1200px-Tango_me_logo.svg.png",
     displayPrice: 2.86,
     packages: [
       { name: "300 Coins", price: 2.86 },
@@ -67,7 +67,7 @@ const DEFAULT_PRODUCTS = [
     name: "superlive topup",
     category: "apps",
     type: "topup",
-    image: "https://i.postimg.cc/C5K5BqS8/bde17b5925808c50d0fa4af94d57397b.jpg",
+    image: "https://play-lh.googleusercontent.com/uR1_WkH13a3Z6B7q7B2k2mX2fW8vY9v4K7b1j_9_Y1y5m2k7f4b8_6c1v2b3n4m5",
     displayPrice: 6.79,
     packages: [
       { name: "605 Coins", price: 6.79 },
@@ -82,7 +82,7 @@ const DEFAULT_PRODUCTS = [
     name: "Google ai Pro 18months",
     category: "subs",
     type: "giftcard",
-    image: "https://i.postimg.cc/tgyXnxz4/file-000000003ef881f4a88496afad4a6fb1.png",
+    image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-gemini-icon.png",
     displayPrice: 6.79,
     packages: [
       { name: "اشتراك 18 شهر", price: 6.79 }
@@ -135,9 +135,8 @@ function safeSet(key, value) {
   }
 }
 
-// Auto-sync original products with real images
 let products = DEFAULT_PRODUCTS;
-safeSet('ak_products_v5', products);
+safeSet('ak_products_final', products);
 
 let paymentMethods = safeGet('ak_payment_methods', DEFAULT_PAYMENTS);
 let storeSettings = safeGet('ak_settings', {
@@ -232,7 +231,7 @@ function renderProducts() {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
-      <img src="${p.image}" class="product-img" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500'">
+      <img src="${p.image}" class="product-img" alt="${p.name}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/686/686589.png'">
       <div class="product-info">
         <h3 class="product-title">${p.name}</h3>
         <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.4rem;">
@@ -584,7 +583,7 @@ function saveProduct(e) {
     name,
     category,
     type,
-    image: imgUrl || "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
+    image: imgUrl || "https://cdn-icons-png.flaticon.com/512/686/686589.png",
     displayPrice: customDisplayPrice,
     packages: parsedPackages
   };
@@ -595,7 +594,7 @@ function saveProduct(e) {
     products.push(newProdData);
   }
 
-  safeSet('ak_products_v5', products);
+  safeSet('ak_products_final', products);
   renderProducts();
   renderAdminProductsList();
   resetProductForm();
@@ -605,19 +604,19 @@ function saveProduct(e) {
 function deleteProduct(id) {
   if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
     products = products.filter(p => p.id !== id);
-    safeSet('ak_products_v5', products);
+    safeSet('ak_products_final', products);
     renderProducts();
     renderAdminProductsList();
   }
 }
 
 function hardResetProducts() {
-  if (confirm("هل تريد إعادة ضبط جميع المنتجات وتحميل الأسعار الصحيحة؟")) {
+  if (confirm("هل تريد إعادة ضبط جميع المنتجات وتحميل الأسعار والصور الصحيحة؟")) {
     products = DEFAULT_PRODUCTS;
-    safeSet('ak_products_v5', products);
+    safeSet('ak_products_final', products);
     renderProducts();
     renderAdminProductsList();
-    alert("✅ تم مسح البيانات وضبط جميع المنتجات والأسعار الصحيحة بنجاح!");
+    alert("✅ تم ضبط جميع المنتجات والصور بنجاح!");
   }
 }
 
