@@ -1,4 +1,4 @@
-// Akatsuki Store Engine - Fully Responsive & Customizable
+// Akatsuki Store Engine - Fully Responsive with Receipt Notifications
 const DZD_RATE = 280;
 
 const DEFAULT_PRODUCTS = [
@@ -31,6 +31,12 @@ const DEFAULT_PRODUCTS = [
 ];
 
 const DEFAULT_PAYMENTS = [
+  {
+    id: "baridimob",
+    name: "بريدي موب BaridiMob",
+    details: "RIP: 00799999002345678912\nNom / Prénom: AKATSUKI STORE",
+    enabled: true
+  },
   {
     id: "bybit",
     name: "Bybit",
@@ -121,7 +127,6 @@ function renderStoreBranding() {
     hero.style.backgroundImage = `linear-gradient(rgba(11,13,16,0.6), rgba(11,13,16,0.85)), url('${storeSettings.heroUrl}')`;
   }
 
-  // Handle Hero Banner Text Visibility & Alignment
   if (heroBox) {
     if (storeSettings.hideHeroText) {
       heroBox.classList.add('hidden');
@@ -185,7 +190,7 @@ function filterCategory(cat) {
   renderProducts();
 }
 
-// Order System
+// Order Modal System
 function openOrderModal(productId) {
   selectedProduct = products.find(p => p.id === productId);
   if (!selectedProduct) return;
@@ -267,7 +272,10 @@ function renderSelectedPaymentDetails() {
   if (!box) return;
   const current = paymentMethods.find(m => m.id === selectedPaymentMethodId);
   if (current) {
-    box.innerHTML = `<pre style="font-family:inherit; white-space:pre-wrap; margin:0;">${current.details}</pre>`;
+    box.innerHTML = `
+      <div style="margin-bottom:6px; font-weight:bold; color:#fff;">بيانات التحويل (${current.name}):</div>
+      <pre style="font-family:inherit; white-space:pre-wrap; margin:0; color:#c9d1d9;">${current.details}</pre>
+    `;
   }
 }
 
@@ -325,11 +333,11 @@ function handleOrderSubmit(e) {
     `الكمية: ${qty}\n` +
     `${targetFieldText}\n` +
     `طريقة الدفع: ${payName}\n` +
-    `المبلغ: $${usdTotal} (${dzdTotal} دج)\n\n` +
-    `ملاحظة: تم إرسال إثبات الدفع مع هذه الرسالة.`
+    `المبلغ الإجمالي: $${usdTotal} (${dzdTotal} دج)\n\n` +
+    `📸 *ملاحظة:* تم إرفاق صورة وصل الدفع (Screenshot) مع هذه الرسالة لتأكيد الطلب.`
   );
 
-  alert("جاري التحقق من عملية الدفع، الرجاء الانتظار...");
+  alert("سيتم نقلك إلى واتساب لإرسال تفاصيل الطلب.. يرجى إرفاق صورة وصل التحويل في المحادثة لتأكيد شحن حسابك!");
   closeOrderModal();
 
   const waUrl = `https://wa.me/${storeSettings.whatsapp || '213556334891'}?text=${waMsg}`;
