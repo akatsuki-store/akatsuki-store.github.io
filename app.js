@@ -135,7 +135,7 @@ function safeSet(key, value) {
   }
 }
 
-let products = safeGet('ak_products_v3', DEFAULT_PRODUCTS);
+let products = safeGet('ak_products_v4', DEFAULT_PRODUCTS);
 let paymentMethods = safeGet('ak_payment_methods', DEFAULT_PAYMENTS);
 let storeSettings = safeGet('ak_settings', {
   name: "Akatsuki-Store",
@@ -260,6 +260,7 @@ function openOrderModal(productId) {
   document.getElementById('order-product-id').value = selectedProduct.id;
   document.getElementById('order-product-type').value = selectedProduct.type;
   document.getElementById('modal-product-name').innerText = selectedProduct.name;
+  document.getElementById('order-receipt-file').value = "";
 
   const uidWarning = document.getElementById('uid-warning-box');
   const gcInfo = document.getElementById('giftcard-info-box');
@@ -353,6 +354,24 @@ function updateCalculatedPrice() {
 
 function handleOrderSubmit(e) {
   e.preventDefault();
+  const fileInput = document.getElementById('order-receipt-file');
+  if (!fileInput.files || fileInput.files.length === 0) {
+    alert("⚠️ يرجى رفع صورة أو سكرين شوت لوصل الدفع قبل تأكيد الطلب!");
+    return;
+  }
+
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+    const receiptBase64 = event.target.result;
+    processOrderFinal(receiptBase64);
+  };
+
+  reader.readAsDataURL(file);
+}
+
+function processOrderFinal(receiptImage) {
   const targetVal = document.getElementById('order-target-value').value.trim();
   const pkgIndex = document.getElementById('order-package').value;
   const qty = document.getElementById('order-qty').value;
@@ -375,6 +394,7 @@ function handleOrderSubmit(e) {
     totalUSD: `$${usdTotal}`,
     totalDZD: `${dzdTotal} دج`,
     paymentMethod: payName,
+    receiptImg: receiptImage,
     status: 'Pending Verification',
     deliveredCode: '',
     date: new Date().toLocaleDateString(),
@@ -395,11 +415,11 @@ function handleOrderSubmit(e) {
     `الكمية: ${qty}\n` +
     `${targetFieldText}\n` +
     `طريقة الدفع: ${payName}\n` +
-    `المبلغ الإجمالي: $${usdTotal} (${dzdTotal} دج)\n\n` +
-    `📸 *ملاحظة:* تم إرفاق صورة وصل الدفع (Screenshot) مع هذه الرسالة لتأكيد الطلب.`
+    `المبلغ: $${usdTotal} (${dzdTotal} دج)\n\n` +
+    `✅ *ملاحظة:* تم رفع وتأكيد وصل الدفع بنجاح مع الطلب.`
   );
 
-  alert("سيتم نقلك إلى واتساب.. يرجى إرفاق صورة وصل التحويل في المحادثة لتأكيد شحن حسابك!");
+  alert("✅ تم إرسال طلبك بنجاح مع وصل الدفع! جاري تحويلك إلى واتساب لتأكيد الشحن الفوري.");
   closeOrderModal();
 
   const waUrl = `https://wa.me/${storeSettings.whatsapp || '213556334891'}?text=${waMsg}`;
@@ -574,7 +594,7 @@ function saveProduct(e) {
     products.push(newProdData);
   }
 
-  safeSet('ak_products_v3', products);
+  safeSet('ak_products_v4', products);
   renderProducts();
   renderAdminProductsList();
   resetProductForm();
@@ -584,7 +604,7 @@ function saveProduct(e) {
 function deleteProduct(id) {
   if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
     products = products.filter(p => p.id !== id);
-    safeSet('ak_products_v3', products);
+    safeSet('ak_products_v4', products);
     renderProducts();
     renderAdminProductsList();
   }
@@ -594,11 +614,12 @@ function hardResetProducts() {
   if (confirm("هل تريد إعادة ضبط جميع المنتجات وتحميل الأسعار الصحيحة؟")) {
     localStorage.removeItem('ak_products');
     localStorage.removeItem('ak_products_v3');
+    localStorage.removeItem('ak_products_v4');
     products = DEFAULT_PRODUCTS;
-    safeSet('ak_products_v3', products);
+    safeSet('ak_products_v4', products);
     renderProducts();
     renderAdminProductsList();
-    alert("✅ تم مسح البيانات القديمة وضبط جميع المنتجات والأسعار الصحيحة بنجاح!");
+    alert("✅ تم مسح البيانات وضبط جميع المنتجات والأسعار الصحيحة بنجاح!");
   }
 }
 
@@ -628,12 +649,22 @@ function renderAdminOrdersTable() {
   }
 
   table.innerHTML = orders.slice().reverse().map(o => `
-    <div style="background:var(--bg-color); padding:0.8rem; margin-bottom:0.8rem; border-radius:6px;">
+    <div style="background:var(--bg-color); padding:0.8rem; margin-bottom:0.8rem; border-radius:6px; border: 1px solid var(--border-color);">
       <p><strong>طلب #${o.id}</strong> (${o.type === 'giftcard' ? 'بطاقة رقمية' : 'شحن ID'})</p>
       <p>المنتج: ${o.product} - ${o.package} (الكمية: ${o.quantity})</p>
       <p>${o.type === 'giftcard' ? 'إيميل العميل' : 'معرف UID'}: <code>${o.targetValue}</code></p>
       <p>المبلغ: <strong>${o.totalUSD} / ${o.totalDZD}</strong> (طريقة الدفع: ${o.paymentMethod})</p>
       <p>الحالة: <span style="color:${o.status === 'Completed' ? '#4BB543' : '#ffaa00'}">${o.status}</span></p>
+      
+      ${o.receiptImg ? `
+        <div style="margin: 8px 0;">
+          <p style="font-size:0.8rem; color:#8b949e; margin-bottom:4px;">وصل الدفع المرفق:</p>
+          <a href="${o.receiptImg}" target="_blank">
+            <img src="${o.receiptImg}" style="max-width: 140px; max-height: 140px; border-radius: 6px; border: 1px solid #444c56; cursor: pointer;" alt="Receipt">
+          </a>
+        </div>
+      ` : '<p style="color:#ff6b6b; font-size:0.75rem;">لا يوجد وصل مرفق</p>'}
+
       ${o.deliveredCode ? `<p>الكود المسلّم: <b style="color:#4BB543;">${o.deliveredCode}</b></p>` : ''}
       
       <div style="margin-top:0.5rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
