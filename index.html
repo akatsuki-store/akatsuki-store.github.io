@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="theme-dark" id="main-body">
@@ -15,19 +15,14 @@
   <!-- Header -->
   <header class="main-header">
     <div class="nav-container">
-      <div class="brand" style="display:flex; align-items:center; gap:10px;">
-        <img id="brand-logo" src="" alt="Logo" class="hidden" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+      <div class="brand">
+        <img id="brand-logo" src="" alt="Logo" class="hidden" style="width:38px; height:38px; border-radius:50%; object-fit:cover;">
         <h1 id="brand-name">Akatsuki-Store</h1>
       </div>
       <div class="nav-actions">
-        <select id="currency-switcher" onchange="changeCurrency(this.value)" style="width: auto; padding: 0.4rem;">
+        <select id="currency-switcher" onchange="changeCurrency(this.value)" style="width: auto; padding: 0.35rem;">
           <option value="USD">USD ($)</option>
           <option value="DZD">DZD (دج)</option>
-        </select>
-        <select id="language-switcher" onchange="changeLanguage(this.value)" style="width: auto; padding: 0.4rem;">
-          <option value="ar">العربية</option>
-          <option value="en">English</option>
-          <option value="fr">Français</option>
         </select>
         <button id="user-btn" class="btn-secondary" onclick="openAuthModal()"><i class="fa-solid fa-user"></i> <span id="user-btn-text">حسابي</span></button>
         <button id="admin-login-btn" class="btn-outline" onclick="openAdminModal()"><i class="fa-solid fa-lock"></i> الأدمن</button>
@@ -35,9 +30,9 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero Banner -->
   <section class="hero-banner" id="hero-section">
-    <div class="hero-content">
+    <div class="hero-content" id="hero-content-box">
       <h2 id="hero-title">أفضل عروض الشحن والبطاقات الرقمية</h2>
       <p id="hero-subtitle">تسليم فوري وموثوق | سعر الصرف: 1$ = 280 دج</p>
     </div>
@@ -79,32 +74,32 @@
         <input type="hidden" id="order-product-id">
         <input type="hidden" id="order-product-type">
         
-        <div class="form-group" id="group-uid">
+        <div class="form-group" style="margin-bottom:12px;">
           <label id="lbl-target-input">معرف الحساب / Player ID (UID):</label>
-          <input type="text" id="order-target-value" required placeholder="أدخل معرف الحساب هنا">
+          <input type="text" id="order-target-value" required placeholder="أدخل معرف الحساب هنا" style="width:100%;">
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom:12px;">
           <label id="lbl-package">الباقة / الفئة:</label>
-          <select id="order-package" required onchange="updateCalculatedPrice()"></select>
+          <select id="order-package" required onchange="updateCalculatedPrice()" style="width:100%;"></select>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom:12px;">
           <label id="lbl-qty">الكمية:</label>
-          <input type="number" id="order-qty" value="1" min="1" max="10" onchange="updateCalculatedPrice()">
+          <input type="number" id="order-qty" value="1" min="1" max="10" onchange="updateCalculatedPrice()" style="width:100%;">
         </div>
 
-        <div class="price-summary">
+        <div style="margin: 12px 0; font-size:1.1rem;">
           <span id="lbl-total">المجموع: </span>
-          <strong id="order-total-price">$0.00</strong>
+          <strong id="order-total-price" style="color:#4BB543;">$0.00</strong>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom:12px;">
           <label id="lbl-payment">طريقة الدفع:</label>
           <div class="payment-methods" id="payment-options-container"></div>
         </div>
 
-        <div id="payment-details-box" class="payment-details-box"></div>
+        <div id="payment-details-box" style="background:#0b0d10; padding:10px; border-radius:6px; margin-bottom:12px; font-size:0.85rem;"></div>
 
         <button type="submit" class="btn-primary full-width" id="btn-confirm-order">إتمام الطلب والإرسال للواتساب</button>
       </form>
@@ -116,31 +111,21 @@
     <div class="modal-content auth-box">
       <span class="close" onclick="closeAuthModal()">&times;</span>
       <h3 id="auth-title">حساب العميل</h3>
-      <div class="auth-tabs">
-        <button class="auth-tab-btn active" onclick="toggleAuthForm('login')">تسجيل دخول</button>
-        <button class="auth-tab-btn" onclick="toggleAuthForm('register')">إنشاء حساب</button>
+      <div style="display:flex; gap:10px; margin:15px 0;">
+        <button class="btn-primary" onclick="toggleAuthForm('login')">تسجيل دخول</button>
+        <button class="btn-secondary" onclick="toggleAuthForm('register')">إنشاء حساب</button>
       </div>
 
       <form id="login-form" onsubmit="handleUserLogin(event)">
-        <div class="form-group">
-          <input type="email" id="login-email" placeholder="البريد الإلكتروني" required>
-        </div>
-        <div class="form-group">
-          <input type="password" id="login-password" placeholder="كلمة المرور" required>
-        </div>
+        <div style="margin-bottom:10px;"><input type="email" id="login-email" placeholder="البريد الإلكتروني" required style="width:100%;"></div>
+        <div style="margin-bottom:10px;"><input type="password" id="login-password" placeholder="كلمة المرور" required style="width:100%;"></div>
         <button type="submit" class="btn-primary full-width">دخول</button>
       </form>
 
       <form id="register-form" class="hidden" onsubmit="handleUserRegister(event)">
-        <div class="form-group">
-          <input type="text" id="reg-name" placeholder="الاسم الكامل" required>
-        </div>
-        <div class="form-group">
-          <input type="email" id="reg-email" placeholder="البريد الإلكتروني" required>
-        </div>
-        <div class="form-group">
-          <input type="password" id="reg-password" placeholder="كلمة المرور" required>
-        </div>
+        <div style="margin-bottom:10px;"><input type="text" id="reg-name" placeholder="الاسم الكامل" required style="width:100%;"></div>
+        <div style="margin-bottom:10px;"><input type="email" id="reg-email" placeholder="البريد الإلكتروني" required style="width:100%;"></div>
+        <div style="margin-bottom:10px;"><input type="password" id="reg-password" placeholder="كلمة المرور" required style="width:100%;"></div>
         <button type="submit" class="btn-primary full-width">إنشاء حساب</button>
       </form>
 
@@ -161,27 +146,23 @@
       <div id="admin-login-view">
         <h3>لوحة تحكم المسؤول</h3>
         <form onsubmit="handleAdminLogin(event)">
-          <div class="form-group">
-            <input type="email" id="admin-email" placeholder="Admin Email" required>
-          </div>
-          <div class="form-group">
-            <input type="password" id="admin-pass" placeholder="Password" required>
-          </div>
+          <div style="margin:10px 0;"><input type="email" id="admin-email" placeholder="Admin Email" required style="width:100%;"></div>
+          <div style="margin:10px 0;"><input type="password" id="admin-pass" placeholder="Password" required style="width:100%;"></div>
           <button type="submit" class="btn-primary full-width">دخول</button>
         </form>
       </div>
 
       <div id="admin-panel-view" class="hidden">
-        <div class="admin-header">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
           <h3>لوحة الإدارة - Akatsuki Store</h3>
-          <button onclick="logoutAdmin()" class="btn-danger-sm">خروج</button>
+          <button onclick="logoutAdmin()" class="btn-secondary" style="padding:4px 8px;">خروج</button>
         </div>
 
         <div class="admin-tabs">
           <button class="admin-tab active" onclick="switchAdminTab('products')">المنتجات والبطاقات</button>
           <button class="admin-tab" onclick="switchAdminTab('payments')">إدارة طرق الدفع</button>
           <button class="admin-tab" onclick="switchAdminTab('orders')">الطلبات والأكواد</button>
-          <button class="admin-tab" onclick="switchAdminTab('settings')">المظهر والروابط</button>
+          <button class="admin-tab" onclick="switchAdminTab('settings')">المظهر والنصوص والبانر</button>
         </div>
 
         <!-- Tab 1: Products -->
@@ -189,26 +170,26 @@
           <h4>إضافة أو تعديل منتج / بطاقة</h4>
           <form id="product-form" onsubmit="saveProduct(event)">
             <input type="hidden" id="edit-product-id">
-            <div class="form-group">
-              <label>اسم المنتج / البطاقة:</label>
-              <input type="text" id="prod-name" placeholder="مثال: Free Fire Diamonds" required>
+            <div style="margin:10px 0;">
+              <label>اسم المنتج:</label>
+              <input type="text" id="prod-name" placeholder="مثال: Free Fire Diamonds" required style="width:100%;">
             </div>
-            <div class="form-group">
+            <div style="margin:10px 0;">
               <label>القسم والنوع:</label>
-              <select id="prod-cat" required>
+              <select id="prod-cat" required style="width:100%;">
                 <option value="games">ألعاب (شحن ID)</option>
                 <option value="giftcards">بطاقات رقمية (Gift Cards - تسليم كود)</option>
                 <option value="apps">تطبيقات (شحن ID)</option>
                 <option value="subs">اشتراكات (تسليم حساب/كود)</option>
               </select>
             </div>
-            <div class="form-group">
-              <label>رابط صورة المنتج (URL مباشر):</label>
-              <input type="url" id="prod-image-url" placeholder="https://i.ibb.co/example.jpg">
+            <div style="margin:10px 0;">
+              <label>رابط صورة المنتج (Direct Image URL):</label>
+              <input type="url" id="prod-image-url" placeholder="https://i.postimg.cc/example.jpg" style="width:100%;">
             </div>
-            <div class="form-group">
-              <label>الباقات والأسعار بالدولار (باقة : السعر ، وافصل بفاصلة):</label>
-              <textarea id="prod-packages" placeholder="100 Diamonds : 1.20 , 310 Diamonds : 3.00" required></textarea>
+            <div style="margin:10px 0;">
+              <label>الباقات والأسعار (اكتبها بأي طريقة: بالدولار أو بالدينار):</label>
+              <textarea id="prod-packages" placeholder="210+21 Diamond : 2.00 , 530+53 Diamond : 5.00" required style="width:100%; height:80px;"></textarea>
             </div>
             <button type="submit" class="btn-primary">حفظ المنتج</button>
           </form>
@@ -220,11 +201,11 @@
         <div id="tab-admin-payments" class="admin-tab-content hidden">
           <h4>إضافة طريقة دفع جديدة</h4>
           <form id="new-payment-form" onsubmit="addNewPaymentMethod(event)">
-            <div class="form-group">
-              <input type="text" id="new-pay-name" placeholder="اسم طريقة الدفع (مثال: بريدي موب BaridiMob)" required>
+            <div style="margin:10px 0;">
+              <input type="text" id="new-pay-name" placeholder="اسم طريقة الدفع (مثال: بريدي موب BaridiMob)" required style="width:100%;">
             </div>
-            <div class="form-group">
-              <textarea id="new-pay-details" placeholder="بيانات التحويل (رقم الحساب، الـ RIP، أو العنوان)" required></textarea>
+            <div style="margin:10px 0;">
+              <textarea id="new-pay-details" placeholder="بيانات التحويل (رقم الحساب، الـ RIP، أو العنوان)" required style="width:100%;"></textarea>
             </div>
             <button type="submit" class="btn-primary">إضافة طريقة الدفع</button>
           </form>
@@ -239,26 +220,50 @@
           <div id="admin-orders-table"></div>
         </div>
 
-        <!-- Tab 4: Design & Links Settings -->
+        <!-- Tab 4: Design & Header Text Settings -->
         <div id="tab-admin-settings" class="admin-tab-content hidden">
-          <h4>روابط المظهر والشعار</h4>
-          <div class="form-group">
+          <h4>تخصيص المظهر ونصوص البانر</h4>
+          <div style="margin:10px 0;">
             <label>اسم المتجر:</label>
-            <input type="text" id="setting-store-name">
+            <input type="text" id="setting-store-name" style="width:100%;">
           </div>
-          <div class="form-group">
-            <label>رابط صورة الشعار (Logo Image URL):</label>
-            <input type="url" id="setting-logo-url" placeholder="https://i.ibb.co/logo.jpg">
+          
+          <div style="background:#0b0d10; padding:10px; border-radius:8px; margin:10px 0; border:1px solid #30363d;">
+            <h5 style="margin-bottom:8px; color:#e50914;">التحكم بكتابة البانر العلوي (Hero Text):</h5>
+            <div style="margin-bottom:8px;">
+              <label><input type="checkbox" id="setting-hide-hero-text"> إخفاء الكتابة في البانر كلياً (إذا كانت صورتك تحتوي على الكتابة)</label>
+            </div>
+            <div style="margin-bottom:8px;">
+              <label>العنوان الرئيسي في البانر:</label>
+              <input type="text" id="setting-hero-title" placeholder="أفضل عروض الشحن والبطاقات الرقمية" style="width:100%;">
+            </div>
+            <div style="margin-bottom:8px;">
+              <label>الوصف الفرعي في البانر:</label>
+              <input type="text" id="setting-hero-sub" placeholder="تسليم فوري وموثوق | سعر الصرف: 1$ = 280 دج" style="width:100%;">
+            </div>
+            <div>
+              <label>موضع النص في البانر:</label>
+              <select id="setting-hero-align" style="width:100%;">
+                <option value="center">في الوسط (Center)</option>
+                <option value="right">على اليمين (Right)</option>
+                <option value="left">على اليسار (Left)</option>
+              </select>
+            </div>
           </div>
-          <div class="form-group">
-            <label>رابط خلفية الهيدر (Hero Banner URL):</label>
-            <input type="url" id="setting-hero-url" placeholder="https://i.ibb.co/banner.jpg">
+
+          <div style="margin:10px 0;">
+            <label>رابط صورة الشعار (Logo URL):</label>
+            <input type="url" id="setting-logo-url" placeholder="https://i.postimg.cc/logo.jpg" style="width:100%;">
           </div>
-          <div class="form-group">
-            <label>روابط صور معرض أسفل الموقع (ضع الروابط مفصولة بفاصلة):</label>
-            <textarea id="setting-gallery-urls" placeholder="https://i.ibb.co/img1.jpg , https://i.ibb.co/img2.jpg"></textarea>
+          <div style="margin:10px 0;">
+            <label>رابط صورة خلفية البانر العلوي (Hero Banner URL):</label>
+            <input type="url" id="setting-hero-url" placeholder="https://i.postimg.cc/banner.jpg" style="width:100%;">
           </div>
-          <button onclick="saveStoreSettings()" class="btn-primary">حفظ الإعدادات</button>
+          <div style="margin:10px 0;">
+            <label>روابط صور معرض أسفل الموقع (مفصولة بفاصلة):</label>
+            <textarea id="setting-gallery-urls" placeholder="https://i.postimg.cc/img1.jpg , https://i.postimg.cc/img2.jpg" style="width:100%;"></textarea>
+          </div>
+          <button onclick="saveStoreSettings()" class="btn-primary">حفظ إعدادات المظهر والنصوص</button>
         </div>
       </div>
     </div>
@@ -277,7 +282,7 @@
     <div class="footer-container">
       <div class="footer-col">
         <h4>الدعم الفني</h4>
-        <p><i class="fa-solid fa-envelope"></i> <a href="mailto:akatsuki.store16@gmail.com">akatsuki.store16@gmail.com</a></p>
+        <p><i class="fa-solid fa-envelope"></i> <a href="mailto:akatsuki.store16@gmail.com" style="color:#fff;">akatsuki.store16@gmail.com</a></p>
         <p><i class="fa-brands fa-whatsapp"></i> +213 556 33 48 91</p>
       </div>
       <div class="footer-col">
@@ -287,9 +292,6 @@
           <i class="fa-brands fa-facebook"></i> صفحتنا على فيسبوك
         </a>
       </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Akatsuki-Store. All Rights Reserved.</p>
     </div>
   </footer>
 
