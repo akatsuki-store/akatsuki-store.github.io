@@ -101,7 +101,6 @@
 
         <div id="payment-details-box" style="background:#0b0d10; padding:12px; border-radius:8px; margin-bottom:12px; font-size:0.85rem; border:1px solid var(--border-color);"></div>
 
-        <!-- Payment Receipt Warning Box -->
         <div class="receipt-notice-box" style="background: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b; color: #fbbf24; border-radius: 8px; padding: 10px; margin-bottom: 14px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
           <i class="fa-solid fa-camera" style="font-size: 1.1rem;"></i>
           <span><strong>ملاحظة هامة:</strong> بعد إتمام عملية التحويل، يرجى إرسال <u>صورة وصل الدفع (Screenshot)</u> في محادثة الواتساب لتأكيد وشحن طلبك مباشرة.</span>
@@ -173,14 +172,18 @@
 
         <!-- Tab 1: Products -->
         <div id="tab-admin-products" class="admin-tab-content">
-          <h4>إضافة أو تعديل منتج / بطاقة</h4>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h4 id="form-product-title">إضافة أو تعديل منتج / بطاقة</h4>
+            <button type="button" onclick="resetProductForm()" class="btn-secondary" style="font-size:0.75rem; padding:4px 8px;">إلغاء التعديل / إضافة جديد</button>
+          </div>
+          
           <form id="product-form" onsubmit="saveProduct(event)">
             <input type="hidden" id="edit-product-id">
-            <div style="margin:10px 0;">
+            <div style="margin:8px 0;">
               <label>اسم المنتج:</label>
               <input type="text" id="prod-name" placeholder="مثال: Free Fire Diamonds" required style="width:100%;">
             </div>
-            <div style="margin:10px 0;">
+            <div style="margin:8px 0;">
               <label>القسم والنوع:</label>
               <select id="prod-cat" required style="width:100%;">
                 <option value="games">ألعاب (شحن ID)</option>
@@ -189,17 +192,22 @@
                 <option value="subs">اشتراكات (تسليم حساب/كود)</option>
               </select>
             </div>
-            <div style="margin:10px 0;">
+            <div style="margin:8px 0;">
               <label>رابط صورة المنتج (Direct Image URL):</label>
               <input type="url" id="prod-image-url" placeholder="https://i.postimg.cc/example.jpg" style="width:100%;">
             </div>
-            <div style="margin:10px 0;">
-              <label>الباقات والأسعار (اكتبها بأي طريقة: بالدولار أو بالدينار):</label>
-              <textarea id="prod-packages" placeholder="210+21 Diamond : 2.00 , 530+53 Diamond : 5.00" required style="width:100%; height:80px;"></textarea>
+            <div style="margin:8px 0;">
+              <label>السعر الأساسي الظاهر على البطاقة في الواجهة (اختياري - بالدولار أو بالدينار):</label>
+              <input type="text" id="prod-display-price" placeholder="مثال: 8$ أو 1900 da (اتركه فارغاً ليحسب تلقائياً)" style="width:100%;">
             </div>
-            <button type="submit" class="btn-primary">حفظ المنتج</button>
+            <div style="margin:8px 0;">
+              <label>الباقات والأسعار (اكتب الباقة : السعر ، وافصل بفاصلة أو سطر جديد):</label>
+              <textarea id="prod-packages" placeholder="اشتراك 18 شهر : 8.00" required style="width:100%; height:80px;"></textarea>
+            </div>
+            <button type="submit" class="btn-primary" id="btn-save-product">حفظ المنتج</button>
           </form>
           <hr style="margin:15px 0; border-color:var(--border-color);">
+          <h4>قائمة المنتجات الحالية (اضغط تعديل لتغيير السعر فوراً):</h4>
           <div id="admin-products-list"></div>
         </div>
 
